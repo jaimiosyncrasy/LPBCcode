@@ -24,16 +24,15 @@ Ts=0.1; % should agree with simulink outermost block setting
     timeStart=time(1); timeEnd=time(2); % HH:MM format, for full day  use 23:59
     [minStart,minEnd,simTimestamps] = setSimTime(timeStart,timeEnd);
     resultsName=raw(testIdx+numHead,5); resultsName=resultsName{1};
-    % cols 13,14 not used by this code, instead used by results tracking tool
+    % 'raw LPBC output name' col not used by this code, instead used by results tracking tool
     measStr=raw(testIdx+numHead,6); measStr=measStr{1}; % convert cell array to string
     actStr=raw(testIdx+numHead,7); actStr=actStr{1};
     dbcStr=raw(testIdx+numHead,8); dbcStr=dbcStr{1};
     Sinv_str=raw(testIdx+numHead,9); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
 
-    %%  
-    % use these vars: PVpen,resultsName,
-    
-% read TV load/gen data
+% vars read in from initialization that are not used yet: PVpen
+
+%% read TV load/gen data
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
@@ -56,7 +55,6 @@ Ts=0.1; % should agree with simulink outermost block setting
     busNames=raw(1,2:end); % used to select meas node
     busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
 
-    %%
     % Assign node location indices, print to help with debugging
     meas_idx=strToIdx(measStr,busNames)
     ctrl_idx=strToIdx(actStr,loadNames)
@@ -69,12 +67,11 @@ Ts=0.1; % should agree with simulink outermost block setting
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
     [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
 %%
+kgainCalcType='sysID'; % TEMP
 if strcmp(kgainCalcType,'sysID')
     %% [sysID method] Turn controllers off    
-    % TEMP: come back to revising controller to have on/off, and ZN vs. new method   
         Vang_ctrl=false; % boolean
         Vmag_ctrl=false; % boolean
-        % gainCalc='new method';
         [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart] = designControllerZN(Vmag_ctrl,Vang_ctrl)
 
 
@@ -83,14 +80,9 @@ if strcmp(kgainCalcType,'sysID')
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase);
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    testDbcData=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     
-    figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
-    figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
-   
-    
-    testDbcData(800:803,2:end) % print snippet on all phases
-    
+
      %% [sysID method] Run sim with controllers off to get sys ID data
          disp('------------------- Running uncontrolled sim...');
 
@@ -103,15 +95,8 @@ if strcmp(kgainCalcType,'sysID')
 
     % Run PlotLocalCtrl in command prompt to see results
     %% [sysID method] Do sys ID analysis
-    pjump=testDbcData(950,2:4)-testDbcData(500,2:4)
-    qjump=testDbcData(950,5:7)-testDbcData(500,5:7)
-    vjump=vmag_new(950,:)-vmag_new(500,:) % by 950 should have settled if started at 800
-    dvdq=vjump./(qjump/Sbase)
-    dvdp=vjump./(pjump/Sbase)
-    m=0.8; % ammount you want to attain in first ts
-    Kp_vmag_guess=-m*(1./dvdq) % close to Kp_vmag?
-    Kp_vmag
-    %m*(1./dvdp)
+    [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, Sbase,ctrl_idx,loadNames)
+
     %%
     % Measure OS, settle
     ssError_vmag=0.01;
@@ -162,7 +147,7 @@ end
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase);
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    testDbcData=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     
     figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
     figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
