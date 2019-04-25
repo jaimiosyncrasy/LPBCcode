@@ -12,11 +12,11 @@ function [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(pload,qload,
     % define square wave (step up and step down) disturbance
     pload_avg=mean(pload);
     qload_avg=mean(qload);
-    stepP=0.8*pload_avg; % scalar, assumes dbc location is colocated with a load
-    stepQ=0.8*qload_avg; 
+    stepP=0.8*pload_avg(1); % choose 1st avg to make scalar, assumes dbc location is colocated with a load
+    stepQ=0.8*qload_avg(1); 
     for i=1:length(ctrl_idx)/2
-        testDbcData(dbcStart(i*2-1):dbcStart(i*2-1)+dbcDur,i*2)=stepP(i); % 1 offset because 1st col is time
-        testDbcData(dbcStart(i*2):dbcStart(i*2)+dbcDur,i*2+1)=stepQ(i);
+        testDbcData(dbcStart(i*2-1):dbcStart(i*2-1)+dbcDur,i*2)=stepP; % 1 offset because 1st col is time
+        testDbcData(dbcStart(i*2):dbcStart(i*2)+dbcDur,i*2+1)=stepQ;
     end
     
     % plot for debugging purpose

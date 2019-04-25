@@ -31,6 +31,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     Sinv_str=raw(testIdx+numHead,9); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
 
 % vars read in from initialization that are not used yet: PVpen
+% may need later: strcmp(kgainCalcType,'ZN')
 
 %% read TV load/gen data
     % this code expects second-wise data
@@ -66,16 +67,24 @@ Ts=0.1; % should agree with simulink outermost block setting
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
     [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
-%%
-kgainCalcType='sysID'; % TEMP
-if strcmp(kgainCalcType,'sysID')
-    %% [sysID method] Turn controllers off    
+%% --------------------- Simulation is now initialized -------------------------
+    disp( '------------------- Designing controller...');
+
+%% Ability1: det Ku by running this over and over
+    [ZNcritMat,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNtune()   
+    Vang_ctrl=true; % boolean
+    Vmag_ctrl=true; % boolean
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+
+    
+%% Ability2: det sensitivities by running this
+   
+    % Turn controllers off    
         Vang_ctrl=false; % boolean
         Vmag_ctrl=false; % boolean
-        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart] = designControllerZN(Vmag_ctrl,Vang_ctrl)
+        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
 
-
-    %% [sysID method] Create test disturbance
+    % Create test disturbance
     % inialize actual dbc to 0, only run test dbc
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase);
@@ -83,7 +92,7 @@ if strcmp(kgainCalcType,'sysID')
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     
 
-     %% [sysID method] Run sim with controllers off to get sys ID data
+     % Run sim with controllers off to get sys ID data
          disp('------------------- Running uncontrolled sim...');
 
     % Run simulink
@@ -92,35 +101,30 @@ if strcmp(kgainCalcType,'sysID')
         vmag_init_actual=vmag_new(4,:);
         vang_init_actual-vang_new(4,:);
         disp('finished simulink');    
+        
+    % Compute sensitivities
+        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, Sbase,ctrl_idx,loadNames)
+        [dvdq dvdp ddeldq ddeldp]
+        % units: [pu/pu pu/pu deg/pu deg/pu]
+        
+%% --------------------- Now ready to compute kgains -------------------------
 
-    % Run PlotLocalCtrl in command prompt to see results
-    %% [sysID method] Do sys ID analysis
-    [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, Sbase,ctrl_idx,loadNames)
+%% Set kgains using way 1, save as test1_way1.mat
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
+    Vang_ctrl=true; % boolean
+    Vmag_ctrl=true; % boolean
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
 
-    %%
-    % Measure OS, settle
-    ssError_vmag=0.01;
-    ssError_vang=0.5;
-    % timeseries=[0.1 0.1 0.3 0.7 0.8 1 0.93 0.9]
-    % setpoint=0.9;
-    measStart=120;
-    [OS,settle]=measureTrans(vmag_new(measStart:(measStart+60),phase),vmag_ref(7,1+phase),ssError_vmag) % (timeseries,setpoint,ssError)
+%% Set kgains using way 2, save as test1_way2.mat
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
+    Vang_ctrl=true; % boolean
+    Vmag_ctrl=true; % boolean    
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
 
-    % Collect Process Gain
-    tsamp=280;
+%% Set kgains using way 3, save as test1_way3.mat
 
-    % collectStepData
-    N=80 % number of timesteps of data to collect, in seconds
-    collectStart=120 % timstep after t=0 seconds to start collecting data
-    data.vmag=vmag_new(collectStart:(collectStart+N),:)
-    data.vang=vang_new(collectStart:(collectStart+N),:)
-    data.q=qnew(collectStart:(collectStart+N),:)
-    data.p=pnew(collectStart:(collectStart+N),:)
-    phase=1; % phase A,B,or C
-    LS_Param_Est(data.vmag(:,phase),data.vang(:,phase),data.p(:,phase),data.q(:,phase))
-
-    %% [sysID method] Design controller using sys ID data
-    disp('------------------- Designing controller...');
+    % NOT FINISHED YET
+    %  Design controller using sys ID data
     designControllerSysID(simResults); % set kgains, implicitly "turns on" controllers
 
     % TEMP: come back to revising controller to have on/off, and ZN vs. new method   
@@ -129,19 +133,7 @@ if strcmp(kgainCalcType,'sysID')
     % gainCalc='new method';
    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart,invMat,invDelay] = designControllerNEW(Vmag_ctrl,Vang_ctrl)
 
-
-    
-elseif strcmp(kgainCalcType,'ZN')
-    %% [ZN method] Design controller using ZN
-    disp( '------------------- Designing controller...');
-    % TEMP: come back and turn controllers on 
-        Vang_ctrl=true; % boolean
-        Vmag_ctrl=true; % boolean
-        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart] = designControllerZN(Vmag_ctrl,Vang_ctrl)
-    
-else
-    disp(strcat('error, kgain calculation type',kgainCalcType,' not recognized'));
-end
+%% --------------------- Controller kgains are now set -------------------------
 %% Create disturbance for controlled sim
     % define disturbance directly in this function below
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
@@ -162,9 +154,10 @@ end
         vang_init_actual=vang_new(4,:);
         disp('finished simulink');    
 
+
+%% Save results 
     % Run PlotLocalCtrl in command prompt to see results
 
-%% Output results 
     % so that results tracking tool can compute performance metrics
     disp('------------------- Outputing results...');
     % save data into .mats
