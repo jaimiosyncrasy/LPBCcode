@@ -1,13 +1,15 @@
 function [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas,stepP,stepQ, dbcDur, vmag_new,vang_new,Sbase,ctrl_idx,loadNames)
     % This func computes sensitivities between vmag, vang, P, Q from gains of step
-    % response data
-    % these sensitivities encapsulates consideration of how heavily loaded
+    % response data; these sensitivities encapsulates consideration of how heavily loaded
     % each phase is as well as how much impedance/losses is between the
     % actuator and performance node
+    
+    % dvdq is dim rx1, and so are the other sens vars. r is number of
+    % actuator-phases
     pjump=(stepP/Sbase); % scalar
     qjump=(stepQ/Sbase);
 sense=zeros(length(ctrl_idx),2);
-for i= 1:length(ctrl_idx)
+for i= 1:length(ctrl_idx) % 2r, r is num of phase actuators
         str=loadNames{ctrl_idx(i)}
         phase=str2num(str(end)); % last char is phase number
         if ~isempty(strfind(loadNames{ctrl_idx(i)},'/P')) % if actuator label contains /P

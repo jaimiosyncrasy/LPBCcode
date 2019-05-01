@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=1; % TEMP, for each scenario run, first test below the headers is idx=1
+    testIdx=3; % TEMP, for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -37,21 +37,21 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=35; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
+    n=910; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
     
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
-    netLoadData = csvread('001_IEEE13_secondWise_sigBuilder.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    netLoadData = csvread('sig03_PL0001_April_1sheet.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
     
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ1');
+    [txt,num,raw] = xlsread('PL0001_v4.xls','Pins','B1:WJ1');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames=raw(2:end); % 
     loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
     
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B2:AK3');
+    [txt,num,raw] = xlsread('PL0001_v4.xls','Pins','B2:ALH3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames=raw(1,2:end); % used to select meas node
     busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
@@ -65,8 +65,8 @@ Ts=0.1; % should agree with simulink outermost block setting
 %% Set targets/reference for controller to  track
      [Sbase,V1base,V2base] = computePU();
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base); 
-    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
+    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
 %% --------------------- Simulation is now initialized -------------------------
     disp( '------------------- Designing controller...');
 
@@ -93,7 +93,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     
 
      % Run sim with controllers off to get sys ID data
-         disp('------------------- Running uncontrolled sim...');
+         disdelta_u_vmagp('------------------- Running uncontrolled sim...');
 
     % Run simulink
         sim('Sim_v18.mdl')
@@ -104,35 +104,40 @@ Ts=0.1; % should agree with simulink outermost block setting
         
     % Compute sensitivities
         [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, Sbase,ctrl_idx,loadNames)
-        [dvdq dvdp ddeldq ddeldp]
+        [dvdq dvdp ddeldq ddeldp] % print
         % units: [pu/pu pu/pu deg/pu deg/pu]
         
 %% --------------------- Now ready to compute kgains -------------------------
+kgain_method=1; % USER SETS THIS MANUALLY 
+% (to choose methdof ro computing controller gains)
+% 1 - simplest, traditional Zeigler nichols method
+% 2 - modified version of Zeigler nichols, using sensitivities of each
+% phase-actuator
+% 3 - new method, involving automatic tuning of controller to minimize a
+% cost function
 
-%% Set kgains using way 1, save as test1_way1.mat
-[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
-    Vang_ctrl=true; % boolean
-    Vmag_ctrl=true; % boolean
-[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+%% -------------------
+switch kgain_method
+case 1
+    %% Set kgains using way 1, save as test1_way1.mat
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
+        Vang_ctrl=true; % boolean
+        Vmag_ctrl=true; % boolean
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
 
-%% Set kgains using way 2, save as test1_way2.mat
-[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
-    Vang_ctrl=true; % boolean
-    Vmag_ctrl=true; % boolean    
-[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+case 2
+    %% Set kgains using way 2, save as test1_way2.mat
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
+        Vang_ctrl=true; % boolean
+        Vmag_ctrl=true; % boolean    
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+case 3 
+    %% Set kgains using way 3, save as test1_way3.mat 
+        Vang_ctrl=true; % boolean
+        Vmag_ctrl=true; % boolean
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts)
 
-%% Set kgains using way 3, save as test1_way3.mat
-
-    % NOT FINISHED YET
-    %  Design controller using sys ID data
-    designControllerSysID(simResults); % set kgains, implicitly "turns on" controllers
-
-    % TEMP: come back to revising controller to have on/off, and ZN vs. new method   
-    Vang_ctrl=true; % boolean
-    Vmag_ctrl=true; % boolean
-    % gainCalc='new method';
-   [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart,invMat,invDelay] = designControllerNEW(Vmag_ctrl,Vang_ctrl)
-
+end
 %% --------------------- Controller kgains are now set -------------------------
 %% Create disturbance for controlled sim
     % define disturbance directly in this function below
