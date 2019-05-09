@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=3; % TEMP, for each scenario run, first test below the headers is idx=1
+    testIdx=3; % TEMP (sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -37,25 +37,60 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=910; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
+    n=909; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
     
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
-    netLoadData = csvread('sig03_PL0001_April_1sheet.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    netLoadData = csvread('sig0.3_PL0001_April_1sheet.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
     
-    [txt,num,raw] = xlsread('PL0001_v4.xls','Pins','B1:WJ1');
-    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    loadNames=raw(2:end); % 
-    loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
-    
-    [txt,num,raw] = xlsread('PL0001_v4.xls','Pins','B2:ALH3');
-    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames=raw(1,2:end); % used to select meas node
-    busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','C1:IV1'); %fix this too
 
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    loadNames1=raw(1:end); % 
+    loadNames1 = cellfun(@(S) S(8:end), loadNames1, 'Uniform', 0);
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B6:IV6');  
+    loadNames2=raw(1:end);
+    loadNames2 = cellfun(@(S) S(8:end), loadNames2, 'Uniform', 0);
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B12:CT12');  
+    loadNames3=raw(1:end);  
+    loadNames3 = cellfun(@(S) S(8:end), loadNames3, 'Uniform', 0);
+    
+    loadNames = [loadNames1, loadNames2, loadNames3];
+   % loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
+    
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','C2:IV2');
+    
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames1=raw(1:end); % used to select meas node
+     
+    busNames1=cellfun(@(S) S(3:end-5), busNames1, 'Uniform', 0); % clean up string format
+
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B7:IV7');
+    
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames2=raw(1:end); % used to select meas node
+     
+    busNames2=cellfun(@(S) S(3:end-5), busNames2, 'Uniform', 0);
+    
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B13:IV13');
+    
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames3=raw(1:end); % used to select meas node
+     
+    busNames3=cellfun(@(S) S(3:end-5), busNames3, 'Uniform', 0);
+    
+    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B18:HW18');
+    
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames4=raw(1:end); % used to select meas node
+     
+    busNames4=cellfun(@(S) S(3:end-5), busNames4, 'Uniform', 0);
+    
+    busNames=[busNames1,busNames2,busNames3,busNames4];
+    
     % Assign node location indices, print to help with debugging
     meas_idx=strToIdx(measStr,busNames)
     ctrl_idx=strToIdx(actStr,loadNames)
@@ -93,7 +128,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     
 
      % Run sim with controllers off to get sys ID data
-         disdelta_u_vmagp('------------------- Running uncontrolled sim...');
+         disp('------------------- Running uncontrolled sim...');
 
     % Run simulink
         sim('Sim_v18.mdl')
@@ -110,6 +145,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 %% --------------------- Now ready to compute kgains -------------------------
 kgain_method=1; % USER SETS THIS MANUALLY 
 % (to choose methdof ro computing controller gains)
+
 % 1 - simplest, traditional Zeigler nichols method
 % 2 - modified version of Zeigler nichols, using sensitivities of each
 % phase-actuator
