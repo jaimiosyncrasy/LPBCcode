@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.106"
+    ComputedModelVersion    "1.110"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-7.0, 2.0, 2090.0, 1080.0]
+      Location		      [-20.0, 4.0, 2581.0, 1655.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -52,7 +52,7 @@ Model {
       }
       Array {
 	Type			"Simulink.EditorInfo"
-	Dimension		12
+	Dimension		13
 	Object {
 	  $ObjectID		  5
 	  IsActive		  [0]
@@ -76,9 +76,9 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "1278"
-	  Extents		  [1882.0, 878.0]
-	  ZoomFactor		  [1.25]
-	  Offset		  [-84.0, -34.133333333333326]
+	  Extents		  [2521.0, 1377.0]
+	  ZoomFactor		  [1.7499999999999998]
+	  Offset		  [-17.562892971325258, 3.1809523809523261]
 	}
 	Object {
 	  $ObjectID		  8
@@ -114,7 +114,7 @@ Model {
 	  LoadSaveID		  "1469"
 	  Extents		  [1874.0, 906.0]
 	  ZoomFactor		  [1.75]
-	  Offset		  [2.2857142857149029, 44.57142857143009]
+	  Offset		  [2.2857142857149029, 44.571428571430204]
 	}
 	Object {
 	  $ObjectID		  12
@@ -130,7 +130,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [2034.0, 849.0]
+	  Extents		  [1384.0, 626.0]
 	  ZoomFactor		  [2.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -148,18 +148,27 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [2030.0, 802.0]
-	  ZoomFactor		  [1.75]
-	  Offset		  [595.41638246205343, 388.10714285714073]
+	  Extents		  [2521.0, 1377.0]
+	  ZoomFactor		  [1.7499999999999998]
+	  Offset		  [456.45048221255843, 319.15476190475908]
 	}
 	Object {
 	  $ObjectID		  16
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2015"
-	  Extents		  [2030.0, 802.0]
+	  Extents		  [2521.0, 1377.0]
 	  ZoomFactor		  [1.5]
 	  Offset		  [-130.59999999999991, -4.2000000000000455]
+	}
+	Object {
+	  $ObjectID		  17
+	  IsActive		  [0]
+	  ViewObjType		  "SimulinkSubsys"
+	  LoadSaveID		  "837"
+	  Extents		  [2521.0, 1377.0]
+	  ZoomFactor		  [2.5]
+	  Offset		  [-120.7619047619046, 155.22857142857131]
 	}
 	PropName		"EditorsInfo"
       }
@@ -171,9 +180,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu May 09 15:56:32 2019"
-  RTWModifiedTimeStamp	  479318178
-  ModelVersionFormat	  "1.%<AutoIncrement:106>"
+  LastModifiedDate	  "Sat May 11 11:09:36 2019"
+  RTWModifiedTimeStamp	  479473519
+  ModelVersionFormat	  "1.%<AutoIncrement:110>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -214,7 +223,7 @@ Model {
   TryForcingSFcnDF	  off
   Object {
     $PropName		    "DataLoggingOverride"
-    $ObjectID		    17
+    $ObjectID		    18
     $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
     model_		    "Sim_v18"
     signals_		    []
@@ -234,7 +243,7 @@ Model {
   }
   Object {
     $PropName		    "StreamingClients"
-    $ObjectID		    18
+    $ObjectID		    19
     $ClassName		    "Simulink.HMI.StreamingClients"
     Model		    "Sim_v18"
     Array {
@@ -453,13 +462,13 @@ Model {
     Type		    "Handle"
     Dimension		    6
     Simulink.ConfigSet {
-      $ObjectID		      19
+      $ObjectID		      20
       Version		      "1.15.0"
       Array {
 	Type			"Handle"
 	Dimension		9
 	Simulink.SolverCC {
-	  $ObjectID		  20
+	  $ObjectID		  21
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
 	  StopTime		  "40"
@@ -494,7 +503,7 @@ Model {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  21
+	  $ObjectID		  22
 	  Version		  "1.15.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -527,7 +536,7 @@ Model {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  22
+	  $ObjectID		  23
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -584,7 +593,7 @@ Model {
 	  AccelVerboseBuild	  off
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  23
+	  $ObjectID		  24
 	  Version		  "1.15.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -673,7 +682,7 @@ Model {
 	  IntegerSaturationMsg	  "warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  24
+	  $ObjectID		  25
 	  Version		  "1.15.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -713,7 +722,7 @@ Model {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  25
+	  $ObjectID		  26
 	  Version		  "1.15.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -728,7 +737,7 @@ Model {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  26
+	  $ObjectID		  27
 	  Version		  "1.15.0"
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -741,7 +750,7 @@ Model {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  27
+	  $ObjectID		  28
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -813,7 +822,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      28
+	      $ObjectID		      29
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -882,7 +891,7 @@ Model {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      29
+	      $ObjectID		      30
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -969,7 +978,7 @@ Model {
 	  }
 	}
 	SSC.SimscapeCC {
-	  $ObjectID		  30
+	  $ObjectID		  31
 	  Version		  "1.0"
 	  Array {
 	    Type		    "Cell"
@@ -981,7 +990,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
-	      $ObjectID		      31
+	      $ObjectID		      32
 	      Version		      "1.15.0"
 	      Name		      "SimMechanics"
 	      WarnOnRedundantConstraints on
@@ -1014,14 +1023,14 @@ Model {
 	      OVRRIDBodyVisualizationType "NONE"
 	    }
 	    simmechanics.ConfigurationSet {
-	      $ObjectID		      32
+	      $ObjectID		      33
 	      Version		      "1.15.0"
 	      Description	      "SimMechanics 2G"
 	      Array {
 		Type			"Handle"
 		Dimension		2
 		simmechanics.DiagnosticsConfigSet {
-		  $ObjectID		  33
+		  $ObjectID		  34
 		  Version		  "1.15.0"
 		  Description		  "Diagnostics"
 		  Name			  "DiagnosticsConfigSet"
@@ -1035,7 +1044,7 @@ Model {
 		  SimMechanicsJointTargetOverSpecification "error"
 		}
 		simmechanics.ExplorerConfigSet {
-		  $ObjectID		  34
+		  $ObjectID		  35
 		  Version		  "1.15.0"
 		  Description		  "Explorer"
 		  Name			  "ExplorerConfigSet"
@@ -1066,13 +1075,13 @@ Model {
       ConfigPrmDlgPosition     [ 441, 49, 2503, 1121 ] 
     }
     Simulink.ConfigSet {
-      $ObjectID		      35
+      $ObjectID		      36
       Version		      "1.15.0"
       Array {
 	Type			"Handle"
 	Dimension		9
 	Simulink.SolverCC {
-	  $ObjectID		  36
+	  $ObjectID		  37
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
 	  StopTime		  "300"
@@ -1107,7 +1116,7 @@ Model {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  37
+	  $ObjectID		  38
 	  Version		  "1.15.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -1140,7 +1149,7 @@ Model {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  38
+	  $ObjectID		  39
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -1197,7 +1206,7 @@ Model {
 	  AccelVerboseBuild	  off
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  39
+	  $ObjectID		  40
 	  Version		  "1.15.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -1286,7 +1295,7 @@ Model {
 	  IntegerSaturationMsg	  "warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  40
+	  $ObjectID		  41
 	  Version		  "1.15.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -1326,7 +1335,7 @@ Model {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  41
+	  $ObjectID		  42
 	  Version		  "1.15.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -1341,7 +1350,7 @@ Model {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  42
+	  $ObjectID		  43
 	  Version		  "1.15.0"
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -1354,7 +1363,7 @@ Model {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  43
+	  $ObjectID		  44
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -1434,7 +1443,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      44
+	      $ObjectID		      45
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -1506,7 +1515,7 @@ Model {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      45
+	      $ObjectID		      46
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -1593,7 +1602,7 @@ Model {
 	  }
 	}
 	SSC.SimscapeCC {
-	  $ObjectID		  46
+	  $ObjectID		  47
 	  Version		  "1.0"
 	  Array {
 	    Type		    "Cell"
@@ -1605,7 +1614,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
-	      $ObjectID		      47
+	      $ObjectID		      48
 	      Version		      "1.15.0"
 	      Name		      "SimMechanics"
 	      WarnOnRedundantConstraints on
@@ -1638,14 +1647,14 @@ Model {
 	      OVRRIDBodyVisualizationType "NONE"
 	    }
 	    simmechanics.ConfigurationSet {
-	      $ObjectID		      48
+	      $ObjectID		      49
 	      Version		      "1.15.0"
 	      Description	      "SimMechanics 2G"
 	      Array {
 		Type			"Handle"
 		Dimension		2
 		simmechanics.DiagnosticsConfigSet {
-		  $ObjectID		  49
+		  $ObjectID		  50
 		  Version		  "1.15.0"
 		  Description		  "Diagnostics"
 		  Name			  "DiagnosticsConfigSet"
@@ -1659,7 +1668,7 @@ Model {
 		  SimMechanicsJointTargetOverSpecification "error"
 		}
 		simmechanics.ExplorerConfigSet {
-		  $ObjectID		  50
+		  $ObjectID		  51
 		  Version		  "1.15.0"
 		  Description		  "Explorer"
 		  Name			  "ExplorerConfigSet"
@@ -1691,13 +1700,13 @@ Model {
       ConfigPrmDlgPosition     [ 301, 119, 2415, 1333 ] 
     }
     Simulink.ConfigSet {
-      $ObjectID		      51
+      $ObjectID		      52
       Version		      "1.15.0"
       Array {
 	Type			"Handle"
 	Dimension		9
 	Simulink.SolverCC {
-	  $ObjectID		  52
+	  $ObjectID		  53
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
 	  StopTime		  "3600"
@@ -1732,7 +1741,7 @@ Model {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  53
+	  $ObjectID		  54
 	  Version		  "1.15.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -1765,7 +1774,7 @@ Model {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  54
+	  $ObjectID		  55
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -1822,7 +1831,7 @@ Model {
 	  AccelVerboseBuild	  off
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  55
+	  $ObjectID		  56
 	  Version		  "1.15.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -1911,7 +1920,7 @@ Model {
 	  IntegerSaturationMsg	  "warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  56
+	  $ObjectID		  57
 	  Version		  "1.15.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -1951,7 +1960,7 @@ Model {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  57
+	  $ObjectID		  58
 	  Version		  "1.15.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -1966,7 +1975,7 @@ Model {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  58
+	  $ObjectID		  59
 	  Version		  "1.15.0"
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -1979,7 +1988,7 @@ Model {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  59
+	  $ObjectID		  60
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -2059,7 +2068,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      60
+	      $ObjectID		      61
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -2131,7 +2140,7 @@ Model {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      61
+	      $ObjectID		      62
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -2218,7 +2227,7 @@ Model {
 	  }
 	}
 	SSC.SimscapeCC {
-	  $ObjectID		  62
+	  $ObjectID		  63
 	  Version		  "1.0"
 	  Array {
 	    Type		    "Cell"
@@ -2230,7 +2239,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
-	      $ObjectID		      63
+	      $ObjectID		      64
 	      Version		      "1.15.0"
 	      Name		      "SimMechanics"
 	      WarnOnRedundantConstraints on
@@ -2263,14 +2272,14 @@ Model {
 	      OVRRIDBodyVisualizationType "NONE"
 	    }
 	    simmechanics.ConfigurationSet {
-	      $ObjectID		      64
+	      $ObjectID		      65
 	      Version		      "1.15.0"
 	      Description	      "SimMechanics 2G"
 	      Array {
 		Type			"Handle"
 		Dimension		2
 		simmechanics.DiagnosticsConfigSet {
-		  $ObjectID		  65
+		  $ObjectID		  66
 		  Version		  "1.15.0"
 		  Description		  "Diagnostics"
 		  Name			  "DiagnosticsConfigSet"
@@ -2284,7 +2293,7 @@ Model {
 		  SimMechanicsJointTargetOverSpecification "error"
 		}
 		simmechanics.ExplorerConfigSet {
-		  $ObjectID		  66
+		  $ObjectID		  67
 		  Version		  "1.15.0"
 		  Description		  "Explorer"
 		  Name			  "ExplorerConfigSet"
@@ -2316,13 +2325,13 @@ Model {
       ConfigPrmDlgPosition     [ 301, 119, 2415, 1333 ] 
     }
     Simulink.ConfigSet {
-      $ObjectID		      67
+      $ObjectID		      68
       Version		      "1.15.0"
       Array {
 	Type			"Handle"
 	Dimension		9
 	Simulink.SolverCC {
-	  $ObjectID		  68
+	  $ObjectID		  69
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
 	  StopTime		  "300"
@@ -2357,7 +2366,7 @@ Model {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  69
+	  $ObjectID		  70
 	  Version		  "1.15.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -2390,7 +2399,7 @@ Model {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  70
+	  $ObjectID		  71
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -2447,7 +2456,7 @@ Model {
 	  AccelVerboseBuild	  off
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  71
+	  $ObjectID		  72
 	  Version		  "1.15.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -2536,7 +2545,7 @@ Model {
 	  IntegerSaturationMsg	  "warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  72
+	  $ObjectID		  73
 	  Version		  "1.15.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -2576,7 +2585,7 @@ Model {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  73
+	  $ObjectID		  74
 	  Version		  "1.15.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -2591,7 +2600,7 @@ Model {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  74
+	  $ObjectID		  75
 	  Version		  "1.15.0"
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -2604,7 +2613,7 @@ Model {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  75
+	  $ObjectID		  76
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -2684,7 +2693,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      76
+	      $ObjectID		      77
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -2756,7 +2765,7 @@ Model {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      77
+	      $ObjectID		      78
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -2843,7 +2852,7 @@ Model {
 	  }
 	}
 	SSC.SimscapeCC {
-	  $ObjectID		  78
+	  $ObjectID		  79
 	  Version		  "1.0"
 	  Array {
 	    Type		    "Cell"
@@ -2855,7 +2864,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
-	      $ObjectID		      79
+	      $ObjectID		      80
 	      Version		      "1.15.0"
 	      Name		      "SimMechanics"
 	      WarnOnRedundantConstraints on
@@ -2888,14 +2897,14 @@ Model {
 	      OVRRIDBodyVisualizationType "NONE"
 	    }
 	    simmechanics.ConfigurationSet {
-	      $ObjectID		      80
+	      $ObjectID		      81
 	      Version		      "1.15.0"
 	      Description	      "SimMechanics 2G"
 	      Array {
 		Type			"Handle"
 		Dimension		2
 		simmechanics.DiagnosticsConfigSet {
-		  $ObjectID		  81
+		  $ObjectID		  82
 		  Version		  "1.15.0"
 		  Description		  "Diagnostics"
 		  Name			  "DiagnosticsConfigSet"
@@ -2909,7 +2918,7 @@ Model {
 		  SimMechanicsJointTargetOverSpecification "error"
 		}
 		simmechanics.ExplorerConfigSet {
-		  $ObjectID		  82
+		  $ObjectID		  83
 		  Version		  "1.15.0"
 		  Description		  "Explorer"
 		  Name			  "ExplorerConfigSet"
@@ -2941,13 +2950,13 @@ Model {
       ConfigPrmDlgPosition     [ 301, 119, 2415, 1333 ] 
     }
     Simulink.ConfigSet {
-      $ObjectID		      83
+      $ObjectID		      84
       Version		      "1.15.0"
       Array {
 	Type			"Handle"
 	Dimension		9
 	Simulink.SolverCC {
-	  $ObjectID		  84
+	  $ObjectID		  85
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
 	  StopTime		  "300"
@@ -2982,7 +2991,7 @@ Model {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  85
+	  $ObjectID		  86
 	  Version		  "1.15.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -3015,7 +3024,7 @@ Model {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  86
+	  $ObjectID		  87
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -3072,7 +3081,7 @@ Model {
 	  AccelVerboseBuild	  off
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  87
+	  $ObjectID		  88
 	  Version		  "1.15.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -3161,7 +3170,7 @@ Model {
 	  IntegerSaturationMsg	  "warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  88
+	  $ObjectID		  89
 	  Version		  "1.15.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -3201,7 +3210,7 @@ Model {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  89
+	  $ObjectID		  90
 	  Version		  "1.15.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -3216,7 +3225,7 @@ Model {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  90
+	  $ObjectID		  91
 	  Version		  "1.15.0"
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -3229,7 +3238,7 @@ Model {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  91
+	  $ObjectID		  92
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -3309,7 +3318,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      92
+	      $ObjectID		      93
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -3381,7 +3390,7 @@ Model {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      93
+	      $ObjectID		      94
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -3468,7 +3477,7 @@ Model {
 	  }
 	}
 	SSC.SimscapeCC {
-	  $ObjectID		  94
+	  $ObjectID		  95
 	  Version		  "1.0"
 	  Array {
 	    Type		    "Cell"
@@ -3480,7 +3489,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
-	      $ObjectID		      95
+	      $ObjectID		      96
 	      Version		      "1.15.0"
 	      Name		      "SimMechanics"
 	      WarnOnRedundantConstraints on
@@ -3513,14 +3522,14 @@ Model {
 	      OVRRIDBodyVisualizationType "NONE"
 	    }
 	    simmechanics.ConfigurationSet {
-	      $ObjectID		      96
+	      $ObjectID		      97
 	      Version		      "1.15.0"
 	      Description	      "SimMechanics 2G"
 	      Array {
 		Type			"Handle"
 		Dimension		2
 		simmechanics.DiagnosticsConfigSet {
-		  $ObjectID		  97
+		  $ObjectID		  98
 		  Version		  "1.15.0"
 		  Description		  "Diagnostics"
 		  Name			  "DiagnosticsConfigSet"
@@ -3534,7 +3543,7 @@ Model {
 		  SimMechanicsJointTargetOverSpecification "error"
 		}
 		simmechanics.ExplorerConfigSet {
-		  $ObjectID		  98
+		  $ObjectID		  99
 		  Version		  "1.15.0"
 		  Description		  "Explorer"
 		  Name			  "ExplorerConfigSet"
@@ -3566,13 +3575,13 @@ Model {
       ConfigPrmDlgPosition     [ 301, 119, 2415, 1333 ] 
     }
     Simulink.ConfigSet {
-      $ObjectID		      99
+      $ObjectID		      100
       Version		      "1.15.0"
       Array {
 	Type			"Handle"
 	Dimension		9
 	Simulink.SolverCC {
-	  $ObjectID		  100
+	  $ObjectID		  101
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
 	  StopTime		  "300"
@@ -3607,7 +3616,7 @@ Model {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  101
+	  $ObjectID		  102
 	  Version		  "1.15.0"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -3640,7 +3649,7 @@ Model {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  102
+	  $ObjectID		  103
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -3697,7 +3706,7 @@ Model {
 	  AccelVerboseBuild	  off
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  103
+	  $ObjectID		  104
 	  Version		  "1.15.0"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -3786,7 +3795,7 @@ Model {
 	  IntegerSaturationMsg	  "warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  104
+	  $ObjectID		  105
 	  Version		  "1.15.0"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -3826,7 +3835,7 @@ Model {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  105
+	  $ObjectID		  106
 	  Version		  "1.15.0"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -3841,7 +3850,7 @@ Model {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  106
+	  $ObjectID		  107
 	  Version		  "1.15.0"
 	  SFSimOverflowDetection  on
 	  SFSimEcho		  on
@@ -3854,7 +3863,7 @@ Model {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  107
+	  $ObjectID		  108
 	  Version		  "1.15.0"
 	  Array {
 	    Type		    "Cell"
@@ -3934,7 +3943,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      108
+	      $ObjectID		      109
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -4006,7 +4015,7 @@ Model {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      109
+	      $ObjectID		      110
 	      Version		      "1.15.0"
 	      Array {
 		Type			"Cell"
@@ -4093,7 +4102,7 @@ Model {
 	  }
 	}
 	SSC.SimscapeCC {
-	  $ObjectID		  110
+	  $ObjectID		  111
 	  Version		  "1.0"
 	  Array {
 	    Type		    "Cell"
@@ -4105,7 +4114,7 @@ Model {
 	    Type		    "Handle"
 	    Dimension		    2
 	    MECH.SimMechanicsCC {
-	      $ObjectID		      111
+	      $ObjectID		      112
 	      Version		      "1.15.0"
 	      Name		      "SimMechanics"
 	      WarnOnRedundantConstraints on
@@ -4138,14 +4147,14 @@ Model {
 	      OVRRIDBodyVisualizationType "NONE"
 	    }
 	    simmechanics.ConfigurationSet {
-	      $ObjectID		      112
+	      $ObjectID		      113
 	      Version		      "1.15.0"
 	      Description	      "SimMechanics 2G"
 	      Array {
 		Type			"Handle"
 		Dimension		2
 		simmechanics.DiagnosticsConfigSet {
-		  $ObjectID		  113
+		  $ObjectID		  114
 		  Version		  "1.15.0"
 		  Description		  "Diagnostics"
 		  Name			  "DiagnosticsConfigSet"
@@ -4159,7 +4168,7 @@ Model {
 		  SimMechanicsJointTargetOverSpecification "error"
 		}
 		simmechanics.ExplorerConfigSet {
-		  $ObjectID		  114
+		  $ObjectID		  115
 		  Version		  "1.15.0"
 		  Description		  "Explorer"
 		  Name			  "ExplorerConfigSet"
@@ -4194,11 +4203,11 @@ Model {
   }
   Simulink.ConfigSet {
     $PropName		    "ActiveConfigurationSet"
-    $ObjectID		    99
+    $ObjectID		    100
   }
   Object {
     $PropName		    "DataTransfer"
-    $ObjectID		    115
+    $ObjectID		    116
     $ClassName		    "Simulink.GlobalDataTransfer"
     DefaultTransitionBetweenSyncTasks "Ensure deterministic transfer (maximum delay)"
     DefaultTransitionBetweenAsyncTasks "Ensure data integrity only"
@@ -4562,7 +4571,7 @@ Model {
   }
   System {
     Name		    "Sim_v18"
-    Location		    [-7, 2, 2083, 1082]
+    Location		    [-20, 4, 1424, 908]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -4618,7 +4627,7 @@ Model {
       RequestExecContextInheritance off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		116
+	$ObjectID		117
 	$ClassName		"Simulink.Mask"
 	Type			"Model Functions"
 	Initialization		"currentBlock = gcb;\nroot = bdroot(currentBlock);\n\nif ~strcmp(get_param(root,'BlockDiagramType'),'"
@@ -4634,7 +4643,7 @@ Model {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  5
 	  Object {
-	    $ObjectID		    117
+	    $ObjectID		    118
 	    Type		    "edit"
 	    Name		    "InitFcnX"
 	    Prompt		    "Initialisation"
@@ -4642,28 +4651,28 @@ Model {
 	    Evaluate		    "off"
 	  }
 	  Object {
-	    $ObjectID		    118
+	    $ObjectID		    119
 	    Type		    "checkbox"
 	    Name		    "prel"
 	    Prompt		    "Preload Function"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    119
+	    $ObjectID		    120
 	    Type		    "checkbox"
 	    Name		    "posl"
 	    Prompt		    "PostLoad Function"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    120
+	    $ObjectID		    121
 	    Type		    "checkbox"
 	    Name		    "inif"
 	    Prompt		    "InitFcn"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    121
+	    $ObjectID		    122
 	    Type		    "checkbox"
 	    Name		    "strf"
 	    Prompt		    "StartFcn"
@@ -4699,7 +4708,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-7, 2, 2083, 1082]
+	Location		[-20, 4, 2561, 1659]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -5042,7 +5051,7 @@ Model {
 	  SourceType		  ""
 	  epname		  "System"
 	  extension		  "Excel"
-	  xls			  "'PL0001_v4.xls'"
+	  xls			  "'impedMod_IEEE13.xls'"
 	  raw			  "'4992b.raw'"
 	  dyr			  "'4992b.dyr'"
 	  cyme			  "'ieee13.sxst'"
@@ -5794,7 +5803,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "local controller, two 3ph MIMO"
-	    Location		    [-7, 2, 2083, 1082]
+	    Location		    [-20, 4, 2561, 1659]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -5806,7 +5815,7 @@ Model {
 	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
-	    ZoomFactor		    "125"
+	    ZoomFactor		    "175"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "V_ang_measured"
@@ -5882,8 +5891,8 @@ Model {
 	      }
 	      System {
 		Name			"U >> Vang control"
-		Location		[1106, 464, 3042, 1520]
-		Open			off
+		Location		[-20, 4, 2561, 1659]
+		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
 		ScreenColor		"white"
@@ -5894,7 +5903,7 @@ Model {
 		TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 		TiledPageScale		1
 		ShowPageBoundaries	off
-		ZoomFactor		"175"
+		ZoomFactor		"250"
 		Block {
 		  BlockType		  Inport
 		  Name			  "V_ang_measured"
@@ -5927,7 +5936,7 @@ Model {
 		  RequestExecContextInheritance	off
 		  System {
 		    Name		    "3-Phase  PID controller\nallows for different\n controller gains \nfor each phase"
-		    Location		    [-7, 2, 2083, 1082]
+		    Location		    [-7, 2, 1437, 906]
 		    Open		    on
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -6003,7 +6012,7 @@ Model {
 		    RequestExecContextInheritance off
 		    System {
 		    Name		    "SISO PID controller, PhA1"
-		    Location		    [-7, 2, 2083, 1082]
+		    Location		    [-7, 2, 1437, 906]
 		    Open		    on
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -6787,7 +6796,7 @@ Model {
 		    RequestExecContextInheritance off
 		    System {
 		    Name		    "SISO PID controller, PhC1"
-		    Location		    [-7, 2, 2083, 1082]
+		    Location		    [-7, 2, 1437, 906]
 		    Open		    on
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -7609,7 +7618,7 @@ Model {
 	      }
 	      System {
 		Name			"U >> Vmag control"
-		Location		[-7, 2, 2083, 1082]
+		Location		[-7, 2, 1437, 906]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -8235,7 +8244,7 @@ Model {
 		    RequestExecContextInheritance off
 		    System {
 		    Name		    "SISO PID controller, PhB"
-		    Location		    [-7, 2, 2083, 1082]
+		    Location		    [-7, 2, 1437, 906]
 		    Open		    on
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -8624,7 +8633,7 @@ Model {
 		    RequestExecContextInheritance off
 		    System {
 		    Name		    "SISO PID controller, PhC"
-		    Location		    [-7, 2, 2083, 1082]
+		    Location		    [-7, 2, 1437, 906]
 		    Open		    on
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -9763,7 +9772,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "measure and plot Q"
-	    Location		    [195, 343, 1049, 1360]
+	    Location		    [-20, 4, 2561, 1659]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -10004,7 +10013,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [-7, 2, 2083, 1082]
+	    Location		    [-20, 4, 2561, 1659]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -10048,6 +10057,7 @@ Model {
 	      Position		      [15, 305, 120, 335]
 	      ZOrder		      734
 	      VariableName	      "netLoadData"
+	      OutDataTypeStr	      "double"
 	      SampleTime	      "0"
 	      ZeroCross		      on
 	    }
@@ -10513,7 +10523,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"sc_console"
-	Location		[-7, 2, 2083, 1082]
+	Location		[-7, 2, 1437, 906]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -10687,7 +10697,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "scopes"
-	    Location		    [-7, 2, 2083, 1082]
+	    Location		    [-7, 2, 1437, 906]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -10951,7 +10961,10 @@ Stateflow {
     firstTransition	    10
     firstJunction	    9
     viewObj		    2
+    visible		    1
     machine		    1
+    subviewS {
+    }
     ssIdHighWaterMark	    10
     decomposition	    CLUSTER_CHART
     type		    EML_CHART
@@ -11172,18 +11185,17 @@ Stateflow {
       "f have 1 actuator and it's located at the perf node \n    % inputs: rx1 vectors of powers at all nodes \n       "
       " % r is number of phases across all nodes, i.e. the dim of the pin\n        % vector input to RTlab solve\n     "
       "  \n   %% actuation signal sent from controller to devices\n   %% Devices actuate here:\n    % Device enforces b"
-      "asic inv limit by moving operating piont to closest\n    % point on the inv circle\n    pact=zeros(3,3); qact=ze"
-      "ros(3,3); % initialize, TEMP, assume single actuator is on 3 phases\n    for i=1:3 % across phases, TEMP, assumi"
+      "asic inv limit by moving operating piont to closest\n    % point on the inv circle\n    pact=zeros(1,3); qact=ze"
+      "ros(1,3); % initialize, TEMP, assume single actuator is on 3 phases\n    for i=1:3 % across phases, TEMP, assumi"
       "ng the single actuator is on 3 phases\n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)=pcmd(i)*Sin"
-      "v(i)/(sqrt(pcmd(i)^2+qcmd(i)^2))\n            qact(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2))\n        else\n"
-      "            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        end\n    end\n%%  \n    % all signals being "
-      "added here must be formatted 'p q p q...'\n   \n    PQact=[pact(1) qact(1) pact(2) qact(2) pact(3) qact(3)]';\n "
-      "   % TEMP^ not an elegant fix, assumes single 3ph actuator\n    %loadPQ=zeros(size(netLoadData));\n    % TODO: i"
-      "ncorporate variable sized input and output\n    loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% just to "
-      "check length\n    coder.varsize('loadPQ',[908 1]);\n    coder.varsize('netLoadData',[908 1]);\n    loadPQ=netLoa"
-      "dData; % P&Q, ordered according to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData; \n    loa"
-      "dPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;\n    \n    \n    \n    \n    %netLoadData(ctrl_idx)=netLoadData(ctrl"
-      "_idx)+PQact+testDbcData; \n    %netLoadData(dbc_idx)=netLoadData(dbc_idx)+actualDbcData;\n\n\nend"
+      "v(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n            qact(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n        els"
+      "e\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        end\n    end\n%%  \n    % all signals bei"
+      "ng added here must be formatted 'p q p q...'\n   \n    PQact=[pact(1) qact(1) pact(2) qact(2) pact(3) qact(3)]';"
+      "\n    % TEMP^ not an elegant fix, assumes single 3ph actuator\n    loadPQ=zeros(size(netLoadData));\n    % TODO:"
+      " incorporate variable sized input and output\n    %loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% just "
+      "to check length\n    %coder.varsize('loadPQ',[908 1]);\n    %coder.varsize('netLoadData',[908 1]);\n    loadPQ=n"
+      "etLoadData; % P&Q, ordered according to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData; \n  "
+      "  loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;\n    \n    \n    \n   \n\nend"
       editorLayout	      "100 M4x1[10 5 700 500]"
     }
   }
@@ -11237,16 +11249,15 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"908"
+	size			"34"
       }
       type {
-	method			SF_INHERITED_TYPE
 	primitive		SF_DOUBLE_TYPE
       }
       complexity	      SF_COMPLEX_INHERITED
       frame		      SF_FRAME_NO
     }
-    dataType		    "Inherit: Same as Simulink"
+    dataType		    "double"
   }
   data {
     id			    17
@@ -11345,11 +11356,10 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"908"
+	size			"34"
 	isDynamic		1
       }
       type {
-	method			SF_INHERITED_TYPE
 	primitive		SF_DOUBLE_TYPE
 	isSigned		1
 	wordLength		"16"
@@ -11357,7 +11367,7 @@ Stateflow {
       complexity	      SF_COMPLEX_INHERITED
       frame		      SF_FRAME_INHERITED
     }
-    dataType		    "Inherit: Same as Simulink"
+    dataType		    "double"
   }
   data {
     id			    22
