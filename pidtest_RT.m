@@ -1,4 +1,4 @@
-function J = pidtest_RT(Gp,dt,parms,N,settleMax,OSmax,plot)
+function J = pidtest_RT(Gp,dt,parms,N,settleMax,OSmax,stepMag,YNplot)
     s = tf('s');
     % Create PID controller
     % Gc = parms(1) + parms(2)/s + parms(3)*s/(1+.001*s);
@@ -10,7 +10,8 @@ function J = pidtest_RT(Gp,dt,parms,N,settleMax,OSmax,plot)
 
     % Simulate
     t = 0:dt:N;
-    [y,t] = step(ClosedLoop,t);
+    opt = stepDataOptions; opt.StepAmplitude = stepMag; % specify your own step amplitude
+    [y,t] = step(ClosedLoop,t,opt);
     yref=1;
     u = lsim(Gc,yref-y,t); % u produced from passing y-yref through Gc
 
@@ -36,13 +37,15 @@ function J = pidtest_RT(Gp,dt,parms,N,settleMax,OSmax,plot)
     %figure; plot(t,devTerm,t,uEffortTerm,'LineWidth',2); legend('devTerm','uEffortTerm');
     J = dt*sum(Q1(t).*(devTerm) + settlePen.*settle + OSPen.*OS+ R*uEffortTerm.^2) 
 
-    if (plot)
+    if (YNplot)
         %Plot controlled sim
         figure;
-        step(ClosedLoop,t)
-        h = findobj(gcf,'type','line');
-        set(h,'linewidth',2); title('Automatic PItuner: CL step resp with candidate controller');
-        drawnow
+        [y,t]=step(ClosedLoop,t,opt);
+        plot(t, squeeze(y), [0 N],[stepMag stepMag],'k','LineWidth',2)
+%         h = findobj(gcf,'type','line');
+%         set(h,'linewidth',2); 
+        title('Automatic PItuner: CL step resp with candidate controller');
+        %drawnow
         %pause
     end
 end

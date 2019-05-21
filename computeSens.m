@@ -7,14 +7,12 @@ function [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas,stepP,stepQ, dbcDur, vmag
     % dvdq is dim rx1, and so are the other sens vars. r is number of
     % actuator-phases
     pjump=(stepP/Sbase); % scalar
-    qjump=(stepQ/Sbase);
+    qjump=(stepQ/Sbase); % stepP is not PU
 sense=zeros(length(ctrl_idx),2);
 for i= 1:length(ctrl_idx) % 2r, r is num of phase actuators
-        str=loadNames{ctrl_idx(i)}
+        str=loadNames{ctrl_idx(i)};
         phase=str2num(str(end)); % last char is phase number
         if ~isempty(strfind(loadNames{ctrl_idx(i)},'/P')) % if actuator label contains /P
-            disp('hi');
-            (vmag_new(dbcMeas(i),phase)-vmag_new(dbcMeas(i)-dbcDur,phase))/(stepP/Sbase)
             sense(i,1)=(vmag_new(dbcMeas(i),phase)-vmag_new(dbcMeas(i)-dbcDur,phase))/(stepP/Sbase);
             sense(i,2)=(vang_new(dbcMeas(i),phase)-vang_new(dbcMeas(i)-dbcDur,phase))/(stepP/Sbase);
         elseif ~isempty(strfind(loadNames{ctrl_idx(i)},'/Q'))
@@ -27,7 +25,5 @@ for i= 1:length(ctrl_idx) % 2r, r is num of phase actuators
     dvdq=sense(2:2:end,1);
     ddeldq=sense(2:2:end,2);
     
-%     m=0.8; % ammount you want to attain in first ts
-%     Kp_vmag_guess=-m*(1./dvdq) % close to Kp_vmag?
-%     Kp_vmag
+% sensitivity values are in pu, i.e. Vpu/Spu, Vbase=2401V, Sbase=500kVA
 end

@@ -1,7 +1,7 @@
 function [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base) 
     secList=[1:(minEnd-minStart)*60]'; % starts from 1, not actual second of the day
     tarVmag=[1.02 1.02 1.02]; % pu
-    tarVang=[-2.4 -120 120]; % degrees
+    tarVang=[-2.4 -120-2.4 120-2.4]; % degrees
     vang_ref=[secList, repmat(tarVang,length(secList),1)];
     vmag_ref=[secList, repmat(tarVmag,length(secList),1)];
 %% initialization step for that first time run RT lab initialize voltages to be steady state values

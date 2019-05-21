@@ -61,8 +61,8 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
     %axis([0,max(inter+1),0.9,1.2]); % narrow axis to easier see one phase
     hold off;
     
- maxDelU_vmag=max(max(abs(delta_u_vmag)))
- maxU_vmag=max(max(abs(vmag_new)))
+%  maxDelU_vmag=max(max(abs(delta_u_vmag)))
+%  maxU_vmag=max(max(abs(vmag_new)))
 
  %% Plot P and Vang
         a=[10 -130 130];
@@ -111,8 +111,8 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 
     hold off;
     
-  maxDelU_vang=max(max(abs(delta_u_vang)))
- maxU_vang=max(max(abs(vang_new)))
+%   maxDelU_vang=max(max(abs(delta_u_vang)))
+%  maxU_vang=max(max(abs(vang_new)))
  
  %% Plot P vs. Q plots
 % % minEnd-1 is largest value minIntime can be assigned 

@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=3; % TEMP (sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=1; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -37,79 +37,55 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=909; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
+    n=35; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
     
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
-    netLoadData = csvread('sig0.3_PL0001_April_1sheet.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    
+% need diff TV load/gen data file if SPBC phasor targets vs. if just
+% tracking constant phasor (when tracking SPBC phasor targets the load
+% data needs to be scaled down)
+    % for sim1_1 and others:
+    % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    % for adam1 sim:
+    netLoadData = csvread('001_IEEE13_secondWise_sigBuilder.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
-    
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','C1:IV1'); %fix this too
 
+    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ2');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    loadNames1=raw(1:end); % 
-    loadNames1 = cellfun(@(S) S(8:end), loadNames1, 'Uniform', 0);
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B6:IV6');  
-    loadNames2=raw(1:end);
-    loadNames2 = cellfun(@(S) S(8:end), loadNames2, 'Uniform', 0);
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B12:CT12');  
-    loadNames3=raw(1:end);  
-    loadNames3 = cellfun(@(S) S(8:end), loadNames3, 'Uniform', 0);
-    
-    loadNames = [loadNames1, loadNames2, loadNames3];
-   % loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
-    
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','C2:IV2');
-    
-    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames1=raw(1:end); % used to select meas node
-     
-    busNames1=cellfun(@(S) S(3:end-5), busNames1, 'Uniform', 0); % clean up string format
+    loadNames=raw(1,2:end); % 
+    loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
 
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B7:IV7');
-    
+    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B2:AK3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames2=raw(1:end); % used to select meas node
-     
-    busNames2=cellfun(@(S) S(3:end-5), busNames2, 'Uniform', 0);
-    
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B13:IV13');
-    
-    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames3=raw(1:end); % used to select meas node
-     
-    busNames3=cellfun(@(S) S(3:end-5), busNames3, 'Uniform', 0);
-    
-    [txt,num,raw] = xlsread('PL0001_v4_copy.xls','Pins','B18:HW18');
-    
-    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames4=raw(1:end); % used to select meas node
-     
-    busNames4=cellfun(@(S) S(3:end-5), busNames4, 'Uniform', 0);
-    
-    busNames=[busNames1,busNames2,busNames3,busNames4];
-    
+    busNames=raw(1,2:end); % used to select meas node
+    busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging
     meas_idx=strToIdx(measStr,busNames)
     ctrl_idx=strToIdx(actStr,loadNames)
     dbc_idx=strToIdx(dbcStr,loadNames)
     Sinv=repmat(Sinv_str,1,length(ctrl_idx)/2) % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
-
+    r=length(ctrl_idx)/2 % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r
+    
 %% Set targets/reference for controller to  track
-     [Sbase,V1base,V2base] = computePU();
-    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base); 
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
+    [Sbase,V1base,V2base] = computePU();
+    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
+    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
+    
+%     vmag_ref
+%     vang_ref
 %% --------------------- Simulation is now initialized -------------------------
     disp( '------------------- Designing controller...');
 
 %% Ability1: det Ku by running this over and over
-    [ZNcritMat,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNtune()   
+    [ZNcritMat,k_singlePh]=ZNtune();   
     Vang_ctrl=true; % boolean
     Vmag_ctrl=true; % boolean
-[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
 
     
 %% Ability2: det sensitivities by running this
@@ -117,7 +93,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     % Turn controllers off    
         Vang_ctrl=false; % boolean
         Vmag_ctrl=false; % boolean
-        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
 
     % Create test disturbance
     % inialize actual dbc to 0, only run test dbc
@@ -131,19 +107,17 @@ Ts=0.1; % should agree with simulink outermost block setting
          disp('------------------- Running uncontrolled sim...');
 
     % Run simulink
-        sim('Sim_v18.mdl')
-        set_param('Sim_v18','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(4,:);
         vang_init_actual-vang_new(4,:);
         disp('finished simulink');    
         
     % Compute sensitivities
         [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, Sbase,ctrl_idx,loadNames)
-        [dvdq dvdp ddeldq ddeldp] % print
         % units: [pu/pu pu/pu deg/pu deg/pu]
         
 %% --------------------- Now ready to compute kgains -------------------------
-kgain_method=1; % USER SETS THIS MANUALLY 
 % (to choose methdof ro computing controller gains)
 
 % 1 - simplest, traditional Zeigler nichols method
@@ -153,20 +127,20 @@ kgain_method=1; % USER SETS THIS MANUALLY
 % cost function
 
 %% -------------------
-switch kgain_method
+switch kgainCalcType
 case 1
     %% Set kgains using way 1, save as test1_way1.mat
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
+    [k_singlePh]=ZNset(ZNcritMat)  
         Vang_ctrl=true; % boolean
         Vmag_ctrl=true; % boolean
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r)
 
 case 2
     %% Set kgains using way 2, save as test1_way2.mat
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=ZNset(ZNcritMat)  
+    [k_singlePh]=ZNset(ZNcritMat)  
         Vang_ctrl=true; % boolean
         Vmag_ctrl=true; % boolean    
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Kp_vmag,Ki_vmag,Kp_vang,Ki_vang)
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,k_singlePh)
 case 3 
     %% Set kgains using way 3, save as test1_way3.mat 
         Vang_ctrl=true; % boolean
@@ -189,8 +163,8 @@ end
 
     disp('------------------- Running controlled sim...');
     % Run simulink
-        sim('Sim_v18.mdl')
-        set_param('Sim_v18','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(4,:);
         vang_init_actual=vang_new(4,:);
         disp('finished simulink');    
@@ -209,6 +183,9 @@ end
 %% ------------------------- End of Code ----------------------------------
 toc % print elapsed sim time
 %% Version Control Log
+% sim_v19 simulink .mdl
+% revamp of PI control blocks
+
 % phasor08_IEEE13_v18_PIDofflineCalc
 % code revamp, added meas selector and update powers MATLAB function
 % blocks, deleted inverter delay blocks
