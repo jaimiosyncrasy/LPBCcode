@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.144"
+    ComputedModelVersion    "1.147"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -73,21 +73,21 @@ Model {
 	}
 	Object {
 	  $ObjectID		  7
+	  IsActive		  [0]
+	  ViewObjType		  "SimulinkTopLevel"
+	  LoadSaveID		  "0"
+	  Extents		  [1328.0, 555.0]
+	  ZoomFactor		  [2.0]
+	  Offset		  [0.0, 0.0]
+	}
+	Object {
+	  $ObjectID		  8
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
 	  Extents		  [1328.0, 555.0]
-	  ZoomFactor		  [1.0]
-	  Offset		  [425.44033722440247, 392.71554785252704]
-	}
-	Object {
-	  $ObjectID		  8
-	  IsActive		  [0]
-	  ViewObjType		  "SimulinkTopLevel"
-	  LoadSaveID		  "0"
-	  Extents		  [1878.0, 863.0]
-	  ZoomFactor		  [2.0]
-	  Offset		  [0.0, 0.0]
+	  ZoomFactor		  [1.5]
+	  Offset		  [974.107003891069, 591.71554785252715]
 	}
 	Object {
 	  $ObjectID		  9
@@ -102,10 +102,10 @@ Model {
 	  $ObjectID		  10
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
-	  LoadSaveID		  "2089"
-	  Extents		  [1878.0, 863.0]
-	  ZoomFactor		  [1.5]
-	  Offset		  [-19.125000000000114, -80.79575459711981]
+	  LoadSaveID		  "2098"
+	  Extents		  [1328.0, 555.0]
+	  ZoomFactor		  [2.0]
+	  Offset		  [0.0, 0.0]
 	}
 	PropName		"EditorsInfo"
       }
@@ -117,9 +117,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Jun 05 17:43:31 2019"
-  RTWModifiedTimeStamp	  481644376
-  ModelVersionFormat	  "1.%<AutoIncrement:144>"
+  LastModifiedDate	  "Thu Jun 06 19:08:07 2019"
+  RTWModifiedTimeStamp	  481747667
+  ModelVersionFormat	  "1.%<AutoIncrement:147>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -4506,7 +4506,7 @@ Model {
   }
   System {
     Name		    "Sim_v19"
-    Location		    [-9, 0, 1375, 746]
+    Location		    [-7, 2, 1371, 735]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -4655,7 +4655,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"100"
+	ZoomFactor		"150"
 	Block {
 	  BlockType		  Inport
 	  Name			  "tap_change"
@@ -5072,8 +5072,8 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [-9, 0, 1375, 746]
-	    Open		    on
+	    Location		    [-7, 2, 1371, 735]
+	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
 	    ScreenColor		    "white"
@@ -5167,8 +5167,8 @@ Model {
 	      }
 	      System {
 		Name			"For Each\nSubsystem"
-		Location		[-20, 4, 1914, 1098]
-		Open			off
+		Location		[-7, 2, 1371, 735]
+		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
 		ScreenColor		"white"
@@ -5193,7 +5193,7 @@ Model {
 		}
 		Block {
 		  BlockType		  Inport
-		  Name			  "Qcmd-Qmax"
+		  Name			  "|Qmax|-|Qcmd|"
 		  SID			  "2100"
 		  Position		  [110, 173, 140, 187]
 		  ZOrder		  6
@@ -5214,18 +5214,6 @@ Model {
 		  IndexMode		  "One-based"
 		}
 		Block {
-		  BlockType		  Product
-		  Name			  "Product2"
-		  SID			  "2102"
-		  Ports			  [2, 1]
-		  Position		  [190, 102, 220, 133]
-		  ZOrder		  20
-		  InputSameDT		  off
-		  OutDataTypeStr	  "Inherit: Inherit via internal rule"
-		  RndMeth		  "Floor"
-		  SaturateOnIntegerOverflow off
-		}
-		Block {
 		  BlockType		  Switch
 		  Name			  "Switch"
 		  SID			  "2103"
@@ -5237,18 +5225,18 @@ Model {
 		}
 		Block {
 		  BlockType		  Constant
-		  Name			  "if opp sign, output 1 (not sat)"
+		  Name			  "if opp sign, output 0 (sat)"
 		  SID			  "2104"
 		  Position		  [170, 212, 245, 238]
 		  ZOrder		  22
+		  Value			  "0"
 		}
 		Block {
 		  BlockType		  Constant
-		  Name			  "if same sign, output 0 (sat)"
+		  Name			  "if same sign, output 1 (not sat)"
 		  SID			  "2105"
 		  Position		  [170, 47, 245, 73]
 		  ZOrder		  21
-		  Value			  "0"
 		}
 		Block {
 		  BlockType		  Outport
@@ -5263,27 +5251,19 @@ Model {
 		  ZOrder		  1
 		  SrcBlock		  "Qcmd"
 		  SrcPort		  1
-		  DstBlock		  "Product2"
-		  DstPort		  1
+		  Points		  [45, 0]
 		}
 		Line {
-		  ZOrder		  2
-		  SrcBlock		  "Qcmd-Qmax"
+		  ZOrder		  7
+		  SrcBlock		  "|Qmax|-|Qcmd|"
 		  SrcPort		  1
-		  Points		  [20, 0; 0, -55]
-		  DstBlock		  "Product2"
-		  DstPort		  2
-		}
-		Line {
-		  ZOrder		  3
-		  SrcBlock		  "Product2"
-		  SrcPort		  1
+		  Points		  [59, 0; 0, -60]
 		  DstBlock		  "Switch"
 		  DstPort		  2
 		}
 		Line {
 		  ZOrder		  4
-		  SrcBlock		  "if same sign, output 0 (sat)"
+		  SrcBlock		  "if same sign, output 1 (not sat)"
 		  SrcPort		  1
 		  Points		  [25, 0]
 		  DstBlock		  "Switch"
@@ -5298,7 +5278,7 @@ Model {
 		}
 		Line {
 		  ZOrder		  6
-		  SrcBlock		  "if opp sign, output 1 (not sat)"
+		  SrcBlock		  "if opp sign, output 0 (sat)"
 		  SrcPort		  1
 		  Points		  [18, 0; 0, -90]
 		  DstBlock		  "Switch"
@@ -5895,7 +5875,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "Q-V PI controllers\n( r SISO controllers)"
-	    Location		    [-20, 4, 1914, 1098]
+	    Location		    [-7, 2, 1371, 735]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -6291,11 +6271,11 @@ Model {
 	      Name		      "Scope3"
 	      SID		      "2075"
 	      Ports		      [1]
-	      Position		      [620, 259, 650, 291]
+	      Position		      [620, 324, 650, 356]
 	      ZOrder		      761
 	      BackgroundColor	      "orange"
 	      Floating		      off
-	      Location		      [648, 391, 1692, 1015]
+	      Location		      [313, 133, 1357, 757]
 	      Open		      off
 	      NumInputPorts	      "1"
 	      List {
@@ -6701,7 +6681,7 @@ Model {
 	      Points		      [-97, 0]
 	      Branch {
 		ZOrder			3015
-		Points			[0, -35]
+		Points			[0, 30]
 		DstBlock		"Scope3"
 		DstPort			1
 	      }
@@ -7867,7 +7847,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [-9, 0, 1375, 746]
+	    Location		    [-7, 2, 1371, 735]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -8441,7 +8421,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"sc_console"
-	Location		[-9, 0, 1375, 746]
+	Location		[-7, 2, 1371, 735]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -8615,7 +8595,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "scopes"
-	    Location		    [-9, 0, 1375, 746]
+	    Location		    [-7, 2, 1371, 735]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -8879,7 +8859,10 @@ Stateflow {
     firstTransition	    10
     firstJunction	    9
     viewObj		    2
+    visible		    1
     machine		    1
+    subviewS {
+    }
     ssIdHighWaterMark	    10
     decomposition	    CLUSTER_CHART
     type		    EML_CHART
