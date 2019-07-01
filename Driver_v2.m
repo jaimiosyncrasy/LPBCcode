@@ -54,7 +54,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
 
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ2');
+    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ1');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames=raw(1,2:end); % 
     loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
@@ -83,7 +83,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     disp( '------------------- Designing controller...');
 
 %% Ability1: det Ku by running this over and over
-    [ZNcritMat,k_singlePh]=ZNtune();   
+    [ZNcritMat,k_singlePh]=ZNtune(V1base, Sbase);   
     Vang_ctrl=true; % boolean
     Vmag_ctrl=true; % boolean
 [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
@@ -116,8 +116,8 @@ Ts=0.1; % should agree with simulink outermost block setting
         disp('finished simulink');    
         
     % Compute sensitivities
-        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, Sbase,ctrl_idx,loadNames)
-        % units: [pu/pu pu/pu deg/pu deg/pu]
+        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames)
+        % units: [V/kVAR V/kW deg/kVar deg/kW]
         
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
@@ -164,8 +164,8 @@ end
 %     %%%%3.1 PV disturbance 
 %     %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
 %     
-%     figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
-%     figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+%    % figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+%    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
  
 %%  Run sim with controllers ON
 
@@ -184,7 +184,7 @@ end
     % so that results tracking tool can compute performance metrics
     disp('------------------- Outputing results...');
     % save data into .mats
-	 save(resultsName,'vmag_new','vang_new','pnew','qnew','simTimestamps','vmag_ref','vang_ref')
+	 save(resultsName,'vmag_new','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig')
      % to check what you've saved away...
      %clear all; load('simData_001.mat'); whos
      
