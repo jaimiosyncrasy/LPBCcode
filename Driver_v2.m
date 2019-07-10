@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=4; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=1; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -48,7 +48,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     % for sim1_1 and others:
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     % for adam1 sim:
-    netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_1300-1400_norm03_2_1.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
 
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
@@ -71,11 +71,14 @@ Ts=0.1; % should agree with simulink outermost block setting
     Sinv=repmat(Sinv_str,1,length(ctrl_idx)/2) % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
     r=length(ctrl_idx)/2 % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r
     
+%     [netLoadData, PV_percent] = PV_Cloud_Disturbance(netLoadData, 200, 210);
+%     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, after PV disturbance');
+    
 %% Set targets/reference for controller to  track
     [Sbase,V1base,V2base] = computePU();
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
+    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
     
 %     vmag_ref
 %     vang_ref
@@ -99,7 +102,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     % Create test disturbance
     % inialize actual dbc to 0, only run test dbc
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);
+    actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
 
@@ -109,8 +112,8 @@ Ts=0.1; % should agree with simulink outermost block setting
          disp('------------------- Running uncontrolled sim...');
 
     % Run simulink
-        sim('Sim_v19.mdl')
-        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19_noPI.mdl')
+        set_param('Sim_v19_noPI','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(4,:);
         vang_init_actual-vang_new(4,:);
         disp('finished simulink');    
