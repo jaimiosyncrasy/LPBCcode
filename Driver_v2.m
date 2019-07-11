@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=1; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=6; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -37,7 +37,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=35; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
+    n=191; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
     
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
@@ -48,22 +48,39 @@ Ts=0.1; % should agree with simulink outermost block setting
     % for sim1_1 and others:
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     % for adam1 sim:
-    netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    netLoadData = csvread('004_GB_IEEE123_time_sigBuilder_secondwise_norm1.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
 
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
-
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ1');
+    
+    %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
+    [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B1:GJ1');
+%     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    loadNames=raw(1,2:end); % 
+    loadNames =raw(1,2:end); % 
     loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
 
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B2:AK3');
+%     [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','A5:IV5');
+% %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
+%     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+%     loadNames2 =raw(1,1:end); % 
+%     loadNames2 = cellfun(@(S) S(4:end), loadNames2, 'Uniform', 0); % clean up string format
+    
+%     loadNames = [loadNames1 loadNames2];
+    
+    [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B2:IV3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames=raw(1,2:end); % used to select meas node
-    busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
-    % Assign node location indices, print to help with debugging     
+    busNames1=raw(1,2:end); % used to select meas node
+    busNames1=cellfun(@(S) S(1:end-5), busNames1, 'Uniform', 0); % clean up string format
+    % Assign node location indices, print to help with debugging  
+    [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B6:S7');
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames2=raw(1,2:end); % used to select meas node
+    busNames2=cellfun(@(S) S(1:end-5), busNames2, 'Uniform', 0); % clean up string format
+    % Assign node location indices, print to help with debugging 
+    busNames = [busNames1 busNames2];
+    
     
     meas_idx=strToIdx(measStr,busNames)
     ctrl_idx=strToIdx(actStr,loadNames)
@@ -102,8 +119,8 @@ Ts=0.1; % should agree with simulink outermost block setting
     % Create test disturbance
     % inialize actual dbc to 0, only run test dbc
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);
-    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+    actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+    actualDbcData = actualDbcData*0;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
 
 %     xlswrite('impedMod_IEEE13.xls', 0, 'Switch','D2:D4') %2.1 disturbance
@@ -112,8 +129,8 @@ Ts=0.1; % should agree with simulink outermost block setting
          disp('------------------- Running uncontrolled sim...');
 
     % Run simulink
-        sim('Sim_v19_noPI.mdl')
-        set_param('Sim_v19_noPI','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(4,:);
         vang_init_actual-vang_new(4,:);
         disp('finished simulink');    

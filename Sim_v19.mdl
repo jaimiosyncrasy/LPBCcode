@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.310"
+    ComputedModelVersion    "1.317"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-8.0, 0.0, 1936.0, 1036.0]
+      Location		      [-10.0, 0.0, 1934.0, 1030.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -58,7 +58,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2098"
-	  Extents		  [1886.0, 858.0]
+	  Extents		  [1878.0, 799.0]
 	  ZoomFactor		  [2.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -76,7 +76,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2089"
-	  Extents		  [1886.0, 858.0]
+	  Extents		  [1878.0, 799.0]
 	  ZoomFactor		  [1.5]
 	  Offset		  [-1.4583333333333712, 12.666666666666686]
 	}
@@ -85,9 +85,9 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [1880.0, 805.0]
-	  ZoomFactor		  [1.75]
-	  Offset		  [563.633333333327, 412.65714285714671]
+	  Extents		  [1878.0, 799.0]
+	  ZoomFactor		  [1.25]
+	  Offset		  [362.5119047618989, 250.78214285714591]
 	}
 	PropName		"EditorsInfo"
       }
@@ -99,9 +99,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Jul 09 11:29:15 2019"
-  RTWModifiedTimeStamp	  484572554
-  ModelVersionFormat	  "1.%<AutoIncrement:310>"
+  LastModifiedDate	  "Thu Jul 11 12:52:30 2019"
+  RTWModifiedTimeStamp	  484750259
+  ModelVersionFormat	  "1.%<AutoIncrement:317>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -4128,7 +4128,7 @@ Model {
 	  $ObjectID		  108
 	  Version		  "1.15.0"
 	  StartTime		  "0.0"
-	  StopTime		  "300"
+	  StopTime		  "360"
 	  AbsTol		  "auto"
 	  FixedStep		  "Ts"
 	  InitialStep		  "auto"
@@ -5113,7 +5113,7 @@ Model {
   }
   System {
     Name		    "Sim_v19"
-    Location		    [-11, 0, 1931, 1042]
+    Location		    [-8, 0, 1928, 1036]
     Open		    off
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -5250,7 +5250,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-8, 0, 1928, 1036]
+	Location		[-10, 0, 1924, 1030]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -5262,7 +5262,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"175"
+	ZoomFactor		"125"
 	Block {
 	  BlockType		  Inport
 	  Name			  "tap_change"
@@ -5399,7 +5399,7 @@ Model {
 	  BlockType		  SubSystem
 	  Name			  "MATLAB Function"
 	  SID			  "1962"
-	  Ports			  [9, 5]
+	  Ports			  [9, 4]
 	  Position		  [1075, 497, 1215, 703]
 	  ZOrder		  712
 	  LibraryVersion	  "1.32"
@@ -5423,7 +5423,7 @@ Model {
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
 	    ZoomFactor		    "100"
-	    SIDHighWatermark	    "52"
+	    SIDHighWatermark	    "53"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "TimeStep"
@@ -5509,7 +5509,7 @@ Model {
 	      Name		      " Demux "
 	      SID		      "1962::17"
 	      Ports		      [1, 1]
-	      Position		      [270, 315, 320, 355]
+	      Position		      [270, 280, 320, 320]
 	      ZOrder		      8
 	      Outputs		      "1"
 	    }
@@ -5518,11 +5518,11 @@ Model {
 	      Name		      " SFunction "
 	      SID		      "1962::16"
 	      Tag		      "Stateflow S-Function Sim_v19 2"
-	      Ports		      [9, 6]
+	      Ports		      [9, 5]
 	      Position		      [180, 145, 230, 345]
 	      ZOrder		      7
 	      FunctionName	      "sf_sfun"
-	      PortCounts	      "[9 6]"
+	      PortCounts	      "[9 5]"
 	      EnableBusSupport	      on
 	      Port {
 		PortNumber		2
@@ -5548,18 +5548,12 @@ Model {
 		RTWStorageClass		"Auto"
 		DataLoggingNameMode	"SignalName"
 	      }
-	      Port {
-		PortNumber		6
-		Name			"switchValues"
-		RTWStorageClass		"Auto"
-		DataLoggingNameMode	"SignalName"
-	      }
 	    }
 	    Block {
 	      BlockType		      Terminator
 	      Name		      " Terminator "
 	      SID		      "1962::18"
-	      Position		      [460, 326, 480, 344]
+	      Position		      [460, 291, 480, 309]
 	      ZOrder		      9
 	    }
 	    Block {
@@ -5597,73 +5591,64 @@ Model {
 	      Port		      "4"
 	      IconDisplay	      "Port number"
 	    }
-	    Block {
-	      BlockType		      Outport
-	      Name		      "switchValues"
-	      SID		      "1962::52"
-	      Position		      [460, 246, 480, 264]
-	      ZOrder		      41
-	      Port		      "5"
-	      IconDisplay	      "Port number"
-	    }
 	    Line {
-	      ZOrder		      764
+	      ZOrder		      811
 	      SrcBlock		      "TimeStep"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      1
 	    }
 	    Line {
-	      ZOrder		      765
+	      ZOrder		      812
 	      SrcBlock		      "qcmd"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      2
 	    }
 	    Line {
-	      ZOrder		      766
+	      ZOrder		      813
 	      SrcBlock		      "pcmd"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      3
 	    }
 	    Line {
-	      ZOrder		      767
+	      ZOrder		      814
 	      SrcBlock		      "ctrl_idx"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      4
 	    }
 	    Line {
-	      ZOrder		      768
+	      ZOrder		      815
 	      SrcBlock		      "dbc_idx"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      5
 	    }
 	    Line {
-	      ZOrder		      769
+	      ZOrder		      816
 	      SrcBlock		      "testDbcData"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      6
 	    }
 	    Line {
-	      ZOrder		      770
+	      ZOrder		      817
 	      SrcBlock		      "actualDbcData"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      7
 	    }
 	    Line {
-	      ZOrder		      771
+	      ZOrder		      818
 	      SrcBlock		      "netLoadData"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
 	      DstPort		      8
 	    }
 	    Line {
-	      ZOrder		      772
+	      ZOrder		      819
 	      SrcBlock		      "Sinv"
 	      SrcPort		      1
 	      DstBlock		      " SFunction "
@@ -5671,7 +5656,7 @@ Model {
 	    }
 	    Line {
 	      Name		      "loadPQ"
-	      ZOrder		      773
+	      ZOrder		      820
 	      Labels		      [0, 0]
 	      SrcBlock		      " SFunction "
 	      SrcPort		      2
@@ -5680,7 +5665,7 @@ Model {
 	    }
 	    Line {
 	      Name		      "Qmax"
-	      ZOrder		      774
+	      ZOrder		      821
 	      Labels		      [0, 0]
 	      SrcBlock		      " SFunction "
 	      SrcPort		      3
@@ -5689,7 +5674,7 @@ Model {
 	    }
 	    Line {
 	      Name		      "Pmax"
-	      ZOrder		      775
+	      ZOrder		      822
 	      Labels		      [0, 0]
 	      SrcBlock		      " SFunction "
 	      SrcPort		      4
@@ -5698,7 +5683,7 @@ Model {
 	    }
 	    Line {
 	      Name		      "PQact"
-	      ZOrder		      776
+	      ZOrder		      823
 	      Labels		      [0, 0]
 	      SrcBlock		      " SFunction "
 	      SrcPort		      5
@@ -5706,23 +5691,14 @@ Model {
 	      DstPort		      1
 	    }
 	    Line {
-	      Name		      "switchValues"
-	      ZOrder		      777
-	      Labels		      [0, 0]
-	      SrcBlock		      " SFunction "
-	      SrcPort		      6
-	      DstBlock		      "switchValues"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      778
+	      ZOrder		      824
 	      SrcBlock		      " Demux "
 	      SrcPort		      1
 	      DstBlock		      " Terminator "
 	      DstPort		      1
 	    }
 	    Line {
-	      ZOrder		      779
+	      ZOrder		      825
 	      SrcBlock		      " SFunction "
 	      SrcPort		      1
 	      DstBlock		      " Demux "
@@ -5767,7 +5743,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [-8, 0, 1928, 1036]
+	    Location		    [-10, 0, 1924, 1030]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -5872,7 +5848,7 @@ Model {
 	      }
 	      System {
 		Name			"For Each\nSubsystem"
-		Location		[-8, 0, 1928, 1036]
+		Location		[-10, 0, 1924, 1030]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -6040,7 +6016,7 @@ Model {
 	      BackgroundColor	      "orange"
 	      Floating		      off
 	      Location		      [235, 258, 1601, 936]
-	      Open		      off
+	      Open		      on
 	      NumInputPorts	      "2"
 	      List {
 		ListType		AxesTitles
@@ -6058,7 +6034,7 @@ Model {
 		MarkerStyles		"none|none|none|none|none|none"
 	      }
 	      ShowLegends	      on
-	      LegendLocations	      "0.85871     0.80383     0.10176     0.10767\n0.81259     0.35103     0.14788     0.10767"
+	      LegendLocations	      "0.85871     0.80383     0.10176     0.10767\n0.81259     0.35103     0.14422     0.10767"
 	      YMin		      "-46.25~-5"
 	      YMax		      "6.25~5"
 	      SaveName		      "ScopeData8"
@@ -6074,8 +6050,8 @@ Model {
 	      ZOrder		      760
 	      BackgroundColor	      "orange"
 	      Floating		      off
-	      Location		      [153, 272, 1589, 1071]
-	      Open		      off
+	      Location		      [153, 270, 1589, 1069]
+	      Open		      on
 	      NumInputPorts	      "2"
 	      List {
 		ListType		AxesTitles
@@ -6107,8 +6083,8 @@ Model {
 	      ZOrder		      761
 	      BackgroundColor	      "orange"
 	      Floating		      off
-	      Location		      [10, 60, 1930, 1030]
-	      Open		      off
+	      Location		      [10, 87, 1922, 1057]
+	      Open		      on
 	      NumInputPorts	      "1"
 	      List {
 		ListType		AxesTitles
@@ -6125,6 +6101,7 @@ Model {
 		MarkerStyles		"none|none|none|none|none|none"
 	      }
 	      ShowLegends	      on
+	      LegendLocations	      "0.81302     0.86289     0.15952    0.075258"
 	      YMin		      "-0.125"
 	      YMax		      "1.125"
 	      SaveName		      "ScopeData9"
@@ -6141,7 +6118,7 @@ Model {
 	      BackgroundColor	      "orange"
 	      Floating		      off
 	      Location		      [490, 69, 1174, 769]
-	      Open		      off
+	      Open		      on
 	      NumInputPorts	      "1"
 	      List {
 		ListType		AxesTitles
@@ -6599,7 +6576,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "Q-V PI controllers\n( r SISO controllers)"
-	    Location		    [-8, 0, 1928, 1036]
+	    Location		    [-10, 0, 1924, 1030]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -7487,12 +7464,12 @@ Model {
 	  Name			  "Scope2"
 	  SID			  "2344"
 	  Ports			  [2]
-	  Position		  [1495, 601, 1525, 634]
+	  Position		  [1495, 611, 1525, 644]
 	  ZOrder		  791
 	  BackgroundColor	  "orange"
 	  Floating		  off
 	  Location		  [50, 165, 1412, 843]
-	  Open			  off
+	  Open			  on
 	  NumInputPorts		  "2"
 	  List {
 	    ListType		    AxesTitles
@@ -7512,39 +7489,6 @@ Model {
 	  YMin			  "-23.625~-5"
 	  YMax			  "2.625~5"
 	  SaveName		  "ScopeData18"
-	  DataFormat		  "StructureWithTime"
-	  LimitDataPoints	  off
-	}
-	Block {
-	  BlockType		  Scope
-	  Name			  "Scope3"
-	  SID			  "2376"
-	  Ports			  [1]
-	  Position		  [1475, 689, 1505, 721]
-	  ZOrder		  800
-	  BackgroundColor	  "orange"
-	  Floating		  off
-	  Location		  [25, 80, 1469, 934]
-	  Open			  off
-	  NumInputPorts		  "1"
-	  List {
-	    ListType		    AxesTitles
-	    axes1		    "%<SignalLabel>"
-	  }
-	  List {
-	    ListType		    ScopeGraphics
-	    FigureColor		    "[0.156862745098039 0.156862745098039 0.156862745098039]"
-	    AxesColor		    "[0 0 0]"
-	    AxesTickColor	    "[0.686274509803922 0.686274509803922 0.686274509803922]"
-	    LineColors		    "[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-	    LineStyles		    "-|-|-|-|-|-"
-	    LineWidths		    "[0.5 0.5 0.5 0.5 0.5 0.5]"
-	    MarkerStyles	    "none|none|none|none|none|none"
-	  }
-	  ShowLegends		  on
-	  YMin			  "-0.125"
-	  YMax			  "1.125"
-	  SaveName		  "ScopeData3"
 	  DataFormat		  "StructureWithTime"
 	  LimitDataPoints	  off
 	}
@@ -7584,15 +7528,15 @@ Model {
 	  BlockType		  Reference
 	  Name			  "Static PF Solver"
 	  SID			  "1569"
-	  Ports			  [2, 4]
-	  Position		  [1270, 370, 1425, 755]
+	  Ports			  [1, 2]
+	  Position		  [1270, 374, 1425, 761]
 	  ZOrder		  619
 	  LibraryVersion	  "1.136"
 	  SourceBlock		  "rtlab_phasor/Solver"
 	  SourceType		  ""
 	  epname		  "System"
 	  extension		  "Excel"
-	  xls			  "'impedMod_IEEE13.xls'"
+	  xls			  "'004_GB_IEEE123.xlsx'"
 	  raw			  "'4992b.raw'"
 	  dyr			  "'4992b.dyr'"
 	  cyme			  "'ieee13.sxst'"
@@ -8302,19 +8246,6 @@ Model {
 	}
 	Block {
 	  BlockType		  ToWorkspace
-	  Name			  "To Workspace7"
-	  SID			  "2308"
-	  Ports			  [1]
-	  Position		  [1270, 770, 1330, 800]
-	  ZOrder		  774
-	  VariableName		  "SwitchValues"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
 	  Name			  "To Workspace8"
 	  SID			  "2321"
 	  Ports			  [1]
@@ -8727,7 +8658,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [-11, 0, 1931, 1042]
+	    Location		    [-10, 0, 1924, 1030]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -8972,7 +8903,7 @@ Model {
 	  ZOrder		  2925
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  1
-	  Points		  [0, -45; 9, 0]
+	  Points		  [0, -95; 9, 0]
 	  Branch {
 	    ZOrder		    3224
 	    Points		    [0, -70]
@@ -8986,27 +8917,20 @@ Model {
 	  }
 	}
 	Line {
-	  ZOrder		  2926
-	  SrcBlock		  "Static PF Solver"
-	  SrcPort		  2
-	  Points		  [4, 0; 0, -85]
-	  DstBlock		  "select measurement at performance node"
-	  DstPort		  2
-	}
-	Line {
 	  ZOrder		  2930
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  1
-	  Points		  [25, 0; 0, -10]
+	  Points		  [0, -5; 25, 0]
 	  Branch {
-	    ZOrder		    3173
-	    Points		    [0, -40]
-	    DstBlock		    "Static PF Solver"
+	    ZOrder		    3711
+	    Points		    [0, -10]
+	    DstBlock		    "To Workspace2"
 	    DstPort		    1
 	  }
 	  Branch {
-	    ZOrder		    3033
-	    DstBlock		    "To Workspace2"
+	    ZOrder		    3173
+	    Points		    [0, 45]
+	    DstBlock		    "Static PF Solver"
 	    DstPort		    1
 	  }
 	}
@@ -9110,17 +9034,27 @@ Model {
 	  }
 	}
 	Line {
-	  ZOrder		  3222
+	  ZOrder		  2926
 	  SrcBlock		  "Static PF Solver"
-	  SrcPort		  3
-	  DstBlock		  "Scope2"
-	  DstPort		  1
+	  SrcPort		  2
+	  Points		  [4, 0; 0, -45]
+	  Branch {
+	    ZOrder		    3763
+	    Points		    [0, -185]
+	    DstBlock		    "select measurement at performance node"
+	    DstPort		    2
+	  }
+	  Branch {
+	    ZOrder		    3713
+	    DstBlock		    "Scope2"
+	    DstPort		    1
+	  }
 	}
 	Line {
 	  ZOrder		  3270
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  4
-	  Points		  [2, 0; 0, 205]
+	  Points		  [2, 0; 0, 170]
 	  DstBlock		  "To Workspace10"
 	  DstPort		  1
 	}
@@ -9128,7 +9062,7 @@ Model {
 	  ZOrder		  3235
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  3
-	  Points		  [9, 0; 0, 205]
+	  Points		  [9, 0; 0, 180]
 	  DstBlock		  "Gain1"
 	  DstPort		  1
 	}
@@ -9136,7 +9070,7 @@ Model {
 	  ZOrder		  3236
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  2
-	  Points		  [9, 0; 0, -215]
+	  Points		  [9, 0; 0, -230]
 	  DstBlock		  "Gain2"
 	  DstPort		  1
 	}
@@ -9229,13 +9163,6 @@ Model {
 	  }
 	}
 	Line {
-	  ZOrder		  3600
-	  SrcBlock		  "Static PF Solver"
-	  SrcPort		  4
-	  DstBlock		  "Scope3"
-	  DstPort		  1
-	}
-	Line {
 	  ZOrder		  3602
 	  SrcBlock		  "vars from \nmatlab workspace"
 	  SrcPort		  6
@@ -9308,33 +9235,6 @@ Model {
 	    ZOrder		    3664
 	    Points		    [-157, 0; 0, 155]
 	    DstBlock		    "Q-V PI controllers\n( r SISO controllers)"
-	    DstPort		    2
-	  }
-	}
-	Line {
-	  ZOrder		  3673
-	  SrcBlock		  "MATLAB Function"
-	  SrcPort		  5
-	  Points		  [25, 0]
-	  Branch {
-	    ZOrder		    3675
-	    Points		    [0, 105]
-	    Branch {
-	      ZOrder		      3716
-	      Points		      [0, 35]
-	      DstBlock		      "Scope1"
-	      DstPort		      1
-	    }
-	    Branch {
-	      ZOrder		      3715
-	      DstBlock		      "To Workspace7"
-	      DstPort		      1
-	    }
-	  }
-	  Branch {
-	    ZOrder		    3674
-	    Points		    [9, 0; 0, -20]
-	    DstBlock		    "Static PF Solver"
 	    DstPort		    2
 	  }
 	}
@@ -9818,7 +9718,7 @@ Stateflow {
     name		    "Sim_v19"
     created		    "22-Nov-2017 08:06:29"
     isLibrary		    0
-    firstTarget		    31
+    firstTarget		    30
     sfVersion		    80000005
   }
   chart {
@@ -10015,14 +9915,11 @@ Stateflow {
     viewLimits		    [0 156.75 0 153.75]
     screen		    [1 1 3600 1200 1.180555555555556]
     treeNode		    [0 13 0 0]
-    firstTransition	    29
-    firstJunction	    28
+    firstTransition	    28
+    firstJunction	    27
     viewObj		    12
-    visible		    1
     machine		    1
-    subviewS {
-    }
-    ssIdHighWaterMark	    39
+    ssIdHighWaterMark	    40
     decomposition	    CLUSTER_CHART
     type		    EML_CHART
     firstData		    14
@@ -10046,38 +9943,39 @@ Stateflow {
     decomposition	    CLUSTER_STATE
     eml {
       isEML		      1
-      script		      "function [loadPQ, Qmax ,Pmax, PQact, switchValues]  = updatePows(TimeStep, qcmd,pcmd,ctrl_idx,dbc"
-      "_idx,testDbcData,actualDbcData,netLoadData,Sinv)\n% netLoadData, dbcData, and k are timeseries, fed once by one "
-      "for each timestep\n% ctrl_idx and dbc_idx are constant\n    % inputs: \n        % k is current timestep\n       "
-      " % 3x1 vectors of unadjusted actuation, as if have 1 actuator and it's located at the perf node \n    % inputs: "
-      "rx1 vectors of powers at all nodes \n        % r is number of phases across all nodes, i.e. the dim of the pin\n"
-      "        % vector input to RTlab solve\n       \n   %% actuation signal sent from controller to devices\n   %% De"
-      "vices actuate here:\n    % Device enforces basic inv limit by moving operating point to closest\n    % point on "
-      "the inv circle\n    % Keith's attempt \n%     pact=zeros(1,3); qact=zeros(1,3); % initialize, TEMP, assume singl"
-      "e actuator is on 3 phases\n%     Pmax=zeros(1,3); Qmax=zeros(1,3);\n%     for i=1:3 % across phases, TEMP, assum"
-      "ing the single actuator is on 3 phases\n%         if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n%             Pmax(i)=pcmd(i"
-      ")*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n%             Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));      "
-      "  \n%             if pcmd(i) > Sinv(i)\n%                 Pmax(i) = Sinv(i);\n%                 Qmax(i) = 0;\n% "
-      "            elseif pcmd(i) < -Sinv(i)\n%                 Pmax(i) = -Sinv(i); %sign?\n%                 Qmax(i) ="
-      " 0;\n%             else\n%                 Pmax(i) = pcmd(i);\n%                 Qmax(i) = sqrt((Sinv(i)^2 - Pma"
-      "x(i)^2)); %sign?\n%             end            \n%             pact(i)=Pmax(i);\n%             qact(i)=Qmax(i);\n"
-      "%         else\n%             pact(i)=pcmd(i);\n%             qact(i)=qcmd(i);\n%             Pmax(i) = Sinv(i);"
-      "\n%             Qmax(i) = Sinv(i);\n%         end\n%     end\n    \n    %Jaimie \n    pact=zeros(1,3); qact=zero"
-      "s(1,3); % initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,3); Qmax=zeros(1,3);\n    fo"
-      "r i=1:3 % across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqr"
-      "t(pcmd(i)^2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax"
-      "))= 0; \n        Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);"
-      "\n            qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n     "
-      "   end\n    end\n     \n  \n% 2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP"
-      ", choose this each time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % T"
-      "opologyChangeStart <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]"
-      "; %switch opens at beginning of disturbance \n%      else\n         switchValues = [1 1 1];\n%      end\n     \n"
-      "    \n%%\n    % all signals being added here must be formatted 'p q p q...'\n   \n    PQact=[pact(1) qact(1) pac"
-      "t(2) qact(2) pact(3) qact(3)]';\n    % TEMP^ not an elegant fix, assumes single 3ph actuator\n    loadPQ=zeros(s"
-      "ize(netLoadData));\n    % TODO: incorporate variable sized input and output\n    %loadPQ = zeros(908);%TEMP \n  "
-      "  %disp(length(loadPQ));% just to check length\n    %coder.varsize('loadPQ',[908 1]);\n    %coder.varsize('netLo"
-      "adData',[908 1]);\n    loadPQ=netLoadData; % P&Q, ordered according to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ct"
-      "rl_idx)+PQact+testDbcData; \n    loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;   \n\nend"
+      script		      "function [loadPQ, Qmax ,Pmax, PQact]  = updatePows(TimeStep, qcmd,pcmd,ctrl_idx,dbc_idx,testDbcDa"
+      "ta,actualDbcData,netLoadData,Sinv)\n% netLoadData, dbcData, and k are timeseries, fed once by one for each times"
+      "tep\n% ctrl_idx and dbc_idx are constant\n    % inputs: \n        % k is current timestep\n        % 3x1 vectors"
+      " of unadjusted actuation, as if have 1 actuator and it's located at the perf node \n    % inputs: rx1 vectors of"
+      " powers at all nodes \n        % r is number of phases across all nodes, i.e. the dim of the pin\n        % vect"
+      "or input to RTlab solve\n       \n   %% actuation signal sent from controller to devices\n   %% Devices actuate "
+      "here:\n    % Device enforces basic inv limit by moving operating point to closest\n    % point on the inv circle"
+      "\n    % Keith's attempt \n%     pact=zeros(1,3); qact=zeros(1,3); % initialize, TEMP, assume single actuator is "
+      "on 3 phases\n%     Pmax=zeros(1,3); Qmax=zeros(1,3);\n%     for i=1:3 % across phases, TEMP, assuming the single"
+      " actuator is on 3 phases\n%         if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n%             Pmax(i)=pcmd(i)*Sinv(i)/(sqr"
+      "t(pcmd(i)^2+qcmd(i)^2));\n%             Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));        \n%         "
+      "    if pcmd(i) > Sinv(i)\n%                 Pmax(i) = Sinv(i);\n%                 Qmax(i) = 0;\n%             el"
+      "seif pcmd(i) < -Sinv(i)\n%                 Pmax(i) = -Sinv(i); %sign?\n%                 Qmax(i) = 0;\n%        "
+      "     else\n%                 Pmax(i) = pcmd(i);\n%                 Qmax(i) = sqrt((Sinv(i)^2 - Pmax(i)^2)); %sig"
+      "n?\n%             end            \n%             pact(i)=Pmax(i);\n%             qact(i)=Qmax(i);\n%         els"
+      "e\n%             pact(i)=pcmd(i);\n%             qact(i)=qcmd(i);\n%             Pmax(i) = Sinv(i);\n%          "
+      "   Qmax(i) = Sinv(i);\n%         end\n%     end\n    \n    %Jaimie \n    pact=zeros(1,3); qact=zeros(1,3); % ini"
+      "tialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,3); Qmax=zeros(1,3);\n    for i=1:3 % acr"
+      "oss phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv/(sqrt(pcmd(i)^2+qcmd"
+      "(i)^2));\n        Qmax(i)=qcmd(i)*Sinv/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))= 0; \n        Qm"
+      "ax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv^2\n            pact(i)= Pmax(i);\n            qact(i)="
+      " Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        end\n    end\n     "
+      "\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose this each ti"
+      "me \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyChangeStart <="
+      "  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch opens at be"
+      "ginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%%\n    % all"
+      " signals being added here must be formatted 'p q p q...'\n   \n    PQact=[pact(1) qact(1) ]'; %pact(2) qact(2) p"
+      "act(3) qact(3)]'; %TEMP, change for different actuator length \n    % TEMP^ not an elegant fix, assumes single 3"
+      "ph actuator\n    loadPQ=zeros(size(netLoadData));\n    % TODO: incorporate variable sized input and output\n    "
+      "%loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% just to check length\n    %coder.varsize('loadPQ',[908 "
+      "1]);\n    %coder.varsize('netLoadData',[908 1]);\n    loadPQ=netLoadData; % P&Q, ordered according to loadNames\n"
+      "    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData; \n    loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;   "
+      "\n\nend"
       editorLayout	      "100 M4x1[10 5 700 500]"
     }
   }
@@ -10153,7 +10051,7 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"34"
+	size			"190"
       }
       type {
 	primitive		SF_DOUBLE_TYPE
@@ -10282,7 +10180,7 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"34"
+	size			"190"
 	isDynamic		1
       }
       type {
@@ -10343,29 +10241,7 @@ Stateflow {
     id			    26
     ssIdNumber		    30
     name		    "PQact"
-    linkNode		    [12 25 27]
-    scope		    OUTPUT_DATA
-    machine		    1
-    props {
-      array {
-	size			"-1"
-      }
-      type {
-	method			SF_INHERITED_TYPE
-	primitive		SF_DOUBLE_TYPE
-	isSigned		1
-	wordLength		"16"
-      }
-      complexity	      SF_COMPLEX_INHERITED
-      frame		      SF_FRAME_NO
-    }
-    dataType		    "Inherit: Same as Simulink"
-  }
-  data {
-    id			    27
-    ssIdNumber		    39
-    name		    "switchValues"
-    linkNode		    [12 26 0]
+    linkNode		    [12 25 0]
     scope		    OUTPUT_DATA
     machine		    1
     props {
@@ -10384,7 +10260,7 @@ Stateflow {
     dataType		    "Inherit: Same as Simulink"
   }
   junction {
-    id			    28
+    id			    27
     position		    [23.5747 49.5747 7]
     chart		    12
     linkNode		    [12 0 0]
@@ -10393,7 +10269,7 @@ Stateflow {
     type		    CONNECTIVE_JUNCTION
   }
   transition {
-    id			    29
+    id			    28
     labelString		    "{eML_blk_kernel();}"
     labelPosition	    [28.125 13.875 102.544 14.964]
     fontSize		    12
@@ -10401,7 +10277,7 @@ Stateflow {
       intersection	      [0 0 1 0 23.5747 14.625 0 0]
     }
     dst {
-      id		      28
+      id		      27
       intersection	      [1 0 -1 0 23.5747 42.5747 0 0]
     }
     midPoint		    [23.5747 24.9468]
@@ -10417,22 +10293,22 @@ Stateflow {
     ssIdNumber		    2
   }
   instance {
-    id			    30
+    id			    29
     name		    "Sm_master/MATLAB Function"
     machine		    1
     chart		    12
   }
   target {
-    id			    31
+    id			    30
     name		    "sfun"
     description		    "Default Simulink S-Function Target."
     machine		    1
-    linkNode		    [1 0 32]
+    linkNode		    [1 0 31]
   }
   target {
-    id			    32
+    id			    31
     name		    "rtw"
     machine		    1
-    linkNode		    [1 31 0]
+    linkNode		    [1 30 0]
   }
 }
