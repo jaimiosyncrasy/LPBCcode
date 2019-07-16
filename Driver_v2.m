@@ -37,7 +37,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=191; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
+    n=193; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
     
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
@@ -48,14 +48,14 @@ Ts=0.1; % should agree with simulink outermost block setting
     % for sim1_1 and others:
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     % for adam1 sim:
-    netLoadData = csvread('004_GB_IEEE123_time_sigBuilder_secondwise_norm1.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    netLoadData = csvread('005_GB_UCB33_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
 
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
     
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
-    [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B1:GJ1');
+    [txt,num,raw] = xlsread('005_GB_UCB33_opal.xls','Pins','B1:GL1');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames =raw(1,2:end); % 
@@ -69,17 +69,18 @@ Ts=0.1; % should agree with simulink outermost block setting
     
 %     loadNames = [loadNames1 loadNames2];
     
-    [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B2:IV3');
+    [txt,num,raw] = xlsread('005_GB_UCB33_opal.xls','Pins','B2:CW3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames1=raw(1,2:end); % used to select meas node
-    busNames1=cellfun(@(S) S(1:end-5), busNames1, 'Uniform', 0); % clean up string format
+    busNames=raw(1,2:end); % used to select meas node
+    busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging  
-    [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B6:S7');
-    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames2=raw(1,2:end); % used to select meas node
-    busNames2=cellfun(@(S) S(1:end-5), busNames2, 'Uniform', 0); % clean up string format
-    % Assign node location indices, print to help with debugging 
-    busNames = [busNames1 busNames2];
+    %TEMP for longer feeder 
+%     [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B6:S7');
+%     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+%     busNames2=raw(1,2:end); % used to select meas node
+%     busNames2=cellfun(@(S) S(1:end-5), busNames2, 'Uniform', 0); % clean up string format
+%     % Assign node location indices, print to help with debugging 
+%     busNames = [busNames1 busNames2];
     
     
     meas_idx=strToIdx(measStr,busNames)
@@ -92,11 +93,11 @@ Ts=0.1; % should agree with simulink outermost block setting
 %     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, after PV disturbance');
     
 %% Set targets/reference for controller to  track
-    [Sbase,V1base,V2base] = computePU();
+    [Sbase,V1base] = computePU();
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base); 
-    
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base); 
+    V2base = 0;
 %     vmag_ref
 %     vang_ref
 %% --------------------- Simulation is now initialized -------------------------
@@ -111,10 +112,10 @@ Ts=0.1; % should agree with simulink outermost block setting
     
 %% Ability2: det sensitivities by running this
    
-    % Turn controllers off    
-        Vang_ctrl=false; % boolean
-        Vmag_ctrl=false; % boolean
-        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
+%     Turn controllers off    
+%         Vang_ctrl=false; % boolean
+%         Vmag_ctrl=false; % boolean
+%         [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
 
     % Create test disturbance
     % inialize actual dbc to 0, only run test dbc
@@ -122,8 +123,11 @@ Ts=0.1; % should agree with simulink outermost block setting
     actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     actualDbcData = actualDbcData*0;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
-
-%     xlswrite('impedMod_IEEE13.xls', 0, 'Switch','D2:D4') %2.1 disturbance
+    %TEMP for no disturbance 
+    testDbcData = testDbcData.*0;
+    stepP = stepP*0; 
+    stepQ = stepQ*0; 
+    dbcDur= dbcDur*0;
 
      % Run sim with controllers off to get sys ID data
          disp('------------------- Running uncontrolled sim...');

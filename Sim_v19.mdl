@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.317"
+    ComputedModelVersion    "1.321"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-10.0, 0.0, 1934.0, 1030.0]
+      Location		      [-11.0, 0.0, 1942.0, 1042.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -58,7 +58,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2098"
-	  Extents		  [1878.0, 799.0]
+	  Extents		  [1886.0, 811.0]
 	  ZoomFactor		  [2.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -66,28 +66,28 @@ Model {
 	  $ObjectID		  6
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
-	  LoadSaveID		  "2084"
-	  Extents		  [1886.0, 858.0]
-	  ZoomFactor		  [1.25]
-	  Offset		  [-5.3250000000000455, 0.0]
+	  LoadSaveID		  "2060"
+	  Extents		  [1886.0, 811.0]
+	  ZoomFactor		  [1.5]
+	  Offset		  [0.0, 0.0]
 	}
 	Object {
 	  $ObjectID		  7
-	  IsActive		  [0]
-	  ViewObjType		  "SimulinkSubsys"
-	  LoadSaveID		  "2089"
-	  Extents		  [1878.0, 799.0]
-	  ZoomFactor		  [1.5]
-	  Offset		  [-1.4583333333333712, 12.666666666666686]
-	}
-	Object {
-	  $ObjectID		  8
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [1878.0, 799.0]
+	  Extents		  [1886.0, 811.0]
+	  ZoomFactor		  [1.75]
+	  Offset		  [-2.0, 505.14285714285722]
+	}
+	Object {
+	  $ObjectID		  8
+	  IsActive		  [0]
+	  ViewObjType		  "SimulinkSubsys"
+	  LoadSaveID		  "2084"
+	  Extents		  [1886.0, 811.0]
 	  ZoomFactor		  [1.25]
-	  Offset		  [362.5119047618989, 250.78214285714591]
+	  Offset		  [-5.3250000000000455, 0.0]
 	}
 	PropName		"EditorsInfo"
       }
@@ -99,9 +99,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Jul 11 12:52:30 2019"
-  RTWModifiedTimeStamp	  484750259
-  ModelVersionFormat	  "1.%<AutoIncrement:317>"
+  LastModifiedDate	  "Mon Jul 15 11:21:40 2019"
+  RTWModifiedTimeStamp	  485090498
+  ModelVersionFormat	  "1.%<AutoIncrement:321>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -5250,7 +5250,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-10, 0, 1924, 1030]
+	Location		[-11, 0, 1931, 1042]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -5262,7 +5262,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"125"
+	ZoomFactor		"175"
 	Block {
 	  BlockType		  Inport
 	  Name			  "tap_change"
@@ -5743,8 +5743,8 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [-10, 0, 1924, 1030]
-	    Open		    on
+	    Location		    [-11, 0, 1931, 1042]
+	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
 	    ScreenColor		    "white"
@@ -5848,7 +5848,7 @@ Model {
 	      }
 	      System {
 		Name			"For Each\nSubsystem"
-		Location		[-10, 0, 1924, 1030]
+		Location		[-11, 0, 1931, 1042]
 		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -5888,6 +5888,7 @@ Model {
 		  SID			  "2103"
 		  Position		  [290, 100, 340, 140]
 		  ZOrder		  5
+		  Criteria		  "u2 > Threshold"
 		  InputSameDT		  off
 		  SaturateOnIntegerOverflow off
 		}
@@ -6016,7 +6017,7 @@ Model {
 	      BackgroundColor	      "orange"
 	      Floating		      off
 	      Location		      [235, 258, 1601, 936]
-	      Open		      on
+	      Open		      off
 	      NumInputPorts	      "2"
 	      List {
 		ListType		AxesTitles
@@ -6034,7 +6035,6 @@ Model {
 		MarkerStyles		"none|none|none|none|none|none"
 	      }
 	      ShowLegends	      on
-	      LegendLocations	      "0.85871     0.80383     0.10176     0.10767\n0.81259     0.35103     0.14422     0.10767"
 	      YMin		      "-46.25~-5"
 	      YMax		      "6.25~5"
 	      SaveName		      "ScopeData8"
@@ -6051,7 +6051,7 @@ Model {
 	      BackgroundColor	      "orange"
 	      Floating		      off
 	      Location		      [153, 270, 1589, 1069]
-	      Open		      on
+	      Open		      off
 	      NumInputPorts	      "2"
 	      List {
 		ListType		AxesTitles
@@ -6084,7 +6084,7 @@ Model {
 	      BackgroundColor	      "orange"
 	      Floating		      off
 	      Location		      [10, 87, 1922, 1057]
-	      Open		      on
+	      Open		      off
 	      NumInputPorts	      "1"
 	      List {
 		ListType		AxesTitles
@@ -6118,7 +6118,7 @@ Model {
 	      BackgroundColor	      "orange"
 	      Floating		      off
 	      Location		      [490, 69, 1174, 769]
-	      Open		      on
+	      Open		      off
 	      NumInputPorts	      "1"
 	      List {
 		ListType		AxesTitles
@@ -6576,7 +6576,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "Q-V PI controllers\n( r SISO controllers)"
-	    Location		    [-10, 0, 1924, 1030]
+	    Location		    [-11, 0, 1931, 1042]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -6682,8 +6682,8 @@ Model {
 	      }
 	      System {
 		Name			"For Each\nSubsystem"
-		Location		[-8, -8, 1928, 1028]
-		Open			off
+		Location		[-11, 0, 1931, 1042]
+		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
 		ScreenColor		"white"
@@ -6722,6 +6722,7 @@ Model {
 		  SID			  "2065"
 		  Position		  [290, 100, 340, 140]
 		  ZOrder		  5
+		  Criteria		  "u2 > Threshold"
 		  InputSameDT		  off
 		  SaturateOnIntegerOverflow off
 		}
@@ -6868,7 +6869,6 @@ Model {
 		MarkerStyles		"none|none|none|none|none|none"
 	      }
 	      ShowLegends	      on
-	      LegendLocations	      "0.85683      0.7798     0.10352     0.12086\n0.80984     0.33278     0.15051     0.12086"
 	      YMin		      "-46.25~-5"
 	      YMax		      "6.25~5"
 	      SaveName		      "ScopeData8"
@@ -6917,7 +6917,7 @@ Model {
 	      ZOrder		      761
 	      BackgroundColor	      "orange"
 	      Floating		      off
-	      Location		      [1, 49, 1921, 1019]
+	      Location		      [10, 60, 1922, 1030]
 	      Open		      off
 	      NumInputPorts	      "1"
 	      List {
@@ -6935,7 +6935,7 @@ Model {
 		MarkerStyles		"none|none|none|none|none|none"
 	      }
 	      ShowLegends	      on
-	      LegendLocations	      "0.8717     0.90206     0.10833    0.053265"
+	      LegendLocations	      "0.8717     0.90206     0.15952    0.075258"
 	      YMin		      "-0.125"
 	      YMax		      "1.125"
 	      SaveName		      "ScopeData9"
@@ -7469,7 +7469,7 @@ Model {
 	  BackgroundColor	  "orange"
 	  Floating		  off
 	  Location		  [50, 165, 1412, 843]
-	  Open			  on
+	  Open			  off
 	  NumInputPorts		  "2"
 	  List {
 	    ListType		    AxesTitles
@@ -7501,8 +7501,8 @@ Model {
 	  ZOrder		  788
 	  BackgroundColor	  "orange"
 	  Floating		  off
-	  Location		  [11, 182, 699, 565]
-	  Open			  off
+	  Location		  [1, 72, 1921, 1019]
+	  Open			  on
 	  NumInputPorts		  "1"
 	  List {
 	    ListType		    AxesTitles
@@ -7536,7 +7536,7 @@ Model {
 	  SourceType		  ""
 	  epname		  "System"
 	  extension		  "Excel"
-	  xls			  "'004_GB_IEEE123.xlsx'"
+	  xls			  "'005_GB_UCB33_opal.xls'"
 	  raw			  "'4992b.raw'"
 	  dyr			  "'4992b.dyr'"
 	  cyme			  "'ieee13.sxst'"
@@ -8342,7 +8342,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "measure and plot P"
-	    Location		    [-11, 0, 1931, 1042]
+	    Location		    [-11, -11, 1931, 1031]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -8658,7 +8658,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [-10, 0, 1924, 1030]
+	    Location		    [-11, -11, 1931, 1031]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -8920,17 +8920,17 @@ Model {
 	  ZOrder		  2930
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  1
-	  Points		  [0, -5; 25, 0]
+	  Points		  [25, 0]
 	  Branch {
-	    ZOrder		    3711
-	    Points		    [0, -10]
-	    DstBlock		    "To Workspace2"
+	    ZOrder		    3796
+	    Points		    [0, 45]
+	    DstBlock		    "Static PF Solver"
 	    DstPort		    1
 	  }
 	  Branch {
-	    ZOrder		    3173
-	    Points		    [0, 45]
-	    DstBlock		    "Static PF Solver"
+	    ZOrder		    3711
+	    Points		    [0, -15]
+	    DstBlock		    "To Workspace2"
 	    DstPort		    1
 	  }
 	}
@@ -8953,17 +8953,18 @@ Model {
 	  ZOrder		  2950
 	  SrcBlock		  "vars from \nmatlab workspace"
 	  SrcPort		  4
-	  Points		  [176, 0; 0, 77; -127, 0; 0, -22]
+	  Points		  [49, 0]
 	  Branch {
-	    ZOrder		    3666
-	    Points		    [0, -50; 28, 0; 0, -50]
-	    DstBlock		    "MATLAB Function"
-	    DstPort		    8
-	  }
-	  Branch {
-	    ZOrder		    3610
+	    ZOrder		    3798
+	    Points		    [0, 55]
 	    DstBlock		    "To Workspace3"
 	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    3666
+	    Points		    [28, 0; 0, -45]
+	    DstBlock		    "MATLAB Function"
+	    DstPort		    8
 	  }
 	}
 	Line {
@@ -9040,7 +9041,7 @@ Model {
 	  Points		  [4, 0; 0, -45]
 	  Branch {
 	    ZOrder		    3763
-	    Points		    [0, -185]
+	    Points		    [0, -190]
 	    DstBlock		    "select measurement at performance node"
 	    DstPort		    2
 	  }
@@ -9166,7 +9167,7 @@ Model {
 	  ZOrder		  3602
 	  SrcBlock		  "vars from \nmatlab workspace"
 	  SrcPort		  6
-	  Points		  [28, 0; 0, 60; 30, 0; 0, -195]
+	  Points		  [32, 0; 0, -40; 26, 0; 0, -95]
 	  DstBlock		  "MATLAB Function"
 	  DstPort		  5
 	}
@@ -10051,7 +10052,7 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"190"
+	size			"192"
       }
       type {
 	primitive		SF_DOUBLE_TYPE
@@ -10180,7 +10181,7 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"190"
+	size			"192"
 	isDynamic		1
       }
       type {
