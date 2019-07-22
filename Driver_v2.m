@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=7; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=9; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -27,10 +27,11 @@ Ts=0.1; % should agree with simulink outermost block setting
     % 'raw LPBC output name' col not used by this code, instead used by results tracking tool
     measStr=raw(testIdx+numHead,6); measStr=measStr{1}; % convert cell array to string
     actStr=raw(testIdx+numHead,7); actStr=actStr{1};
-    dbcStr=raw(testIdx+numHead,8); dbcStr=dbcStr{1};
-    Sinv_str=raw(testIdx+numHead,9); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
-
-% vars read in from initialization that are not used yet: PVpen
+    dbcStr=raw(testIdx+numHead,9); dbcStr=dbcStr{1};
+    Sinv_str=raw(testIdx+numHead,10); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
+    ridxStr=raw(testIdx+numHead,8); ridxStr=ridxStr{1}; 
+    ridx=str2double(strsplit(ridxStr,',')); ridx = ridx(~isnan(ridx)); % split string of nodes by comma delimiter, yielding cell array
+    % vars read in from initialization that are not used yet: PVpen
 % may need later: strcmp(kgainCalcType,'ZN')
 
 %% read TV load/gen data
@@ -122,13 +123,13 @@ Ts=0.1; % should agree with simulink outermost block setting
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData = actualDbcData*0;
+    %actualDbcData = actualDbcData*0;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     %TEMP for no disturbance 
-    testDbcData = testDbcData.*0;
-    stepP = stepP*0; 
-    stepQ = stepQ*0; 
-    dbcDur= dbcDur*0;
+%     testDbcData = testDbcData.*0;
+%     stepP = stepP*0; 
+%     stepQ = stepQ*0; 
+%     dbcDur= dbcDur*0;
 
      % Run sim with controllers off to get sys ID data
          disp('------------------- Running uncontrolled sim...');
@@ -178,19 +179,19 @@ case 3
 end
 %% --------------------- Controller kgains are now set -------------------------
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
-%     % define disturbance directly in this function below 
-%     
-%     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-%     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
-%     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-%     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
-%     %3.1 for PV gen cut in half: 
-%     %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
-%     %%%%3.1 PV disturbance 
-%     %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
-%     
-%    % figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
-%    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+    % define disturbance directly in this function below 
+    
+    n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+    actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
+    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    %3.1 for PV gen cut in half: 
+    %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
+    %%%%3.1 PV disturbance 
+    %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
+    
+   % figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+   % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
  
 %%  Run sim with controllers ON
 
