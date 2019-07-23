@@ -9,10 +9,12 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
 
          % hardcode for now
         tau=0.3; % first order TF time const for plat model
-        settleMax=[10 10]; % vmag vang
-        OSmax=[0.2 0.1]; % vmag vang
-        stepMag=[dvdq(1) ddeldp(1)]; % design using a reasonable step change in V/kW
+        settleMax=[10 10]; % vmag vang, units of seconds
+        OSmax=[0.2 0.1]; % percentage, vmag vang
+        stepMag=[0.05 2]; % hardcoded, TEMP, realistic voltage disturbance mags
+        %stepMag=[dvdq(1) ddeldp(1)]; % design using a reasonable step change in V/kW
         lbub=[0.1*(1/dvdq(1)) 10*(1/dvdq(1)); 0.1*(1/ddeldp(1)) 10*(1/ddeldp(1))] % allowable range of kgains, vmag first row, vang second row
+    
     % If controller loop off, zero out kgains
      if Vmag_ctrl==false
          Kp_vmag=zeros(1,r); Ki_vmag=zeros(1,r);

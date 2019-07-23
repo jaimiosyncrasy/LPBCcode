@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=9; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=7; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -30,8 +30,12 @@ Ts=0.1; % should agree with simulink outermost block setting
     dbcStr=raw(testIdx+numHead,9); dbcStr=dbcStr{1};
     Sinv_str=raw(testIdx+numHead,10); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
     ridxStr=raw(testIdx+numHead,8); ridxStr=ridxStr{1}; 
-    ridx=str2double(strsplit(ridxStr,',')); ridx = ridx(~isnan(ridx)); % split string of nodes by comma delimiter, yielding cell array
-    % vars read in from initialization that are not used yet: PVpen
+    if isa(ridxStr,'double') % if already a double, no need to convert string to double
+       ridx=ridxStr;
+    else
+       ridx=str2double(strsplit(ridxStr,',')); ridx = ridx(~isnan(ridx)); % split string of nodes by comma delimiter, yielding cell array
+    end 
+   % vars read in from initialization that are not used yet: PVpen
 % may need later: strcmp(kgainCalcType,'ZN')
 
 %% read TV load/gen data
@@ -142,7 +146,7 @@ Ts=0.1; % should agree with simulink outermost block setting
         disp('finished simulink');    
         
     % Compute sensitivities
-        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames)
+        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
         % units: [V/kVAR V/kW deg/kVar deg/kW]
         
 %% --------------------- Now ready to compute kgains -------------------------
@@ -180,11 +184,11 @@ end
 %% --------------------- Controller kgains are now set -------------------------
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 
-    
-    n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
-    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+%     
+%     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+%     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
+%     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+%     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createActualDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     %3.1 for PV gen cut in half: 
     %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
     %%%%3.1 PV disturbance 

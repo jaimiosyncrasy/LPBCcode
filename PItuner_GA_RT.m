@@ -15,7 +15,7 @@ function kset = PItuner_GA_RT(sens,tau,dt,settleMax,OSmax,stepMag,lbub)
     options = gaoptimset('PopulationSize',popsize,'Generations',MaxGenerations);
       
    %options = gaoptimset('PopulationSize',popsize,'Generations',MaxGenerations,'CreationFcn','gacreationuniform','InitialPopulationRange',[0 10]);
-    plot=false; % dont plot while tuning
+    plot=false; % dont plot while autotuning, unless debugging
     [kset,fval,exitflag,output,population,scores] = ga(@(K)pidtest_RT(Gd,dt,K,N,settleMax,OSmax,stepMag,plot),2,-eye(2),zeros(2,1),[],[],lb,ub,[],options);
     
     disp('-------- Best -----------------------------');

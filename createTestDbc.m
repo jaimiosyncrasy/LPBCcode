@@ -8,6 +8,9 @@ function [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(pload,qload,
     dbcMeas=dbcStart+dbcDur-3; % in timesteps
     sz=size(pload);
     testDbcData=[[0:Ts:length(pload)]' zeros(length(pload)/Ts+1,numDbc)]; % col1 is time, initialize as no dbc with correct dims
+    % idx=find(vec_nodes==str2num(measStr(1:3))) %3.1 reconfigure to find
+    % all of the PV nodes, and then during disturbance, decrease them by
+    % 0.5
     
     % define square wave (step up and step down) disturbance
     pload_avg=mean(pload);
@@ -18,8 +21,10 @@ function [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(pload,qload,
         testDbcData(dbcStart(i*2-1):dbcStart(i*2-1)+dbcDur,i*2)=stepP; % 1 offset because 1st col is time
         testDbcData(dbcStart(i*2):dbcStart(i*2)+dbcDur,i*2+1)=stepQ;
     end
-    
-    % plot for debugging purpose
+   
+    %testDbcData = testDbcData*0; %TEMP comment out for Adam + 1.1 
+    %plot for debugging purpose
     figure; plot(testDbcData(:,2:end),'LineWidth',1.5); hold on; plot(dbcMeas,testDbcData(dbcMeas,2:end),'k.','MarkerSize',15); 
-    legend(num2str(ctrl_idx)); title('test disturbance')
+    legend(num2str(ctrl_idx)); title('test disturbance: P,Q,P,Q...'); ylabel('kW or kVAR');
+    axis([0 totDbcTime 0 pload_avg(1)*1.5])
 end
