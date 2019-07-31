@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=7; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=9; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -42,8 +42,10 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=55; % for each feeder, the number of cols in TV load/gen data, which is number of nodes*phases
+    n=55; % for each feeder, the number of cols in TV load/gen data (including time col), which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
+    % IEEE13 unbal has n=35
+    % IEEE13 bal has n=55
     
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
     
@@ -56,11 +58,12 @@ Ts=0.1; % should agree with simulink outermost block setting
     netLoadData = csvread('016_GB_IEEE13_balance_all_ver2_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
 
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
+%     loadData_noTS=loadData_noTS*0;
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
     
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
-    [txt,num,raw] = xlsread('016_GB_IEEE13_balance_all_ver2.xls','Pins','B1:BD1');
+    [txt,num,raw] = xlsread('016_GB_IEEE13_balance_all_ver2_OPAL2.xls','Pins','B1:BD1');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames =raw(1,2:end); % 
@@ -74,7 +77,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     
 %     loadNames = [loadNames1 loadNames2];
     
-    [txt,num,raw] = xlsread('016_GB_IEEE13_balance_all_ver2.xls','Pins','B2:AR3');
+    [txt,num,raw] = xlsread('016_GB_IEEE13_balance_all_ver2_OPAL2.xls','Pins','B2:AR3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames=raw(1,2:end); % used to select meas node
     busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
@@ -115,40 +118,40 @@ Ts=0.1; % should agree with simulink outermost block setting
 [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
  
     
-%% Ability2: det sensitivities by running this
-   
-%     Turn controllers off    
-        Vang_ctrl=false; % boolean
-        Vmag_ctrl=false; % boolean
-        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
-
-    % Create test disturbance
-    % inialize actual dbc to 0, only run test dbc
-    n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
-    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    %actualDbcData = actualDbcData*0;
-    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
-    %TEMP for no disturbance 
-%     testDbcData = testDbcData.*0;
-%     stepP = stepP*0; 
-%     stepQ = stepQ*0; 
-%     dbcDur= dbcDur*0;
-
-     % Run sim with controllers off to get sys ID data
-         disp('------------------- Running uncontrolled sim...');
-
-    % Run simulink
-        sim('Sim_v19.mdl')
-        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
-        vmag_init_actual=vmag_new(4,:);
-        vang_init_actual-vang_new(4,:);
-        disp('finished simulink');    
-        
-    % Compute sensitivities
-        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
-        % units: [V/kVAR V/kW deg/kVar deg/kW]
-        
+% %% Ability2: det sensitivities by running this
+%    
+% %     Turn controllers off    
+%         Vang_ctrl=false; % boolean
+%         Vmag_ctrl=false; % boolean
+%         [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
+% 
+%     % Create test disturbance
+%     % inialize actual dbc to 0, only run test dbc
+%     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+%     actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
+%     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+%     %actualDbcData = actualDbcData*0;
+%     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+%     %TEMP for no disturbance 
+% %     testDbcData = testDbcData.*0;
+% %     stepP = stepP*0; 
+% %     stepQ = stepQ*0; 
+% %     dbcDur= dbcDur*0;
+% 
+%      % Run sim with controllers off to get sys ID data
+%          disp('------------------- Running uncontrolled sim...');
+% 
+%     % Run simulink
+%         sim('Sim_v19.mdl')
+%         set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+%         vmag_init_actual=vmag_new(4,:);
+%         vang_init_actual-vang_new(4,:);
+%         disp('finished simulink');    
+%         
+%     % Compute sensitivities
+%         [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
+%         % units: [V/kVAR V/kW deg/kVar deg/kW]
+%         
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
 
@@ -185,16 +188,18 @@ end
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 
 %     
-%     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-%     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
-%     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-%     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createActualDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+     %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
+     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
+     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+    %[testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     %3.1 for PV gen cut in half: 
     %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
     %%%%3.1 PV disturbance 
     %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
     
-   % figure; plot(actualDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+   figure; plot(actualDbcData(1:360/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
  
 %%  Run sim with controllers ON

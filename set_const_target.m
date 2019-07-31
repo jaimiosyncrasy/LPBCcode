@@ -1,6 +1,6 @@
 function [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base) 
     secList=[1:(minEnd-minStart)*60]'; % starts from 1, not actual second of the day
-    tarVmag=[0.98 0.98 0.98];%[0.9816 0.9930 0.9837]; % pu
+    tarVmag=[1 0.99 0.975];%[0.9816 0.9930 0.9837]; % pu
     %tarVmag=[0.98 0.98 0.98 0.98 0.98];%[0.9816 0.9930 0.9837]; % pu
     tarVang=[-2 -120-2 120-2]; % degrees
     %tarVang=[-2 -120-2 120-2 0 0]; % degrees

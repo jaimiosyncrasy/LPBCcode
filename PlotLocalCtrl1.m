@@ -3,7 +3,7 @@
 tidx=0:length(t); % t is cummulative timestep, tidx is integers for indexing
 %FOR 1 NODE:
 plotStart=minStart; %minute of the day, should not exceed timeEnd
-plotEnd=minStart+5; %minEnd for entire simulation
+plotEnd=minStart + 1; %minEnd for entire simulation
 inter=1:(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
 %%
@@ -16,8 +16,7 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
     figure;     % same plot across phases
     hold on;
     plot(tidx(inter+1),qnew(tidx(inter+1),1),'b-','LineWidth',2);
-    plot(tidx(inter+1),qnew(tidx(inter+1),2),'r-','LineWidth',2);
-    plot(tidx(inter+1),qnew(tidx(inter+1),3),'g-','LineWidth',2);
+
     %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',2);
     %plot(s,qnew(s,1),'k.','MarkerSize',20);
     if (Vang_ctrl==true && Vang_ctrlStart>plotStart)
@@ -73,8 +72,7 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
     figure;     % same plot across phases
     hold on;
     plot(tidx(inter+1),pnew(tidx(inter+1),1),'b-','LineWidth',2);
-    plot(tidx(inter+1),pnew(tidx(inter+1),2),'r-','LineWidth',2);
-    plot(tidx(inter+1),pnew(tidx(inter+1),3),'g-','LineWidth',2);
+
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',2);

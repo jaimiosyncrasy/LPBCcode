@@ -3,7 +3,7 @@
 tidx=0:length(t); % t is cummulative timestep, tidx is integers for indexing
 %FOR 1 NODE:
 plotStart=minStart; %minute of the day, should not exceed timeEnd
-plotEnd=minStart+5; %minEnd for entire simulation
+plotEnd=minStart+1.1; %minEnd for entire simulation
 inter=1:(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
 %%
@@ -17,7 +17,6 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
     hold on;
     plot(tidx(inter+1),qnew(tidx(inter+1),1),'b-','LineWidth',2);
     plot(tidx(inter+1),qnew(tidx(inter+1),2),'r-','LineWidth',2);
-    plot(tidx(inter+1),qnew(tidx(inter+1),3),'g-','LineWidth',2);
     %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',2);
     %plot(s,qnew(s,1),'k.','MarkerSize',20);
     if (Vang_ctrl==true && Vang_ctrlStart>plotStart)
@@ -55,7 +54,7 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 %     if (Vang_ctrl==true)
 %         plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'m-');%,[dbcStart,dbcStart],get(gca,'ylim'),'k');
 %     end
-    xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Voltage (pu)');title('Vmag at perf node'); grid on; legend('va','varef','vb','vbref','vc','vcref','ctrl start', 'ctrl start');  
+    xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Voltage (pu)');title('Vmag at perf node'); grid on; legend('va','vatarget','vb','vbtarget','vc','vctarget','ctrl start', 'ctrl start');  
     txt1 = strcat('perf node Vbase (V) =',num2str(V1base)); text(get(gca,'xlim'),get(gca,'ylim'),txt1);
     %set(gca, 'XTick',1:60:(minEnd-minStart+1)*60, 'XTickLabel',minStart:(minEnd+1))        
     %axis([0,max(inter+1),0.9,1.2]); % narrow axis to easier see one phase
@@ -74,7 +73,6 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
     hold on;
     plot(tidx(inter+1),pnew(tidx(inter+1),1),'b-','LineWidth',2);
     plot(tidx(inter+1),pnew(tidx(inter+1),2),'r-','LineWidth',2);
-    plot(tidx(inter+1),pnew(tidx(inter+1),3),'g-','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',2);
@@ -104,7 +102,7 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 %     if (Vang_ctrl==true && Vang_ctrlStart>plotStart)
 %         plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'m-');%,[dbcStart,dbcStart],get(gca,'ylim'),'k');
 %     end
-    xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Phase Angle (degrees)');title('Vang at perf node'); grid on; legend('va','varef','vb','vbref','vc','vcref','ctrl start', 'ctrl start');  
+    xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Phase Angle (degrees)');title('Vang at perf node'); grid on; legend('va','vatarget','vb','vbtarget','vc','vctarget','ctrl start', 'ctrl start');  
     txt1 = strcat('perf node Vbase (V) =',num2str(V2base)); text(get(gca,'xlim'),get(gca,'ylim'),txt1);
     %axis([min(tidx(inter+1)),max(tidx(inter+1)),-5,5]); % narrow axis to easier see one phase
     %set(gca, 'XTick',plotStart:60:(plotEnd-plotStart+1)*60, 'XTickLabel',minStart:(minEnd+1))        
