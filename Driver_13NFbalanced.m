@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=9; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=11; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -91,7 +91,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 %     busNames = [busNames1 busNames2];
     
     
-    meas_idx=strToIdx(measStr,busNames)
+    meas_idx=strToIdx(measStr,busNames); meas_idx = [28 28 28  29 30]
     ctrl_idx=strToIdx(actStr,loadNames)
     dbc_idx=strToIdx(dbcStr,loadNames)
     Sinv=repmat(Sinv_str,1,length(ctrl_idx)/2) % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
@@ -154,33 +154,33 @@ Ts=0.1; % should agree with simulink outermost block setting
         [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
         % units: [V/kVAR V/kW deg/kVar deg/kW]
         
-        %%
-        %% extra plot for way 3
-r=3;
-%close all
-% qnew and vmag_new are in pu
-itvl=1:230;
-figure;
-for i = 1:r
-    subplot(1,r,i);
-    [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
-    set(hline1,'LineWidth',1.5);
-set(hline2,'LineWidth',1.5);
-    legend('vmag','q');
-end
-title('Q-->Vmag');
-figure;
-for i = 1:r
-    subplot(1,r,i);
-    [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
-    set(hline1,'LineWidth',1.5);
-    set(hline2,'LineWidth',1.5);
-    legend('vang','p');
-end
-title('P-->Vang');
-        
-figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
-figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
+%         %%
+%         % extra plot for way 3
+% r=3;
+% %close all
+% % qnew and vmag_new are in pu
+% itvl=1:230;
+% figure;
+% for i = 1:r
+%     subplot(1,r,i);
+%     [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
+%     set(hline1,'LineWidth',1.5);
+% set(hline2,'LineWidth',1.5);
+%     legend('vmag','q');
+% end
+% title('Q-->Vmag');
+% figure;
+% for i = 1:r
+%     subplot(1,r,i);
+%     [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
+%     set(hline1,'LineWidth',1.5);
+%     set(hline2,'LineWidth',1.5);
+%     legend('vang','p');
+% end
+% title('P-->Vang');
+%         
+% figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
+% figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
@@ -211,7 +211,7 @@ case 3
     %% Set kgains using way 3, save as test1_way3.mat 
         Vang_ctrl=true; % boolean
         Vmag_ctrl=true; % boolean
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts)
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts,r)
 
 end
 %% --------------------- Controller kgains are now set -------------------------
@@ -219,8 +219,8 @@ end
     % define disturbance directly in this function below 
 %     
      n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-     %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
-     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
+     actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
+     %actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
      n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     %[testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
@@ -228,10 +228,18 @@ end
     %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
     %%%%3.1 PV disturbance 
     %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
-    
-   figure; plot(actualDbcData(1:3600/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+     
+   figure; plot(actualDbcData(1:36000,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
  
+   %% For T4.1/2/3, multiple actuators on the same phase so need to split the kgains by 3
+   % skeletal adjustement
+  
+    Kp_vmag=Kp_vmag/3
+    Ki_vmag=Ki_vmag/3
+    Kp_vang=Kp_vang/3
+    Ki_vang=Ki_vang/3
+    
 %%  Run sim with controllers ON
 
     disp('------------------- Running controlled sim...');

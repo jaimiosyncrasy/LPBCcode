@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=1; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=22; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -42,7 +42,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=35; % for each feeder, the number of cols in TV load/gen data (including time col), which is number of nodes*phases
+    n=607; % for each feeder, the number of cols in TV load/gen data (including time col), which is number of nodes*phases
     % TEMP:^ fix n assignment to allow feeders of diff sizes
     % IEEE13 unbal has n=35
     % IEEE13 bal has n=55
@@ -55,42 +55,57 @@ Ts=0.1; % should agree with simulink outermost block setting
     % for sim1_1 and others:
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     % for adam1 sim:
-    netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
-
+    netLoadData = csvread('PL0001_July_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
 %     loadData_noTS=loadData_noTS*0;
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
     
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ1');
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B1:IV1');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    loadNames =raw(1,2:end); % 
-    loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
+    loadNames1 =raw(1,2:end); % 
+    loadNames1 = cellfun(@(S) S(8:end), loadNames1, 'Uniform', 0); % clean up string format
 
-%     [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','A5:IV5');
-% %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
-%     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-%     loadNames2 =raw(1,1:end); % 
-%     loadNames2 = cellfun(@(S) S(4:end), loadNames2, 'Uniform', 0); % clean up string format
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B6:IV6');
+%     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
+    loadNames2 =raw(1,1:end); % 
+    loadNames2 = cellfun(@(S) S(8:end), loadNames2, 'Uniform', 0); % clean up string format
     
-%     loadNames = [loadNames1 loadNames2];
-
-    [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B2:AK3');
- %   [txt,num,raw] = xlsread('016_GB_IEEE13_balance_all_ver2_OPAL2.xls','Pins','B2:AK3');
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B11:CV11');
+%     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
+    loadNames3 =raw(1,1:end); % 
+    loadNames3 = cellfun(@(S) S(8:end), loadNames3, 'Uniform', 0); % clean up string format
+    
+    loadNames = [loadNames1 loadNames2 loadNames3];
+    
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B2:IV3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-    busNames=raw(1,2:end); % used to select meas node
-    busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
+    busNames1=raw(1,2:end); % used to select meas node
+    busNames1=cellfun(@(S) S(3:end-5), busNames1, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging  
-    %TEMP for longer feeder 
-%     [txt,num,raw] = xlsread('004_GB_IEEE123_pins.xls','Pins','B6:S7');
-%     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
-%     busNames2=raw(1,2:end); % used to select meas node
-%     busNames2=cellfun(@(S) S(1:end-5), busNames2, 'Uniform', 0); % clean up string format
-%     % Assign node location indices, print to help with debugging 
-%     busNames = [busNames1 busNames2];
     
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B7:IV8');
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames2=raw(1,2:end); % used to select meas node
+    busNames2=cellfun(@(S) S(3:end-5), busNames2, 'Uniform', 0); % clean up string format
+    % Assign node location indices, print to help with debugging 
+    
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B12:IV13');
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames3=raw(1,2:end); % used to select meas node
+    busNames3=cellfun(@(S) S(3:end-5), busNames3, 'Uniform', 0); % clean up string format
+    % Assign node location indices, print to help with debugging   
+    
+    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B16:HZ17');
+    % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
+    busNames4=raw(1,2:end); % used to select meas node
+    busNames4=cellfun(@(S) S(3:end-5), busNames4, 'Uniform', 0); % clean up string format
+    % Assign node location indices, print to help with debugging 
+    
+    busNames = [busNames1 busNames2 busNames3 busNames4];
     
     meas_idx=strToIdx(measStr,busNames)
     ctrl_idx=strToIdx(actStr,loadNames)
@@ -127,9 +142,9 @@ Ts=0.1; % should agree with simulink outermost block setting
         [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
 
     % Create test disturbance
+    % inialize actual dbc to 0, only run test dbc
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
-    %actualDbcData = actualDbcData*0
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     %actualDbcData = actualDbcData*0;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx,Sbase);
@@ -145,27 +160,26 @@ Ts=0.1; % should agree with simulink outermost block setting
          disp('------------------- Running uncontrolled sim...');
 
     % Run simulink
-        sim('Sim_v19.mdl')
-        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
-        vmag_init_actual=vmag_new(40,:);
-        vang_init_actual-vang_new(40,:);
+        sim('Sim_v19_PL0001.mdl')
+        set_param('Sim_v19_PL0001','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        vmag_init_actual=vmag_new(4,:);
+        vang_init_actual-vang_new(4,:);
         disp('finished simulink');    
         
     % Compute sensitivities
-       [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
+        [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
         % units: [V/kVAR V/kW deg/kVar deg/kW]
         
- %% for way 3
-%         %
+%         %%
+%         % extra plot for way 3
 % r=3;
 % %close all
 % % qnew and vmag_new are in pu
-% % neg so that sign convention is from generator perspective (pos = generate)
 % itvl=1:230;
 % figure;
 % for i = 1:r
 %     subplot(1,r,i);
-%     [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,-testDbcData(itvl,i*2+1));
+%     [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
 %     set(hline1,'LineWidth',1.5);
 % set(hline2,'LineWidth',1.5);
 %     legend('vmag','q');
@@ -174,60 +188,15 @@ Ts=0.1; % should agree with simulink outermost block setting
 % figure;
 % for i = 1:r
 %     subplot(1,r,i);
-%     [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,-testDbcData(itvl,i*2));
+%     [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
 %     set(hline1,'LineWidth',1.5);
 %     set(hline2,'LineWidth',1.5);
 %     legend('vang','p');
 % end
 % title('P-->Vang');
-%        %% 
-%        % things learned: stepmag should not be in pu
-%     mySens=dvdq(1); tau=0.1;
-%     mySens=dvdq(1); tau=0.6;
-%     G=tf([mySens],[tau 1]);
-%     Gd = c2d(G,Ts)
-%     stepMag=stepQ/Sbase; 
-%     TFinal=15;
-%     options = stepDataOptions('StepAmplitude',stepMag);
-%     [y,t]=step(Gd,TFinal,options);
-%      stepCurve=stepMag*(t>=1);
-%      
-%     itvl=65:80;
-%     figure;
-%     ax1=subplot(2,2,1);
-%     plot(itvl-65,-testDbcData(itvl,1*2+1)/Sbase+0.13,'LineWidth',1.5);
-%     ax3=subplot(2,2,3);
-%     plot(itvl-65,vmag_new(itvl,1)-0.9725,'LineWidth',1.5);
-%     
-%     ax2=subplot(2,2,2);
-%     plot(t,stepCurve,'LineWidth',1.5);
-%     ax4=subplot(2,2,4);
-%     plot(t,y,'LineWidth',1.5);
-%     
-%     %linkaxes([ax1,ax2],'xy')
-%     %linkaxes([ax3,ax4],'xy')
-
- %%  for way 3
-       % things learned: stepmag should not be in pu, timescale
-       % incongruence
-    mySens=dvdq(1); tau=0.3*Ts; % should be actual # secs
-    mySens=0.1211; tau=0.3*Ts; % should be actual # secs
-    G=tf([mySens],[tau 1]); % FVT preserved across conversion CT to DT
-    Gd = c2d(G,Ts)
-    stepMag=stepQ/Sbase; 
-    TFinal=0.5;
-    options = stepDataOptions('StepAmplitude',stepMag);
-    [y,t]=step(Gd,TFinal,options);
-     stepCurve=stepMag*(t>=0.1);
-     
-    itvl=65:70;
-    figure;
-    ax1=subplot(2,1,1);
-    plot(itvl-65,-testDbcData(itvl,1*2+1)/Sbase+0.45,t/Ts,stepCurve,'LineWidth',1.5); legend('real','controller model'); title('step dbc');
-    ax3=subplot(2,1,2);
-    plot(itvl-65,vmag_new(itvl,1)-0.9725+0.035,t/Ts,y,'LineWidth',1.5); legend('real','controller model'); title('response step');
-    
-
+%         
+% figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
+% figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
@@ -262,11 +231,6 @@ case 3
 
 end
 %% --------------------- Controller kgains are now set -------------------------
-
-
-
-
-
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 
 %     
@@ -274,24 +238,32 @@ end
      %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
      actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
      n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    %[testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    %[testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     %3.1 for PV gen cut in half: 
     %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
     %%%%3.1 PV disturbance 
     %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
     
-   figure; plot(actualDbcData(1:300/Ts,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
+   figure; plot(actualDbcData(1:3000,2:end),'LineWidth',1.5); title('actual disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
  
+   %% For T4.1/2/3, multiple actuators on the same phase so need to split the kgains by 3
+   % skeletal adjustement
+  
+%     Kp_vmag=Kp_vmag/3
+%     Ki_vmag=Kp_vmag/3
+%     Kp_vmag=Kp_vang/3
+%     Ki_vmag=Kp_vang/3
+    
 %%  Run sim with controllers ON
 
     disp('------------------- Running controlled sim...');
     % Run simulink
-        sim('Sim_v19.mdl')
-        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
-        vmag_init_actual=vmag_new(40,:);
-        vang_init_actual=vang_new(40,:);
+        sim('Sim_v19_PL0001.mdl')
+        set_param('Sim_v19_PL0001','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        vmag_init_actual=vmag_new(4,:);
+        vang_init_actual=vang_new(4,:);
         disp('finished simulink');    
 
 
