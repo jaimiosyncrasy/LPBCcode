@@ -3,9 +3,11 @@
 tidx=0:length(t); % t is cummulative timestep, tidx is integers for indexing
 %FOR 1 NODE:
 plotStart=minStart; %minute of the day, should not exceed timeEnd
-plotEnd=minStart+5; %minEnd for entire simulation
+plotEnd=minEnd; %minEnd for entire simulation
 inter=1:(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
+inter=1:length(netLoadData)*10;
+inter=1:3000;
 %%
  
 % Plot Q and Vmag
@@ -27,7 +29,7 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 %         plot([Vmag_ctrlStart,Vmag_ctrlStart],get(gca,'ylim'),'k-');
 %     end
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Reactive Power (pu)');title('Q at actuator node, (Qmcd) p.u.'); grid on; legend('Qa','Qb','Qc','Qmin','Qmax');  
-    txt2 = strcat('Sbase (pu)=',num2str(Sinv/Sbase)); text(get(gca,'xlim')+[0 -130], get(gca,'ylim'),txt2);
+    txt2 = strcat('Sbase (pu)=',num2str(Sbase)); text(get(gca,'xlim')+[0 -1000], get(gca,'ylim'),txt2);
     %set(gca, 'XTick',1:60:(plotEnd-plotStart+1)*60, 'XTickLabel',plotStart:(plotEnd+1))        
     hold off;
 
@@ -56,7 +58,7 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 %         plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'m-');%,[dbcStart,dbcStart],get(gca,'ylim'),'k');
 %     end
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Voltage (pu)');title('Vmag at perf node'); grid on; legend('va','varef','vb','vbref','vc','vcref','ctrl start', 'ctrl start');  
-    txt1 = strcat('perf node Vbase (V) =',num2str(V1base)); text(get(gca,'xlim'),get(gca,'ylim'),txt1);
+    txt1 = strcat('perf node Vbase (V) =',num2str(V1base)); text(get(gca,'xlim')+[0 -1000],get(gca,'ylim'),txt1);
     %set(gca, 'XTick',1:60:(minEnd-minStart+1)*60, 'XTickLabel',minStart:(minEnd+1))        
     %axis([0,max(inter+1),0.9,1.2]); % narrow axis to easier see one phase
     hold off;
@@ -86,7 +88,7 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
         plot([Vmag_ctrlStart,Vmag_ctrlStart],get(gca,'ylim'),'k-');%,[dbcStart,dbcStart],get(gca,'ylim'),'k');
     end
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Real Power (pu)');title('p at actuator node'); grid on; legend('Pa','Pb','Pc','Pavail');
-    txt2 = strcat('Sbase (pu)=',num2str(Sinv/Sbase)); text(get(gca,'xlim')+[0 -130], get(gca,'ylim'),txt2);
+    txt2 = strcat('Sbase (pu)=',num2str(Sbase)); text(get(gca,'xlim')+[0 -1000], get(gca,'ylim'),txt2);
     %set(gca, 'XTick',1:60:(minEnd-minStart+1)*60, 'XTickLabel',minStart:(minEnd+1))        
 
     hold off;
@@ -105,7 +107,7 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 %         plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'m-');%,[dbcStart,dbcStart],get(gca,'ylim'),'k');
 %     end
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Phase Angle (degrees)');title('Vang at perf node'); grid on; legend('va','varef','vb','vbref','vc','vcref','ctrl start', 'ctrl start');  
-    txt1 = strcat('perf node Vbase (V) =',num2str(V2base)); text(get(gca,'xlim'),get(gca,'ylim'),txt1);
+    txt1 = strcat('perf node Vbase (V) =',num2str(V2base)); text(get(gca,'xlim')+[0 -1000],get(gca,'ylim'),txt1);
     %axis([min(tidx(inter+1)),max(tidx(inter+1)),-5,5]); % narrow axis to easier see one phase
     %set(gca, 'XTick',plotStart:60:(plotEnd-plotStart+1)*60, 'XTickLabel',minStart:(minEnd+1))        
 

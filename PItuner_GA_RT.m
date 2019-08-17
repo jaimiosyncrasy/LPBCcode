@@ -1,6 +1,6 @@
 function kset = PItuner_GA_RT(sens,tau,dt,settleMax,OSmax,stepMag,lbub)
-    popsize =10; % # candidates per generation
-    MaxGenerations = 7; % # generations
+    popsize =15; % # candidates per generation
+    MaxGenerations = 10; % # generations
     
     G=tf([sens],[tau 1]);
     Gd = c2d(G,dt)
@@ -8,7 +8,7 @@ function kset = PItuner_GA_RT(sens,tau,dt,settleMax,OSmax,stepMag,lbub)
     ub=repmat(lbub(2),2,1); % for both kp and ki
 
     %G = 1/(s*(s*s+s+1)); % plant you're controlling
-    N=10; % horizon
+    N=30; % horizon, in seconds
     %rng(1,'twister') % control random number generation, for reproducibility
     %startPop=[5; 10] ; % bounds of starting params
     % use gaoptimset instead of optimoptions, weird error occurs
@@ -21,4 +21,10 @@ function kset = PItuner_GA_RT(sens,tau,dt,settleMax,OSmax,stepMag,lbub)
     disp('-------- Best -----------------------------');
     plot=true; % plot best controller
     pidtest_RT(Gd,dt,kset,N,settleMax,OSmax,stepMag,plot); title(strcat('PItuner: CL step resp, BEST kset=',num2str(kset)));
+    
+%     G=tf([0.1258],[0.3*Ts 1]);
+%     Gd = c2d(G,Ts)
+%     N=10; % seconds, not timesteps
+%     pidtest_RT(Gd,Ts,[3.6 1.96],N,[10],[0.2],0.007,true); title(strcat('PItuner: CL step resp, BEST kset=',num2str([0.45 0.2455])));
+    pause
 end

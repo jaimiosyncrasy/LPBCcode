@@ -3,7 +3,7 @@
 tidx=0:length(t); % t is cummulative timestep, tidx is integers for indexing
 %FOR 1 NODE:
 plotStart=minStart; %minute of the day, should not exceed timeEnd
-plotEnd=minStart+1.1; %minEnd for entire simulation
+plotEnd=minEnd; %minEnd for entire simulation
 inter=1:(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
 %%

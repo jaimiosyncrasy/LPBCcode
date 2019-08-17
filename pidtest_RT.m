@@ -19,7 +19,7 @@ function J = pidtest_RT(Gp,dt,parms,N,settleMax,OSmax,stepMag,YNplot)
     % Build cost func
         % small overshoot, small control effort, and short settle time seem to also
         % provide good stability margins (GM and PM)
-    R= .0002/stepMag;
+    R= .001/stepMag;
     Q1=@(t) 10*t/stepMag; % linearly increasing penalty for deviation
     devTerm=abs(yref-y(:));
     OS=max(max(y(2/dt:end)-yref),0)/stepMag; % start measuring after 2s so have time to rise, outer max is because OS is only for when go above yref
@@ -47,6 +47,6 @@ function J = pidtest_RT(Gp,dt,parms,N,settleMax,OSmax,stepMag,YNplot)
 %         set(h,'linewidth',2); 
         title('Automatic PItuner: CL step resp with candidate controller');
         %drawnow
-        pause
+        %pause
     end
 end

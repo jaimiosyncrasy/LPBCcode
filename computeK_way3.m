@@ -1,5 +1,5 @@
 function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
-    computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts)
+    computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts,r)
     % input: [dvdq ddeldp], each rx1 vectors
     % this func calls PItuner_GA_RT which runs an algo to automatically
     % det kgains for each actuator-phase
@@ -8,13 +8,16 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
     Vmag_ctrlStart = 5; % in seconds, time for turning on controllers
 
          % hardcode for now
-        tau=0.3; % first order TF time const for plat model
-        settleMax=[10 10]; % vmag vang, units of seconds
-        OSmax=[0.2 0.1]; % percentage, vmag vang
-        stepMag=[0.05 2]; % hardcoded, TEMP, realistic voltage disturbance mags
+        tau=0.1; % first order TF time const for plat model
+        settleMax=[20 20]; % vmag vang, units of seconds
+        OSmax=[0.3 0.1]; % percentage, vmag vang
+        stepMag=[0.005 2]; % hardcoded, TEMP, realistic voltage disturbance mags
         %stepMag=[dvdq(1) ddeldp(1)]; % design using a reasonable step change in V/kW
-        lbub=[0.1*(1/dvdq(1)) 10*(1/dvdq(1)); 0.1*(1/ddeldp(1)) 10*(1/ddeldp(1))] % allowable range of kgains, vmag first row, vang second row
-    
+        lbub=[0.05*(1/dvdq(1)) (1/dvdq(1)); 0.05*(1/ddeldp(1)) (1/ddeldp(1))] % allowable range of kgains, vmag first row, vang second row
+        %lbub(1,:)=-lbub(1,:);
+        %lbub=[0.01 1; 0.01 0.1];
+      % NEW: if sens is negative, negate lbub and add neg to dvdq, kset
+      % below
     % If controller loop off, zero out kgains
      if Vmag_ctrl==false
          Kp_vmag=zeros(1,r); Ki_vmag=zeros(1,r);

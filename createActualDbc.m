@@ -8,13 +8,13 @@ function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData)
     actualDbcData=[[0:Ts:length(pload)]' zeros(length(pload)/Ts+1,phases*2)]; % col1 is time, initialize as no dbc with correct dims
     % TEMP: currently only single phase disturabance
     % define square wave (step up and step down) disturbance
-    dbcStart=150; dbcEnd=200; % time is in seconds %IF CHANGED HERE, CHANGE IN UPDATE POWS 
+    dbcStart=150; dbcEnd=180; % time is in seconds %IF CHANGED HERE, CHANGE IN UPDATE POWS 
    if Sinv<10000 % if inv limits active
        stepP=0.5*Sinv(1); % assume dbc is always at a node with a load
        stepQ=0.5*Sinv(1); % make disturbance not too large compared to inv limits 
    else % when no inv limits
-        stepP=0.8*pload(dbcStart); % assumes dbc location is colocated with a load
-        stepQ=0.8*qload(dbcStart); 
+        stepP=8*pload(dbcStart); % assumes dbc location is colocated with a load
+        stepQ=8*qload(dbcStart); 
    end
    
    

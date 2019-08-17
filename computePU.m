@@ -10,7 +10,7 @@ function [Sbase,V1base,V2base] = computePU()
     % Base voltages:
     V2_ph = V2_LL/sqrt(3); % zone 2 is only node 634, zone 1 is rest of nodes
     V1base=V1_ph; V2base=V2_ph;
-    Sbase=5000; % kVAR, same as XFMR rating
+    Sbase=5000/3; % kVAR, same as XFMR rating
     baseVec=V1base;
     
     
@@ -22,5 +22,13 @@ function [Sbase,V1base,V2base] = computePU()
 %     V1base=2401.7; V2base=0;
 %     Sbase=100000; % kVAR, same as XFMR rating
 %     baseVec=V1base;
+
+%     % Calculating for PL0001
+    % Calculating Base Vals to Convert to pu
+   % Base voltages:
+%     V1base=7275; V2base=0;
+%     Sbase=1500; % kVAR, same as XFMR rating --> UNSURE OF 1500
+%     baseVec=V1base;
+
 end
 
