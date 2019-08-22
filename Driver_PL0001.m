@@ -63,43 +63,43 @@ Ts=0.1; % should agree with simulink outermost block setting
     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
     
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B1:IV1');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B1:IV1');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames1 =raw(1,2:end); % 
     loadNames1 = cellfun(@(S) S(8:end), loadNames1, 'Uniform', 0); % clean up string format
 
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B6:IV6');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B4:IV4');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     loadNames2 =raw(1,1:end); % 
     loadNames2 = cellfun(@(S) S(8:end), loadNames2, 'Uniform', 0); % clean up string format
     
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B11:CV11');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B7:CV7');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     loadNames3 =raw(1,1:end); % 
     loadNames3 = cellfun(@(S) S(8:end), loadNames3, 'Uniform', 0); % clean up string format
     
     loadNames = [loadNames1 loadNames2 loadNames3];
     
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B2:IV3');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B2:IV3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames1=raw(1,2:end); % used to select meas node
     busNames1=cellfun(@(S) S(3:end-5), busNames1, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging  
     
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B7:IV8');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B5:IV6');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames2=raw(1,2:end); % used to select meas node
     busNames2=cellfun(@(S) S(3:end-5), busNames2, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging 
     
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B12:IV13');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B8:IV9');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames3=raw(1,2:end); % used to select meas node
     busNames3=cellfun(@(S) S(3:end-5), busNames3, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging   
     
-    [txt,num,raw] = xlsread('OPAL_PL0001_TD.xls','Pins','B16:HZ17');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working.xls','Pins','B10:FR11');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames4=raw(1,2:end); % used to select meas node
     busNames4=cellfun(@(S) S(3:end-5), busNames4, 'Uniform', 0); % clean up string format

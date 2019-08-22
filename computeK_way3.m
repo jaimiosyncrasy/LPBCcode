@@ -13,7 +13,7 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
         OSmax=[0.3 0.1]; % percentage, vmag vang
         stepMag=[0.005 2]; % hardcoded, TEMP, realistic voltage disturbance mags
         %stepMag=[dvdq(1) ddeldp(1)]; % design using a reasonable step change in V/kW
-        lbub=[0.05*(1/dvdq(1)) (1/dvdq(1)); 0.05*(1/ddeldp(1)) (1/ddeldp(1))] % allowable range of kgains, vmag first row, vang second row
+        lbub=[0.05*(1/dvdq(1)) 10*(1/dvdq(1)); 0.05*(1/ddeldp(1)) 10*(1/ddeldp(1))] % allowable range of kgains, vmag first row, vang second row
         %lbub(1,:)=-lbub(1,:);
         %lbub=[0.01 1; 0.01 0.1];
       % NEW: if sens is negative, negate lbub and add neg to dvdq, kset
@@ -37,4 +37,12 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
         end  
      end
     % Kp_vmag and the others are each rx1 vectors
+    
+    data=[...
+    [lbub(1,1) Kp_vmag lbub(1,2)]'...
+    [lbub(1,1) Ki_vmag lbub(1,2)]'...
+    [lbub(2,1) Kp_vang lbub(2,2)]'...
+    [lbub(2,1) Ki_vang lbub(2,2)]'];
+    rowhead = strcat('lb',sprintf(' phase-act%d ', 1:size(data,1)-2),' ub');
+    printmat(data,'Kgains with param space bounds',rowhead,'Kp_vmag Ki_vmag Kp_vang Ki_vang');
 end
