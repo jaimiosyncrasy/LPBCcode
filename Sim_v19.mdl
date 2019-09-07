@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.493"
+    ComputedModelVersion    "1.507"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-11.0, -11.0, 1942.0, 1042.0]
+      Location		      [-9.0, 1.0, 1604.0, 868.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -58,7 +58,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [1886.0, 811.0]
+	  Extents		  [1554.0, 690.0]
 	  ZoomFactor		  [2.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -67,18 +67,18 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [1886.0, 811.0]
-	  ZoomFactor		  [1.7499999999999996]
-	  Offset		  [1097.8571428571436, 324.65714285714267]
+	  Extents		  [1554.0, 690.0]
+	  ZoomFactor		  [1.0]
+	  Offset		  [264.35714285714369, 256.18831368502697]
 	}
 	Object {
 	  $ObjectID		  7
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2084"
-	  Extents		  [1890.0, 875.0]
-	  ZoomFactor		  [2.0]
-	  Offset		  [86.28482053968969, 6.0]
+	  Extents		  [1554.0, 690.0]
+	  ZoomFactor		  [0.6]
+	  Offset		  [-992.91517946031036, -479.16666666666669]
 	}
 	Object {
 	  $ObjectID		  8
@@ -108,9 +108,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri Aug 16 11:33:27 2019"
-  RTWModifiedTimeStamp	  487699924
-  ModelVersionFormat	  "1.%<AutoIncrement:493>"
+  LastModifiedDate	  "Sat Sep 07 10:29:01 2019"
+  RTWModifiedTimeStamp	  489752933
+  ModelVersionFormat	  "1.%<AutoIncrement:507>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -8272,7 +8272,7 @@ Model {
   }
   System {
     Name		    "Sim_v19"
-    Location		    [-11, -11, 1931, 1031]
+    Location		    [-9, 1, 1595, 869]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -8409,7 +8409,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-11, -11, 1931, 1031]
+	Location		[-9, 1, 1595, 869]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -8421,7 +8421,7 @@ Model {
 	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
 	TiledPageScale		1
 	ShowPageBoundaries	off
-	ZoomFactor		"175"
+	ZoomFactor		"100"
 	Block {
 	  BlockType		  Inport
 	  Name			  "tap_change"
@@ -8921,7 +8921,7 @@ Model {
 	  }
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [232, 436, 2168, 1464]
+	    Location		    [-9, 1, 1595, 869]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -9818,7 +9818,7 @@ Model {
 	  }
 	  System {
 	    Name		    "Q-V PI controllers\n( r SISO controllers)"
-	    Location		    [232, 436, 2168, 1464]
+	    Location		    [-9, 1, 1595, 869]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -9830,7 +9830,7 @@ Model {
 	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
-	    ZoomFactor		    "200"
+	    ZoomFactor		    "60"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "Vmag_meas"
@@ -9934,20 +9934,6 @@ Model {
 	      Inputs		      "2"
 	      InputSameDT	      off
 	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Reference
-	      Name		      "Multiport\nSelector1"
-	      SID		      "2413"
-	      Ports		      [1, 1]
-	      Position		      [250, 18, 330, 62]
-	      ZOrder		      801
-	      LibraryVersion	      "1.462"
-	      SourceBlock	      "dspindex/Multiport\nSelector"
-	      SourceType	      "Multiport Selector"
-	      rowsOrCols	      "Columns"
-	      idxCellArray	      "{ridx}"
-	      idxErrMode	      "Clip Index"
 	    }
 	    Block {
 	      BlockType		      Relay
@@ -10801,7 +10787,7 @@ Model {
 	  BlockType		  Reference
 	  Name			  "Static PF Solver"
 	  SID			  "1569"
-	  Ports			  [1, 2]
+	  Ports			  [2, 4]
 	  Position		  [1395, 379, 1550, 766]
 	  ZOrder		  619
 	  LibraryVersion	  "1.136"
@@ -10809,7 +10795,7 @@ Model {
 	  SourceType		  ""
 	  epname		  "System"
 	  extension		  "Excel"
-	  xls			  "'016_GB_IEEE13_balance_all_ver2_OPAL2.xls'"
+	  xls			  "'impedMod_IEEE13.xls'"
 	  raw			  "'4992b.raw'"
 	  dyr			  "'4992b.dyr'"
 	  cyme			  "'ieee13.sxst'"
@@ -11436,7 +11422,7 @@ Model {
 	  VariableName		  "pcmd"
 	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "-1"
+	  SampleTime		  "Ts"
 	}
 	Block {
 	  BlockType		  ToWorkspace
@@ -11488,7 +11474,7 @@ Model {
 	  VariableName		  "allPQ"
 	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "-1"
+	  SampleTime		  "Ts"
 	}
 	Block {
 	  BlockType		  ToWorkspace
@@ -11528,7 +11514,7 @@ Model {
 	  VariableName		  "t"
 	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "-1"
+	  SampleTime		  "Ts"
 	}
 	Block {
 	  BlockType		  ToWorkspace
@@ -11567,7 +11553,7 @@ Model {
 	  VariableName		  "qcmd"
 	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "-1"
+	  SampleTime		  "Ts"
 	}
 	Block {
 	  BlockType		  ToWorkspace
@@ -11978,7 +11964,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [232, 436, 2168, 1464]
+	    Location		    [-9, 1, 1595, 869]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -12221,10 +12207,10 @@ Model {
 	  DstPort		  1
 	}
 	Line {
-	  ZOrder		  2925
+	  ZOrder		  4290
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  1
-	  Points		  [79, 0; 0, -90]
+	  Points		  [79, 0; 0, -45]
 	  Branch {
 	    ZOrder		    3224
 	    Points		    [0, -70]
@@ -12253,8 +12239,8 @@ Model {
 	  SrcPort		  1
 	  Points		  [59, 0]
 	  Branch {
-	    ZOrder		    4038
-	    Points		    [18, 0; 0, 50]
+	    ZOrder		    4287
+	    Points		    [18, 0; 0, -50]
 	    DstBlock		    "Static PF Solver"
 	    DstPort		    1
 	  }
@@ -12349,10 +12335,10 @@ Model {
 	  }
 	}
 	Line {
-	  ZOrder		  2926
+	  ZOrder		  4289
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  2
-	  Points		  [0, -145; 74, 0]
+	  Points		  [74, 0]
 	  Branch {
 	    ZOrder		    3937
 	    Points		    [0, 105]
@@ -12562,11 +12548,12 @@ Model {
 	  }
 	}
 	Line {
-	  ZOrder		  4213
+	  ZOrder		  4288
 	  SrcBlock		  "don't leave inputs to \nephasorsim open, \ntakes on default val of 0\n[1 1 1] sets default switch to c"
 	  "losed"
 	  SrcPort		  1
-	  Points		  [30, 0]
+	  DstBlock		  "Static PF Solver"
+	  DstPort		  2
 	}
 	Line {
 	  ZOrder		  4097
@@ -12638,7 +12625,7 @@ Model {
 	  "e></head><body style=\" font-family:'Helvetica'; font-size:10px; font-weight:400; font-style:normal;\">\n<p style=\""
 	  " margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span"
 	  " style=\" font-size:7pt;\">Initial conditions from excel</span></p></body></html>"
-	  Position		  [81, 18, 251, 36]
+	  Position		  [81, 18, 198, 32]
 	  InternalMargins	  [0, 0, 0, 0]
 	  FixedHeight		  off
 	  FixedWidth		  off
@@ -12665,7 +12652,7 @@ Model {
 	  "e></head><body style=\" font-family:'Helvetica'; font-size:10px; font-weight:400; font-style:normal;\">\n<p style=\""
 	  " margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span"
 	  " style=\" font-size:7pt;\">Print to scopes</span></p></body></html>"
-	  Position		  [2326, 715, 2422, 733]
+	  Position		  [2326, 715, 2391, 729]
 	  InternalMargins	  [0, 0, 0, 0]
 	  FixedHeight		  off
 	  FixedWidth		  off
@@ -13341,40 +13328,40 @@ Stateflow {
       "tep\n% ctrl_idx and dbc_idx are constant\n    % inputs: \n        % k is current timestep\n        % 3x1 vectors"
       " of unadjusted actuation, as if have 1 actuator and it's located at the perf node \n    % inputs: rx1 vectors of"
       " powers at all nodes \n        % r is number of phases across all nodes, i.e. the dim of the pin\n        % vect"
-      "or input to RTlab solve\n     %TimeStep  % use this print statement for debugging\n\n   %% actuation signal sent"
-      " from controller to devices\n   %% Devices actuate here:\n    % Device enforces basic inv limit by moving operat"
-      "ing point to closest\n    % point on the inv circle\n    % Keith's attempt \n%     pact=zeros(1,3); qact=zeros(1"
-      ",3); % initialize, TEMP, assume single actuator is on 3 phases\n%     Pmax=zeros(1,3); Qmax=zeros(1,3);\n%     f"
-      "or i=1:3 % across phases, TEMP, assuming the single actuator is on 3 phases\n%         if pcmd(i)^2+qcmd(i)^2>Si"
-      "nv(i)^2\n%             Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n%             Qmax(i)=qcmd(i)*Sinv("
-      "i)/(sqrt(pcmd(i)^2+qcmd(i)^2));        \n%             if pcmd(i) > Sinv(i)\n%                 Pmax(i) = Sinv(i)"
-      ";\n%                 Qmax(i) = 0;\n%             elseif pcmd(i) < -Sinv(i)\n%                 Pmax(i) = -Sinv(i)"
-      "; %sign?\n%                 Qmax(i) = 0;\n%             else\n%                 Pmax(i) = pcmd(i);\n%           "
-      "      Qmax(i) = sqrt((Sinv(i)^2 - Pmax(i)^2)); %sign?\n%             end            \n%             pact(i)=Pmax"
-      "(i);\n%             qact(i)=Qmax(i);\n%         else\n%             pact(i)=pcmd(i);\n%             qact(i)=qcmd"
-      "(i);\n%             Pmax(i) = Sinv(i);\n%             Qmax(i) = Sinv(i);\n%         end\n%     end\n% cmd=[pcmd "
-      "qcmd] % print for debugging\n    r = length(ctrl_idx)/2;\n    %Jaimie \n    \n    pact=zeros(1,r); qact=zeros(1,"
-      "r); % initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,r); Qmax=zeros(1,r);\n    for i="
-      "1:r % across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pc"
-      "md(i)^2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))= "
-      "0; \n        Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);\n  "
-      "          qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        e"
-      "nd\n    end\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose t"
-      "his each time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyCha"
-      "ngeStart <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch "
-      "opens at beginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%%"
-      "\n    % all signals being added here must be formatted 'p q p q...'\n%     PQact=[pact(1) qact(1)]'; %TEMP, chan"
-      "ge for different actuator length    \n    % you can print this for debugging\n    actpq = [pact.' qact.']; % P i"
-      "n first col, Q in second\n    PQact = reshape(actpq,[1,length(ctrl_idx)]).'; % make col vec with Ps grouped then"
-      " Qs grouped\n    a=reshape(testDbcData,[2,length(ctrl_idx)/2]);\n    testDbcData=reshape(a',[length(ctrl_idx),1]"
-      "); % make col vec with Ps grouped then Qs grouped\n    a=reshape(actualDbcData,[2,length(dbc_idx)/2]);\n    actu"
-      "alDbcData=reshape(a',[length(dbc_idx),1]); % make col vec with Ps grouped then Qs grouped\n    \n%     if any(is"
-      "nan(PQact))\n%         error('PQact is NaN');\n%     end\n\n\n    % Note: loadPQ expects P to be grouped togethe"
-      "r, then Qs\n    loadPQ=zeros(size(netLoadData));\n    %loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% j"
-      "ust to check length\n    %coder.varsize('loadPQ',[908 1]);\n    %coder.varsize('netLoadData',[908 1]);\n    load"
-      "PQ=netLoadData; % P&Q, ordered according to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData;\n"
-      "    loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;\n    % Note: it's ok for these values to be neg because it's "
-      "NET load\nend"
+      "or input to RTlab solve\n     TimeStep  % use this print statement for debugging\n\n   %% actuation signal sent "
+      "from controller to devices\n   %% Devices actuate here:\n    % Device enforces basic inv limit by moving operati"
+      "ng point to closest\n    % point on the inv circle\n    % Keith's attempt \n%     pact=zeros(1,3); qact=zeros(1,"
+      "3); % initialize, TEMP, assume single actuator is on 3 phases\n%     Pmax=zeros(1,3); Qmax=zeros(1,3);\n%     fo"
+      "r i=1:3 % across phases, TEMP, assuming the single actuator is on 3 phases\n%         if pcmd(i)^2+qcmd(i)^2>Sin"
+      "v(i)^2\n%             Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n%             Qmax(i)=qcmd(i)*Sinv(i"
+      ")/(sqrt(pcmd(i)^2+qcmd(i)^2));        \n%             if pcmd(i) > Sinv(i)\n%                 Pmax(i) = Sinv(i);"
+      "\n%                 Qmax(i) = 0;\n%             elseif pcmd(i) < -Sinv(i)\n%                 Pmax(i) = -Sinv(i);"
+      " %sign?\n%                 Qmax(i) = 0;\n%             else\n%                 Pmax(i) = pcmd(i);\n%            "
+      "     Qmax(i) = sqrt((Sinv(i)^2 - Pmax(i)^2)); %sign?\n%             end            \n%             pact(i)=Pmax("
+      "i);\n%             qact(i)=Qmax(i);\n%         else\n%             pact(i)=pcmd(i);\n%             qact(i)=qcmd("
+      "i);\n%             Pmax(i) = Sinv(i);\n%             Qmax(i) = Sinv(i);\n%         end\n%     end\n% cmd=[pcmd q"
+      "cmd] % print for debugging\n    r = length(ctrl_idx)/2;\n    %Jaimie \n    \n    pact=zeros(1,r); qact=zeros(1,r"
+      "); % initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,r); Qmax=zeros(1,r);\n    for i=1"
+      ":r % across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcm"
+      "d(i)^2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))= 0"
+      "; \n        Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);\n   "
+      "         qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        en"
+      "d\n    end\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose th"
+      "is each time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyChan"
+      "geStart <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch o"
+      "pens at beginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%%\n"
+      "    % all signals being added here must be formatted 'p q p q...'\n%     PQact=[pact(1) qact(1)]'; %TEMP, change"
+      " for different actuator length    \n    % you can print this for debugging\n    actpq = [pact.' qact.']; % P in "
+      "first col, Q in second\n    PQact = reshape(actpq,[1,length(ctrl_idx)]).'; % make col vec with Ps grouped then Q"
+      "s grouped\n    a=reshape(testDbcData,[2,length(ctrl_idx)/2]);\n    testDbcData=reshape(a',[length(ctrl_idx),1]);"
+      " % make col vec with Ps grouped then Qs grouped\n    a=reshape(actualDbcData,[2,length(dbc_idx)/2]);\n    actual"
+      "DbcData=reshape(a',[length(dbc_idx),1]); % make col vec with Ps grouped then Qs grouped\n    \n%     if any(isna"
+      "n(PQact))\n%         error('PQact is NaN');\n%     end\n\n\n    % Note: loadPQ expects P to be grouped together,"
+      " then Qs\n    loadPQ=zeros(size(netLoadData));\n    %loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% jus"
+      "t to check length\n    %coder.varsize('loadPQ',[908 1]);\n    %coder.varsize('netLoadData',[908 1]);\n    loadPQ"
+      "=netLoadData; % P&Q, ordered according to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData;\n "
+      "   loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;\n    % Note: it's ok for these values to be neg because it's N"
+      "ET load\nend"
       editorLayout	      "100 M4x1[10 5 700 500]"
     }
   }
@@ -13451,7 +13438,7 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"54"
+	size			"34"
       }
       type {
 	primitive		SF_DOUBLE_TYPE
@@ -13580,7 +13567,7 @@ Stateflow {
     machine		    1
     props {
       array {
-	size			"54"
+	size			"34"
 	isDynamic		1
       }
       type {

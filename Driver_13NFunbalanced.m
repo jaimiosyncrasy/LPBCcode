@@ -2,7 +2,9 @@
 % TV load/gen data
 
 % Jaimie Swartz, PI local controller code, 3/28/19
+%clc; clearvars -except myVars sensCell powCell e; close all;
 clc; clear all; close all;
+
 disp('Running Local Controller...');
 tic % begin counting sim elapsed time
 %% initialize(loaddata.init)
@@ -55,7 +57,8 @@ Ts=0.1; % should agree with simulink outermost block setting
     % for sim1_1 and others:
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     % for adam1 sim:
-    netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    %netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    netLoadData = csvread('001_IEEE13_secondWise_sigBuilder.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
 
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
 %     loadData_noTS=loadData_noTS*0;
@@ -128,8 +131,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 
     % Create test disturbance
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
-    %actualDbcData = actualDbcData*0
+    actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     %actualDbcData = actualDbcData*0;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx,Sbase);
@@ -211,7 +213,6 @@ Ts=0.1; % should agree with simulink outermost block setting
        % things learned: stepmag should not be in pu, timescale
        % incongruence
     mySens=dvdq(1); tau=0.3*Ts; % should be actual # secs
-    mySens=0.1211; tau=0.3*Ts; % should be actual # secs
     G=tf([mySens],[tau 1]); % FVT preserved across conversion CT to DT
     Gd = c2d(G,Ts)
     stepMag=stepQ/Sbase; 
@@ -223,12 +224,20 @@ Ts=0.1; % should agree with simulink outermost block setting
     itvl=65:70;
     figure;
     ax1=subplot(2,1,1);
-    plot(itvl-65,-testDbcData(itvl,1*2+1)/Sbase+0.45,t/Ts,stepCurve,'LineWidth',1.5); legend('real','controller model'); title('step dbc');
+    plot(itvl-65,-testDbcData(itvl,1*2+1)/Sbase+0.45-0.1357,t/Ts,stepCurve,'LineWidth',1.5); legend('Simulation','First order model'); title('Step Disturbance');
+    xlabel('timestep'); ylabel('Reactive power per unit');
     ax3=subplot(2,1,2);
-    plot(itvl-65,vmag_new(itvl,1)-0.9725+0.035,t/Ts,y,'LineWidth',1.5); legend('real','controller model'); title('response step');
-    
-
-
+    plot(itvl-65,vmag_new(itvl,1),t/Ts,y+0.9725-0.035+0.01622,'LineWidth',1.5); legend('Simulation','First order model'); title('Step Response');
+    xlabel('timestep'); ylabel('Voltage per unit');
+ 
+% collect sensitivities across runs of driver so can plot
+% sensCell{1}(:,e)=dvdp;
+% sensCell{2}(:,e)=dvdq;
+% sensCell{3}(:,e)=ddeldq;
+% sensCell{4}(:,e)=ddeldp;
+% powCell{1}(e)=stepQ;
+% powCell{2}(e)=stepP;
+% e=e+1;
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
 
@@ -239,6 +248,38 @@ Ts=0.1; % should agree with simulink outermost block setting
 % cost function
 
 %kgainCalcType=2; % temp, for debugging
+
+% %% Plot sens across diff dbc sizes
+% 
+% figure; plot(powCell{1}(1,:),sensCell{1}(1,:),'r.','MarkerSize',15);
+% title('dvdq: Steady State Gain across diff dbc sizes');
+% xlabel('Reactive power step size (kVAR)');
+% ylabel('Steady state gain (Vpu/Spu)');
+% avgSens=mean(sensCell{1}(1,:));
+% axis([0 1000 avgSens-0.4 avgSens+0.4]);
+% 
+% figure; plot(powCell{1}(1,:),sensCell{2}(1,:),'r.','MarkerSize',15);
+% title('dvdp: Steady State Gain across diff dbc sizes');
+% xlabel('Real power step size (kW)');
+% ylabel('Steady state gain (Vpu/Spu)');
+% avgSens=mean(sensCell{2}(1,:));
+% axis([0 1000 avgSens-0.4 avgSens+0.4]);
+% 
+% figure; plot(powCell{2}(1,:),sensCell{3}(1,:),'r.','MarkerSize',15);
+% title('ddeldq: Steady State Gain across diff dbc sizes');
+% xlabel('Reactive power step size (kVAR)');
+% ylabel('Steady state gain (deg/Spu)');
+% avgSens=mean(sensCell{3}(1,:));
+% axis([0 1000 avgSens-0.4 avgSens+0.4]);
+% 
+% figure; plot(powCell{2}(1,:),sensCell{4}(1,:),'r.','MarkerSize',15);
+% title('ddeldp: Steady State Gain across diff dbc sizes');
+% xlabel('Real power step size (kW)');
+% ylabel('Steady state gain (deg/Spu)');
+% avgSens=mean(sensCell{4}(1,:));
+% axis([0 1000 avgSens-0.4 avgSens+0.4]);
+
+
 %% -------------------
 switch kgainCalcType
 case 1
@@ -256,9 +297,9 @@ case 2
     [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,k_singlePh)
 case 3 
     %% Set kgains using way 3, save as test1_way3.mat 
-        Vang_ctrl=true; % boolean
-        Vmag_ctrl=true; % boolean
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts,r)
+        Vang_ctrl=false; % boolean
+        Vmag_ctrl=false; % boolean
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=afunc(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,Ts,r)
 
 end
 %% --------------------- Controller kgains are now set -------------------------
@@ -271,8 +312,8 @@ end
     % define disturbance directly in this function below 
 %     
      n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-     %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
-     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
+     actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
+     %actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
      n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     %[testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
