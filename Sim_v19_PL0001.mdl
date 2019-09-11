@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.504"
+    ComputedModelVersion    "1.530"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-13.0, 0.0, 1934.0, 1094.0]
+      Location		      [-11.0, -11.0, 1942.0, 1042.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -58,7 +58,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [1874.0, 816.0]
+	  Extents		  [1886.0, 811.0]
 	  ZoomFactor		  [2.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -67,9 +67,9 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [1878.0, 863.0]
-	  ZoomFactor		  [1.7499999999999989]
-	  Offset		  [599.00000000000034, 342.71428571428521]
+	  Extents		  [1886.0, 811.0]
+	  ZoomFactor		  [1.75]
+	  Offset		  [1046.4166666666683, 356.7738095238094]
 	}
 	Object {
 	  $ObjectID		  7
@@ -94,7 +94,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2089"
-	  Extents		  [1874.0, 750.0]
+	  Extents		  [1886.0, 811.0]
 	  ZoomFactor		  [1.7499999999999996]
 	  Offset		  [-46.982142857142492, 9.4285714285714448]
 	}
@@ -108,9 +108,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Aug 15 13:27:28 2019"
-  RTWModifiedTimeStamp	  487776444
-  ModelVersionFormat	  "1.%<AutoIncrement:504>"
+  LastModifiedDate	  "Fri Aug 23 17:40:35 2019"
+  RTWModifiedTimeStamp	  488482834
+  ModelVersionFormat	  "1.%<AutoIncrement:530>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -8280,7 +8280,7 @@ Model {
   }
   System {
     Name		    "Sim_v19_PL0001"
-    Location		    [-13, 0, 1921, 1094]
+    Location		    [-11, -11, 1931, 1031]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -8294,7 +8294,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "200"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "2448"
+    SIDHighWatermark	    "2454"
     Block {
       BlockType		      Reference
       Name		      "Help"
@@ -8417,7 +8417,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-13, 0, 1921, 1094]
+	Location		[-11, -11, 1931, 1031]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -8888,16 +8888,16 @@ Model {
 	Block {
 	  BlockType		  Reference
 	  Name			  "Multiport\nSelector"
-	  SID			  "2447"
+	  SID			  "2454"
 	  Ports			  [1, 3]
-	  Position		  [1270, 508, 1350, 552]
-	  ZOrder		  812
+	  Position		  [1270, 488, 1350, 532]
+	  ZOrder		  819
 	  LibraryVersion	  "1.462"
 	  SourceBlock		  "dspindex/Multiport\nSelector"
 	  SourceType		  "Multiport Selector"
 	  rowsOrCols		  "Rows"
-	  idxCellArray		  "{ [1:254], [255:508], [509: 606]}"
-	  idxErrMode		  "Generate Error"
+	  idxCellArray		  "{ [1:254], [255: 508], [509:606]}"
+	  idxErrMode		  "Clip Index"
 	}
 	Block {
 	  BlockType		  Mux
@@ -8963,7 +8963,7 @@ Model {
 	  }
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [-13, 0, 1921, 1094]
+	    Location		    [-11, -11, 1931, 1031]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -11521,10 +11521,49 @@ Model {
 	}
 	Block {
 	  BlockType		  ToWorkspace
+	  Name			  "To Workspace15"
+	  SID			  "2449"
+	  Ports			  [1]
+	  Position		  [1425, 260, 1485, 290]
+	  ZOrder		  813
+	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
+	  VariableName		  "allPQ1"
+	  MaxDataPoints		  "inf"
+	  Save2DSignal		  "2-D array (concatenate along first dimension)"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace16"
+	  SID			  "2450"
+	  Ports			  [1]
+	  Position		  [1280, 355, 1340, 385]
+	  ZOrder		  814
+	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
+	  VariableName		  "allPQ2"
+	  MaxDataPoints		  "inf"
+	  Save2DSignal		  "2-D array (concatenate along first dimension)"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
+	  Name			  "To Workspace17"
+	  SID			  "2451"
+	  Ports			  [1]
+	  Position		  [1280, 745, 1340, 775]
+	  ZOrder		  815
+	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
+	  VariableName		  "allPQ3"
+	  MaxDataPoints		  "inf"
+	  Save2DSignal		  "2-D array (concatenate along first dimension)"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  ToWorkspace
 	  Name			  "To Workspace2"
 	  SID			  "2041"
 	  Ports			  [1]
-	  Position		  [1260, 365, 1320, 395]
+	  Position		  [1255, 240, 1315, 270]
 	  ZOrder		  736
 	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
 	  VariableName		  "allPQ"
@@ -11564,7 +11603,7 @@ Model {
 	  Name			  "To Workspace5"
 	  SID			  "2046"
 	  Ports			  [1]
-	  Position		  [1060, 365, 1120, 395]
+	  Position		  [1075, 390, 1135, 420]
 	  ZOrder		  741
 	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
 	  VariableName		  "t"
@@ -12268,14 +12307,15 @@ Model {
 	  SrcPort		  1
 	  Points		  [28, 0]
 	  Branch {
-	    ZOrder		    4324
-	    Points		    [0, -150]
-	    DstBlock		    "To Workspace2"
+	    ZOrder		    4425
+	    Points		    [7, 0]
+	    DstBlock		    "Multiport\nSelector"
 	    DstPort		    1
 	  }
 	  Branch {
-	    ZOrder		    4320
-	    DstBlock		    "Multiport\nSelector"
+	    ZOrder		    4324
+	    Points		    [0, -275]
+	    DstBlock		    "To Workspace2"
 	    DstPort		    1
 	  }
 	}
@@ -12316,15 +12356,15 @@ Model {
 	  ZOrder		  3107
 	  SrcBlock		  "Clock"
 	  SrcPort		  1
-	  Points		  [9, 0]
+	  Points		  [9, 0; 0, 25]
 	  Branch {
-	    ZOrder		    3109
+	    ZOrder		    4422
 	    DstBlock		    "To Workspace5"
 	    DstPort		    1
 	  }
 	  Branch {
 	    ZOrder		    3108
-	    Points		    [0, 125]
+	    Points		    [0, 100]
 	    DstBlock		    "MATLAB Function"
 	    DstPort		    1
 	  }
@@ -12659,7 +12699,7 @@ Model {
 	  }
 	}
 	Line {
-	  ZOrder		  4236
+	  ZOrder		  4433
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  2
 	  Points		  [18, 0; 0, 100]
@@ -12667,7 +12707,7 @@ Model {
 	  DstPort		  1
 	}
 	Line {
-	  ZOrder		  4237
+	  ZOrder		  4437
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  4
 	  Points		  [7, 0; 0, 15]
@@ -12675,7 +12715,7 @@ Model {
 	  DstPort		  2
 	}
 	Line {
-	  ZOrder		  4238
+	  ZOrder		  4435
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  6
 	  Points		  [18, 0; 0, -70]
@@ -12683,7 +12723,7 @@ Model {
 	  DstPort		  3
 	}
 	Line {
-	  ZOrder		  4239
+	  ZOrder		  4439
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  8
 	  Points		  [7, 0; 0, -155]
@@ -12691,7 +12731,7 @@ Model {
 	  DstPort		  4
 	}
 	Line {
-	  ZOrder		  4240
+	  ZOrder		  4430
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  1
 	  Points		  [18, 0; 0, -25]
@@ -12699,7 +12739,7 @@ Model {
 	  DstPort		  1
 	}
 	Line {
-	  ZOrder		  4241
+	  ZOrder		  4434
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  3
 	  Points		  [7, 0; 0, -110]
@@ -12707,7 +12747,7 @@ Model {
 	  DstPort		  2
 	}
 	Line {
-	  ZOrder		  4242
+	  ZOrder		  4438
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  5
 	  Points		  [1, 0; 0, -195]
@@ -12715,7 +12755,7 @@ Model {
 	  DstPort		  3
 	}
 	Line {
-	  ZOrder		  4243
+	  ZOrder		  4436
 	  SrcBlock		  "Static PF Solver"
 	  SrcPort		  7
 	  Points		  [13, 0; 0, -280]
@@ -12723,28 +12763,57 @@ Model {
 	  DstPort		  4
 	}
 	Line {
-	  ZOrder		  4321
+	  ZOrder		  4428
 	  SrcBlock		  "Multiport\nSelector"
 	  SrcPort		  1
-	  Points		  [20, 0; 0, -70]
-	  DstBlock		  "Static PF Solver"
-	  DstPort		  1
+	  Points		  [20, 0; 0, -50]
+	  Branch {
+	    ZOrder		    4429
+	    DstBlock		    "Static PF Solver"
+	    DstPort		    1
+	  }
+	  Branch {
+	    ZOrder		    4401
+	    Points		    [0, -170]
+	    DstBlock		    "To Workspace15"
+	    DstPort		    1
+	  }
 	}
 	Line {
-	  ZOrder		  4322
+	  ZOrder		  4426
 	  SrcBlock		  "Multiport\nSelector"
 	  SrcPort		  2
-	  Points		  [24, 0; 0, 45]
-	  DstBlock		  "Static PF Solver"
-	  DstPort		  2
+	  Points		  [18, 0; 0, 18; 6, 0]
+	  Branch {
+	    ZOrder		    4431
+	    Points		    [0, 47]
+	    DstBlock		    "Static PF Solver"
+	    DstPort		    2
+	  }
+	  Branch {
+	    ZOrder		    4403
+	    Points		    [0, -130; -117, 0; 0, -28]
+	    DstBlock		    "To Workspace16"
+	    DstPort		    1
+	  }
 	}
 	Line {
-	  ZOrder		  4399
+	  ZOrder		  4427
 	  SrcBlock		  "Multiport\nSelector"
 	  SrcPort		  3
-	  Points		  [17, 0; 0, 160]
-	  DstBlock		  "Static PF Solver"
-	  DstPort		  3
+	  Points		  [9, 0; 0, 179]
+	  Branch {
+	    ZOrder		    4432
+	    Points		    [16, 0]
+	    DstBlock		    "Static PF Solver"
+	    DstPort		    3
+	  }
+	  Branch {
+	    ZOrder		    4415
+	    Points		    [-90, 0; 0, 56]
+	    DstBlock		    "To Workspace17"
+	    DstPort		    1
+	  }
 	}
 	Annotation {
 	  SID			  "2397"
@@ -13442,7 +13511,10 @@ Stateflow {
     firstTransition	    28
     firstJunction	    27
     viewObj		    12
+    visible		    1
     machine		    1
+    subviewS {
+    }
     ssIdHighWaterMark	    40
     decomposition	    CLUSTER_CHART
     type		    EML_CHART
@@ -13472,39 +13544,39 @@ Stateflow {
       "tep\n% ctrl_idx and dbc_idx are constant\n    % inputs: \n        % k is current timestep\n        % 3x1 vectors"
       " of unadjusted actuation, as if have 1 actuator and it's located at the perf node \n    % inputs: rx1 vectors of"
       " powers at all nodes \n        % r is number of phases across all nodes, i.e. the dim of the pin\n        % vect"
-      "or input to RTlab solve\n     %TimeStep  % use this print statement for debugging\n\n   %% actuation signal sent"
-      " from controller to devices\n   %% Devices actuate here:\n    % Device enforces basic inv limit by moving operat"
-      "ing point to closest\n    % point on the inv circle\n    % Keith's attempt \n%     pact=zeros(1,3); qact=zeros(1"
-      ",3); % initialize, TEMP, assume single actuator is on 3 phases\n%     Pmax=zeros(1,3); Qmax=zeros(1,3);\n%     f"
-      "or i=1:3 % across phases, TEMP, assuming the single actuator is on 3 phases\n%         if pcmd(i)^2+qcmd(i)^2>Si"
-      "nv(i)^2\n%             Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n%             Qmax(i)=qcmd(i)*Sinv("
-      "i)/(sqrt(pcmd(i)^2+qcmd(i)^2));        \n%             if pcmd(i) > Sinv(i)\n%                 Pmax(i) = Sinv(i)"
-      ";\n%                 Qmax(i) = 0;\n%             elseif pcmd(i) < -Sinv(i)\n%                 Pmax(i) = -Sinv(i)"
-      "; %sign?\n%                 Qmax(i) = 0;\n%             else\n%                 Pmax(i) = pcmd(i);\n%           "
-      "      Qmax(i) = sqrt((Sinv(i)^2 - Pmax(i)^2)); %sign?\n%             end            \n%             pact(i)=Pmax"
-      "(i);\n%             qact(i)=Qmax(i);\n%         else\n%             pact(i)=pcmd(i);\n%             qact(i)=qcmd"
-      "(i);\n%             Pmax(i) = Sinv(i);\n%             Qmax(i) = Sinv(i);\n%         end\n%     end\n% cmd=[pcmd "
-      "qcmd] % print for debugging\n    r = length(ctrl_idx)/2;\n    %Jaimie \n    \n    pact=zeros(1,r); qact=zeros(1,"
-      "r); % initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,r); Qmax=zeros(1,r);\n    for i="
-      "1:r % across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pc"
-      "md(i)^2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))= "
-      "0; \n        Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);\n  "
-      "          qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        e"
-      "nd\n    end\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose t"
-      "his each time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyCha"
-      "ngeStart <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch "
-      "opens at beginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%%"
-      "\n  \n%     PQact=[pact(1) qact(1)]'; %TEMP, change for different actuator length    \n    % you can print this "
-      "for debugging\n    actpq = [pact.' qact.']; % P in first col, Q in second\n    PQact = reshape(actpq,[1,length(c"
-      "trl_idx)]).'; % make col vec with Ps grouped then Qs grouped\n    a=reshape(testDbcData,[2,length(ctrl_idx)/2]);"
-      "\n    testDbcData=reshape(a',[length(ctrl_idx),1]); % make col vec with Ps grouped then Qs grouped\n    a=reshap"
-      "e(actualDbcData,[2,length(dbc_idx)/2]);\n    actualDbcData=reshape(a',[length(dbc_idx),1]); % make col vec with "
-      "Ps grouped then Qs grouped\n    \n%     if any(isnan(PQact))\n%         error('PQact is NaN');\n%     end\n\n\n "
-      "   % Note: loadPQ expects P to be grouped together, then Qs\n    loadPQ=zeros(size(netLoadData));\n    %loadPQ ="
-      " zeros(908);%TEMP \n    %disp(length(loadPQ));% just to check length\n    %coder.varsize('loadPQ',[908 1]);\n   "
-      " %coder.varsize('netLoadData',[908 1]);\n    loadPQ=netLoadData; % P&Q, ordered according to loadNames\n    load"
-      "PQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData;\n    loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;\n    % Note"
-      ": it's ok for these values to be neg because it's NET load\nend"
+      "or input to RTlab solve\n%      TimeStep  % use this print statement for debugging\n\n   %% actuation signal sen"
+      "t from controller to devices\n   %% Devices actuate here:\n    % Device enforces basic inv limit by moving opera"
+      "ting point to closest\n    % point on the inv circle\n    % Keith's attempt \n%     pact=zeros(1,3); qact=zeros("
+      "1,3); % initialize, TEMP, assume single actuator is on 3 phases\n%     Pmax=zeros(1,3); Qmax=zeros(1,3);\n%     "
+      "for i=1:3 % across phases, TEMP, assuming the single actuator is on 3 phases\n%         if pcmd(i)^2+qcmd(i)^2>S"
+      "inv(i)^2\n%             Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));\n%             Qmax(i)=qcmd(i)*Sinv"
+      "(i)/(sqrt(pcmd(i)^2+qcmd(i)^2));        \n%             if pcmd(i) > Sinv(i)\n%                 Pmax(i) = Sinv(i"
+      ");\n%                 Qmax(i) = 0;\n%             elseif pcmd(i) < -Sinv(i)\n%                 Pmax(i) = -Sinv(i"
+      "); %sign?\n%                 Qmax(i) = 0;\n%             else\n%                 Pmax(i) = pcmd(i);\n%          "
+      "       Qmax(i) = sqrt((Sinv(i)^2 - Pmax(i)^2)); %sign?\n%             end            \n%             pact(i)=Pma"
+      "x(i);\n%             qact(i)=Qmax(i);\n%         else\n%             pact(i)=pcmd(i);\n%             qact(i)=qcm"
+      "d(i);\n%             Pmax(i) = Sinv(i);\n%             Qmax(i) = Sinv(i);\n%         end\n%     end\n% cmd=[pcmd"
+      " qcmd] % print for debugging\n    r = length(ctrl_idx)/2;\n    %Jaimie \n    \n    pact=zeros(1,r); qact=zeros(1"
+      ",r); % initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,r); Qmax=zeros(1,r);\n    for i"
+      "=1:r % across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(p"
+      "cmd(i)^2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))="
+      " 0; \n        Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);\n "
+      "           qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        "
+      "end\n    end\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose "
+      "this each time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyCh"
+      "angeStart <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch"
+      " opens at beginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%"
+      "%\n  \n%     PQact=[pact(1) qact(1)]'; %TEMP, change for different actuator length    \n    % you can print this"
+      " for debugging\n    pact \n    qact\n    actpq = [pact.' qact.']; % P in first col, Q in second\n    PQact = res"
+      "hape(actpq,[1,length(ctrl_idx)]).'; % make col vec with Ps grouped then Qs grouped\n    a=reshape(testDbcData,[2"
+      ",length(ctrl_idx)/2]);\n    testDbcData=reshape(a',[length(ctrl_idx),1]); % make col vec with Ps grouped then Qs"
+      " grouped\n    a=reshape(actualDbcData,[2,length(dbc_idx)/2]);\n    actualDbcData=reshape(a',[length(dbc_idx),1])"
+      "; % make col vec with Ps grouped then Qs grouped\n    \n%     if any(isnan(PQact))\n%         error('PQact is Na"
+      "N');\n%     end\n\n\n    % Note: loadPQ expects P to be grouped together, then Qs\n    loadPQ=zeros(size(netLoad"
+      "Data));\n    %loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% just to check length\n    %coder.varsize('"
+      "loadPQ',[908 1]);\n    %coder.varsize('netLoadData',[908 1]);\n    loadPQ=netLoadData; % P&Q, ordered according "
+      "to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData;\n    loadPQ(dbc_idx)=loadPQ(dbc_idx)+actu"
+      "alDbcData;\n    \n    % Note: it's ok for these values to be neg because it's NET load\nend"
       editorLayout	      "100 M4x1[10 5 700 500]"
     }
   }

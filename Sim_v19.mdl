@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.507"
+    ComputedModelVersion    "1.516"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-9.0, 1.0, 1604.0, 868.0]
+      Location		      [-8.0, 0.0, 1604.0, 876.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -67,7 +67,7 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [1554.0, 690.0]
+	  Extents		  [1554.0, 698.0]
 	  ZoomFactor		  [1.0]
 	  Offset		  [264.35714285714369, 256.18831368502697]
 	}
@@ -85,7 +85,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2015"
-	  Extents		  [1886.0, 811.0]
+	  Extents		  [1554.0, 690.0]
 	  ZoomFactor		  [1.75]
 	  Offset		  [0.0, 0.0]
 	}
@@ -108,9 +108,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Sat Sep 07 10:29:01 2019"
-  RTWModifiedTimeStamp	  489752933
-  ModelVersionFormat	  "1.%<AutoIncrement:507>"
+  LastModifiedDate	  "Mon Sep 09 12:59:56 2019"
+  RTWModifiedTimeStamp	  489934788
+  ModelVersionFormat	  "1.%<AutoIncrement:516>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -8272,7 +8272,7 @@ Model {
   }
   System {
     Name		    "Sim_v19"
-    Location		    [-9, 1, 1595, 869]
+    Location		    [-8, 0, 1596, 876]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -8409,7 +8409,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-9, 1, 1595, 869]
+	Location		[-8, 0, 1596, 876]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -8921,7 +8921,7 @@ Model {
 	  }
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [-9, 1, 1595, 869]
+	    Location		    [-8, 0, 1596, 876]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -9818,7 +9818,7 @@ Model {
 	  }
 	  System {
 	    Name		    "Q-V PI controllers\n( r SISO controllers)"
-	    Location		    [-9, 1, 1595, 869]
+	    Location		    [-8, 0, 1596, 876]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -11723,7 +11723,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "measure and plot Q"
-	    Location		    [-13, -13, 2573, 1373]
+	    Location		    [-9, 1, 1595, 869]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -11735,7 +11735,7 @@ Model {
 	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
-	    ZoomFactor		    "400"
+	    ZoomFactor		    "150"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "Qactual"
@@ -11964,7 +11964,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [-9, 1, 1595, 869]
+	    Location		    [-8, 0, 1596, 876]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200

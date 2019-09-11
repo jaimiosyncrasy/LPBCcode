@@ -12,7 +12,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    testIdx=22; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=24; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -170,34 +170,43 @@ Ts=0.1; % should agree with simulink outermost block setting
         [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
         % units: [V/kVAR V/kW deg/kVar deg/kW]
         
-%         %%
-%         % extra plot for way 3
-% r=3;
-% %close all
-% % qnew and vmag_new are in pu
-% itvl=1:230;
-% figure;
-% for i = 1:r
-%     subplot(1,r,i);
-%     [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
-%     set(hline1,'LineWidth',1.5);
-% set(hline2,'LineWidth',1.5);
-%     legend('vmag','q');
-% end
-% title('Q-->Vmag');
-% figure;
-% for i = 1:r
-%     subplot(1,r,i);
-%     [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
-%     set(hline1,'LineWidth',1.5);
-%     set(hline2,'LineWidth',1.5);
-%     legend('vang','p');
-% end
-% title('P-->Vang');
-%         
-% figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
-% figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
+        %%
+        % extra plot for way 3
+r=length(ctrl_idx)/2;
+%close all
+% qnew and vmag_new are in pu
+itvl=1:230;
+figure;
+for i = 1:r
+    subplot(1,r,i);
+    [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
+    set(hline1,'LineWidth',1.5);
+set(hline2,'LineWidth',1.5);
+    legend('vmag','q');
+end
+title('Q-->Vmag');
+figure;
+for i = 1:r
+    subplot(1,r,i);
+    [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
+    set(hline1,'LineWidth',1.5);
+    set(hline2,'LineWidth',1.5);
+    legend('vang','p');
+end
+title('P-->Vang');
+        
+figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
+figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
+
+% %% plot first order controller design to match with actual sim
+% tau=0.1
+%         H11=tf([dvdq(1)],[tau 1]);
+%         H22=tf([ddeldp(1)],[tau 1]);
+%         opt = stepDataOptions; opt.StepAmplitude = stepQ/Sbase; % specify your own step amplitude
+%         figure; step(H11,opt);
+%         opt = stepDataOptions; opt.StepAmplitude = stepP/Sbase; % specify your own step amplitude
+%        figure; step(H22,opt);
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
 
@@ -227,7 +236,8 @@ case 3
     %% Set kgains using way 3, save as test1_way3.mat 
         Vang_ctrl=true; % boolean
         Vmag_ctrl=true; % boolean
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts,r)
+    %[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts,r)
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=afunc(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,Ts,r)
 
 end
 %% --------------------- Controller kgains are now set -------------------------

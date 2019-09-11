@@ -3,8 +3,12 @@
 function idx=strToIdx(inputStr,nodeNames)
     idx=-1; % initialize
     a=strsplit(inputStr,','); % split string of nodes by comma delimiter, yielding cell array
-    idx=find(ismember(nodeNames,a)); % return indices where a matches with nodeNames
-    if isempty(idx)
-        disp(strcat('error, could not match{ ',inputStr,' with load names'));
+    idx=[];
+    for i=1:length(a)
+        foo=find(ismember(nodeNames,a(i))); % return indices where a matches with nodeNames
+        if isempty(foo)
+            disp(strcat('error, could not match{ ',inputStr,' with load names'));
+        end
+        idx=[idx foo];
     end
 end
