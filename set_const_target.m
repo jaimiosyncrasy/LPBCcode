@@ -1,18 +1,27 @@
-function [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,V1base,V2base) 
-    secList=[1:(minEnd-minStart)*60]'; % starts from 1, not actual second of the day
-    %tarVmag=[1 0.99 0.975];%[0.9816 0.9930 0.9837]; % pu
-    %tarVmag=[0.9816 0.9930 0.9837]; % pu
-    tarVmag=[0.98 0.98 0.98 0.98 0.98] % pu
+function [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx) 
+    % be careful: when multiple actuators on the same phase the targets are
+    % repeated so dont assign them to different values, this will cause
+    % instability in all cases
 
-    tarVang=[-2 -2 -2 -120-2 120-2]; % degrees
-    %tarVang=[-2 -2 -120-2 120-2 -2]; % degrees
+    secList=[1:(minEnd-minStart)*60]'; % starts from 1, not actual second of the day
+    x=[0.96 0.97 0.98 0.99 1 1.01 1.02 1.03 1.04];
+    a=randi(length(x),length(meas_idx));
+    tarVmag=x(diag(a));
+    %tarVmag=[0.99 1.01 1 0.99 1.01 1 0.99];
+    Vmag_nom=ones(1,length(meas_idx));
+  
+    %tarVang=[-3 -120-3 120-3 -3 -120-3 120-3 -3]; % degrees
+    tarVang=[-3 -120-3 120-3 -120+3 -120+3 1 -3 -120-3 120-3 -3 -120-3 120-3 120-3]; % degrees
+    %tarVang=[-2 -120-2 120-2]; % degrees
     vang_ref=[secList, repmat(tarVang,length(secList),1)];
     vmag_ref=[secList, repmat(tarVmag,length(secList),1)];
 %% initialization step for that first time run RT lab initialize voltages to be steady state values
-    %Vmag_nom=[1 1 1]; % phase, values to settle to at beginning before step response
-    Vmag_nom=[1 1 1 1 1]; % phase, values to settle to at beginning before step response
-    %Vang_nom=[0,-120,120]; % phase, values to settle to at beginning before step response
-    Vang_nom=[0 0 0 -120 120]; % phase, values to settle to at beginning before step response
+  %Vang_nom=[0 -120 120 0 -120 120 0];
+   Vang_nom=[0,-120,120,-120,-120,0,0,-120,120,0,-120,120,120]; % phase, values to settle to at beginning before step response
+    %Vang_nom=[ 0 -120 120]; % phase, values to settle to at beginning before step response
+    if (length(tarVmag)~=length(meas_idx) || length(Vmag_nom)~=length(meas_idx))
+        error('phasor target or IC of meas wrong size');
+    end
     if ((exist('vmag_init_actual')) && (exist('vang_init_actual'))) % if already exists, dont set it to dummy vals
     else
         % dummy values the first time you run a sim, 1st sim's purpose is to store vmag_init_actual

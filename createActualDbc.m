@@ -12,22 +12,23 @@ function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData)
     % dbcs start 2 min in (120 seconds), then occurs every 15 minutes
     dbcStart=120:15*60:length(pload) % in seconds
     if Sinv<10000 % if inv limits active
-       stepP=0.5*Sinv(1); % assume dbc is always at a node with a load
-       stepQ=0.5*Sinv(1); % make disturbance not too large compared to inv limits 
+       stepP=Sinv(1); % assume dbc is always at a node with a load
+       stepQ=Sinv(1); % make disturbance not too large compared to inv limits 
    else % when no inv limits
         stepP=pload(dbcStart(1)); % assumes dbc location is colocated with a load
         stepQ=qload(dbcStart(1)); 
-   end
+    end
+    
+   % totPh is number of dbc phase-actuators
+   % At every dbcStart, 1 to totPh disturbances occur (single double and 3ph totally random), each phase-dbc varying in amp but of the SAME duration
     
     numDbc=length(dbcStart); % 
-    numPh=randsrc(numDbc,1,[1,3;0.3,0.7]) % number of phases to choos
+    phIdx=randi(totPh,[totPh 1]) % indices a dbc occurs
+    phIdx=unique(phIdx.','rows').' % delete off repeated indices
+    numPh=length(phIdx); % At every dbcStart, 1 to totPh disturbances occur
+   
     for i=1:numDbc
-        if numPh(i)==3 % dbc on 3 phases
-            phIdx=[1 2 3];
-        else % dbc on a single phase
-            phIdx=randsrc(1,1,[1,2,3;0.33,0.33,0.34]); % randomly choose one of the phases
-        end
-        dbcAmp=(4-0.2)*rand(2,numPh(i))+0.2; % scaling factor for stepP/Q
+        dbcAmp=(3-0.5)*rand(2,numPh(i))+0.2; % scaling factor for stepP/Q
         dbcDur=randi([10 120],1,1); % in seconds, dbcs are 10 to 120 second sq waves
         
         dbcEnd=(dbcStart(i)+dbcDur)
