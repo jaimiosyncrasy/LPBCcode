@@ -10,19 +10,18 @@ function Jtot=bfunc(Hmat,dt,parms,N,settleMax,OSmax,stepMag,plot)
     k_try=[parms(1) parms(2) parms(3) parms(4)] % [Kp_vmag, Ki_vmag, Kp_vang, Ki_vang]
 	s = tf('s');
 	C1=parms(1) + parms(2)/s; % PI control, vmag loop
-    C2=parms(3) + parms(4)/s; % PI control, vmag loop
+    D2=parms(3) + parms(4)/s; % PI control, vang loop
 
-% the OL TF relation dvdq with del loop present:
-	Gopen=((1+Hmat(2,2)*C2)*Hmat(1,1)-Hmat(1,2)*Hmat(2,1)*C2)/(1+Hmat(2,2)*C2);
-    %Gopen=Hmat(1,1) % without MIMO control
-	Gclosed=feedback(series(C1,Gopen),1);
-	J1=cfunc(dt,N,Gclosed,C1,settleMax(1),OSmax(1),stepMag(1),plot,parms(1:2))
+% SISO control, MIMO plant
+% the vmag_ref-->vmag relation:
+    alpha=Hmat(1,1)*C1; beta=Hmat(1,2)*D2; gamma=Hmat(2,1)*C1/(1+Hmat(2,2)*D2);
+    TF_y1r1=feedback(alpha-beta*gamma,1); % alpha-beta*gamma/(1+alpha-beta*gamma);
+	J1=cfunc(dt,N,TF_y1r1,C1,settleMax(1),OSmax(1),stepMag(1),plot,parms(1:2))
 
-% the OL TF relation ddeldp with v loop present:
-	Gopen=((1+Hmat(1,1)*C1)*Hmat(2,2)-Hmat(1,2)*Hmat(2,1)*C1)/(1+Hmat(1,1)*C1);
-    %Gopen=Hmat(2,2) % without MIMO control
-    Gclosed=feedback(series(C2,Gopen),1);	
-	J2=cfunc(dt,N,Gclosed,C2,settleMax(2),OSmax(2),stepMag(2),plot,parms(3:4))
+% the vang_ref-->vang relation:
+    alpha=Hmat(2,2)*D2; beta=Hmat(2,1)*C1; gamma=Hmat(1,2)*D2/(1+Hmat(1,1)*C1);
+    TF_y2r2=feedback(alpha-beta*gamma,1); % alpha-beta*gamma/(1+alpha-beta*gamma);
+	J2=cfunc(dt,N,TF_y2r2,D2,settleMax(2),OSmax(2),stepMag(2),plot,parms(3:4))
     Jtot=J1+J2;
 end
 

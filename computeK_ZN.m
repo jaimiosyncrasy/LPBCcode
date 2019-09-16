@@ -8,7 +8,7 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=compute
      % Matrix of controller gains phases are across cols
      Kmat(:,:)=repmat(k_singlePh,1,r); % put scalars into matrix
 
-     Kp_vmag=Kmat(1,:); % row 1
+    Kp_vmag=Kmat(1,:); % row 1
     Ki_vmag=Kmat(2,:);
     Kp_vang=Kmat(3,:);
     Ki_vang=Kmat(4,:);

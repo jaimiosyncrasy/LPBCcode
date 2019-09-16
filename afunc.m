@@ -20,11 +20,10 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
 
      % hardcode for now
     tau=0.3*dt; % first order TF time const for plant model
-    settleMax=[30 30]; % vmag vang, units of seconds
     OSmax=[0.5 0.2]; % percentage, vmag vang
     stepMag=[0.05 5]; % hardcoded, TEMP, realistic voltage disturbance mags
     popsize =8; % # candidates per generation
-    MaxGenerations = 5; % # generations
+    MaxGenerations = 6; % # generations
     options = gaoptimset('PopulationSize',popsize,'Generations',MaxGenerations);
     
     if Vmag_ctrl~=Vang_ctrl
@@ -44,7 +43,7 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
              b=sort([m1*(1/ddeldp(i)) m2*(1/ddeldp(i))]);
             lb=[a(1) a(1) b(1) b(1)]
             ub=[a(2) a(2) b(2) b(2)]
-            N=40; % horizon, in seconds
+            N=30; % horizon, in seconds
 
             % create all 4 open-loop TFs
             H11=tf([dvdq(i)],[tau 1]);
@@ -65,10 +64,10 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
 
             Kp_vmag(i)=kset(1); Ki_vmag(i)=kset(2); Kp_vang(i)=kset(3); Ki_vang(i)=kset(4); 
              data=[...
-            [ub(1) Kp_vmag lb(1)]'...
-            [ub(1) Ki_vmag lb(1)]'...
-            [ub(3) Kp_vang lb(3)]'...
-            [ub(3) Ki_vang lb(3)]'];
+            [ub(1) Kp_vmag(i) lb(1)]'...
+            [ub(1) Ki_vmag(i) lb(1)]'...
+            [ub(3) Kp_vang(i) lb(3)]'...
+            [ub(3) Ki_vang(i) lb(3)]'];
             rowhead = strcat('ub',sprintf(' phase-act%d ', 1:size(data,1)-2),' lb');
             printmat(data,'Kgains with param space bounds',rowhead,'Kp_vmag Ki_vmag Kp_vang Ki_vang');
         end
