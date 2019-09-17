@@ -323,25 +323,25 @@ end
 % Kp_vang=kgains(3,:)
 % Ki_vang=kgains(4,:)
 
-% for multAct_MIMO
- Kpp_vmag=0.5*Kpp_vmag
- Kip_vmag=0.5*Kip_vmag
- Kiq_vmag=0.5*Kiq_vmag
- Kpq_vmag=0.5*Kpq_vmag
- Kpp_vang=0.5*Kpp_vang
- Kip_vang=0.5*Kip_vang
- Kiq_vang=0.5*Kiq_vang
- Kpq_vang=0.5*Kpq_vang
+% % for multAct_MIMO
+%  Kpp_vmag=0.5*Kpp_vmag
+%  Kip_vmag=0.5*Kip_vmag
+%  Kiq_vmag=0.5*Kiq_vmag
+%  Kpq_vmag=0.5*Kpq_vmag
+%  Kpp_vang=0.5*Kpp_vang
+%  Kip_vang=0.5*Kip_vang
+%  Kiq_vang=0.5*Kiq_vang
+%  Kpq_vang=0.5*Kpq_vang
 
-%  % when running 1 act per phase
-%  Kpp_vmag=0.33*Kpp_vmag
-%  Kip_vmag=0.33*Kip_vmag
-%  Kiq_vmag=0.33*Kiq_vmag
-%  Kpq_vmag=0.33*Kpq_vmag
-%  Kpp_vang=0.33*Kpp_vang
-%  Kip_vang=0.33*Kip_vang
-%  Kiq_vang=0.33*Kiq_vang
-%  Kpq_vang=0.33*Kpq_vang
+ % when running 1 act per phase
+ Kpp_vmag=0.33*Kpp_vmag
+ Kip_vmag=0.33*Kip_vmag
+ Kiq_vmag=0.33*Kiq_vmag
+ Kpq_vmag=0.33*Kpq_vmag
+ Kpp_vang=0.33*Kpp_vang
+ Kip_vang=0.33*Kip_vang
+ Kiq_vang=0.33*Kiq_vang
+ Kpq_vang=0.33*Kpq_vang
  
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 

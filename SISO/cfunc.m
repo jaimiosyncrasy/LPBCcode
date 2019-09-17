@@ -1,8 +1,7 @@
-function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,YNplot,parms)
+function J = cfunc(dt,N,Gclosed_cont,Cd_cont,settleMax,OSmax,stepMag,YNplot,parms)
     
     % convert CT to DT
-    Cd1=c2d(Cd1_cont,dt);
-    Cd2=c2d(Cd2_cont,dt);
+    Cd=c2d(Cd_cont,dt);
     Gclosed=c2d(Gclosed_cont,dt);
     
     % Simulate
@@ -14,12 +13,12 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
         disp('output from step of Gclosed is NaN or inf');
     else
         yref=stepMag;
-        u = lsim(Cd1,yref-y,t)+lsim(Cd2,yref-y,t); % u produced from passing y-yref through Gc
+        u = lsim(Cd,yref-y,t); % u produced from passing y-yref through Gc
 
         % Build cost func
             % small overshoot, small control effort, and short settle time seem to also
             % provide good stability margins (GM and PM)
-        R= .01/stepMag; % penalize conttrol effort
+        R= .005/stepMag; % penalize conttrol effort
         Q1=@(t) 2*t/stepMag; % linearly increasing penalty for deviation
         devTerm=abs(yref-y(:));
         OS=max(max(y(2/dt:end)-yref),0)/stepMag; % start measuring after 2s so have time to rise, outer max is because OS is only for when go above yref
@@ -31,7 +30,7 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
             disp('didnt settle');
             settle=settleMax+0.05
         end
-        settlePen=15*logBarr(settle,0,settleMax); % normalize with desired max/actual max
+        settlePen=20*logBarr(settle,0,settleMax); % normalize with desired max/actual max
         OSPen=100*logBarr(OS,0,OSmax);
 
         optTerms=[sum(Q1(t).*(devTerm)) settlePen.*settle OSPen.*OS sum(R*uEffortTerm.^2)]
@@ -45,9 +44,8 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
             plot(t, squeeze(y), [0 N],[stepMag stepMag],'k','LineWidth',2);
     %         h = findobj(gcf,'type','line');
     %         set(h,'linewidth',2); 
-            title({'PItuner: CL step resp, of ploop or qloop';strcat('(Kp_{vmag},Ki_{vmag},Kp_{vang},Ki_{vang})=',num2str(parms))});
-            %drawnow{'First line';'Second line'}
-            
+             title(strcat('PItuner: CL step resp, (kp,ki)=',num2str(parms)));
+            %drawnow
     %pause
         end
     end 

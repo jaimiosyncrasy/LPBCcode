@@ -15,7 +15,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 
 % read initialization file
     % CHECK THIS
-    testIdx=31; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=25; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file, constant
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -109,11 +109,11 @@ Ts=0.1; % should agree with simulink outermost block setting
 % Print which measurments alin with which actuators, each row is a meas-act
 % loop
     controlLoopAlign=[loadNames(ctrl_idx)' repmat(busNames(meas_idx)',2,1)]
+[loadNames(ctrl_idx)' repmat(busNames(meas_idx)',2,1) num2str(repmat(dvdq,2,1))]
 %% Set targets/reference for controller to  track
     [Sbase,V1base,V2base] = computePU(); 
-    %Vbase=[repmat(V1base,6,1); repmat(V2base,3,1); repmat(V1base,4,1);]; % for vvc compare
-    Vbase=[repmat(V1base,7,1);];
-    %Vbase=[repmat(V1base,3,1);];
+    Vbase=[repmat(V1base,6,1); repmat(V2base,3,1); repmat(V1base,4,1);]; % for vvc compare
+    %Vbase=[repmat(V1base,7,1);];
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
     [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx); 
@@ -127,7 +127,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     [ZNcritMat,k_singlePh]=ZNtune(V1base, Sbase);   
     Vang_ctrl=true; % boolean
     Vmag_ctrl=true; % boolean
-[Kpq_vmag,Kiq_vmag,Kpq_vang,Kiq_vang,Kpp_vmag,Kip_vmag,Kpp_vang,Kip_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
  
     
 %% Ability2: det sensitivities by running this
@@ -135,7 +135,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 %     Turn controllers off    
         Vang_ctrl=false; % boolean
         Vmag_ctrl=false; % boolean
-        [Kpq_vmag,Kiq_vmag,Kpq_vang,Kiq_vang,Kpp_vmag,Kip_vmag,Kpp_vang,Kip_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
+        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
 
     % Create test disturbance
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
@@ -156,8 +156,8 @@ Ts=0.1; % should agree with simulink outermost block setting
 
     % Run simulink
     % CHECK THIS
-        sim('Sim_v20.mdl')
-        set_param('Sim_v20','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(40,:);
         vang_init_actual-vang_new(40,:);
         disp('finished simulink');    
@@ -221,7 +221,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 %  %%  for way 3
 %        % things learned: stepmag should not be in pu, timescale
 %        % incongruence
-%     mySens=dvdq(1); tau=0.33**0.33*Ts; % should be actual # secs
+%     mySens=dvdq(1); tau=0.3*Ts; % should be actual # secs
 %     G=tf([mySens],[tau 1]); % FVT preserved across conversion CT to DT
 %     Gd = c2d(G,Ts)
 %     stepMag=stepQ/Sbase; 
@@ -311,8 +311,7 @@ case 3
     %% Set kgains using way 3, save as test1_way3.mat 
         Vang_ctrl=true; % boolean
         Vmag_ctrl=true; % boolean
-       [Kpq_vmag,Kiq_vmag,Kpq_vang,Kiq_vang,Kpp_vmag,Kip_vmag,Kpp_vang,Kip_vang...
-        Vmag_ctrlStart,Vang_ctrlStart]=afunc(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,Ts,r)
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=afunc(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,Ts,r)
 end
 %% --------------------- Controller kgains are now set -------------------------
 % CHECK THIS
@@ -323,26 +322,13 @@ end
 % Kp_vang=kgains(3,:)
 % Ki_vang=kgains(4,:)
 
-% for multAct_MIMO
- Kpp_vmag=0.5*Kpp_vmag
- Kip_vmag=0.5*Kip_vmag
- Kiq_vmag=0.5*Kiq_vmag
- Kpq_vmag=0.5*Kpq_vmag
- Kpp_vang=0.5*Kpp_vang
- Kip_vang=0.5*Kip_vang
- Kiq_vang=0.5*Kiq_vang
- Kpq_vang=0.5*Kpq_vang
+% comment out for non-PBC case
+%  Kp_vmag=0.5*Kp_vmag
+%  Ki_vmag=0.5*Ki_vmag
+%  Ki_vang=0.5*Ki_vang
+%  Kp_vang=0.5*Kp_vang
 
-%  % when running 1 act per phase
-%  Kpp_vmag=0.33*Kpp_vmag
-%  Kip_vmag=0.33*Kip_vmag
-%  Kiq_vmag=0.33*Kiq_vmag
-%  Kpq_vmag=0.33*Kpq_vmag
-%  Kpp_vang=0.33*Kpp_vang
-%  Kip_vang=0.33*Kip_vang
-%  Kiq_vang=0.33*Kiq_vang
-%  Kpq_vang=0.33*Kpq_vang
- 
+  
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 
 %     
@@ -350,9 +336,9 @@ end
      %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
      
      % CHECK THIS
-     %actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
-    % save(strcat('dbcData_',resultsName),'actualDbcData');
-    load('dbcData_multAct.mat');
+     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
+     save(strcat('dbcData_',resultsName),'actualDbcData');
+    %load('dbcData_multAct.mat');
      
      n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
@@ -369,8 +355,8 @@ end
     disp('------------------- Running controlled sim...');
     % Run simulink
     % CHECK THIS
-        sim('Sim_v20.mdl')
-        set_param('Sim_v20','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(40,:);
         vang_init_actual=vang_new(40,:);
         disp('finished simulink');    
@@ -382,7 +368,7 @@ end
     % so that results tracking tool can compute performance metrics
     disp('------------------- Outputing results...');
     % save data into .mats
-    kgains=[Kpp_vmag;Kip_vmag;Kpq_vmag;Kiq_vmag;Kpp_vang;Kip_vang;Kpq_vang;Kiq_vang];
+    kgains=[Kp_vmag; Ki_vmag; Kp_vang; Ki_vang];
 	 save(resultsName,'vmag_new','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','kgains')
      % to check what you've saved away...
      %clear all; load('simData_001.mat'); whos
@@ -390,9 +376,6 @@ end
 %% ------------------------- End of Code ----------------------------------
 toc % print elapsed sim time
 %% Version Control Log
-% sim_v20 simulink .mdl
-% MIMO control instead of SISO controllers
-
 % sim_v19 simulink .mdl
 % revamp of PI control blocks
 

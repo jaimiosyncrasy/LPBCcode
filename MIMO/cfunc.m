@@ -1,9 +1,5 @@
-function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,YNplot,parms)
-    
-    % convert CT to DT
-    Cd1=c2d(Cd1_cont,dt);
-    Cd2=c2d(Cd2_cont,dt);
-    Gclosed=c2d(Gclosed_cont,dt);
+function J = cfunc(dt,N,Gclosed,Cd1,Cd2,settleMax,OSmax,stepMag,YNplot,parms)
+    % TFs are already discretized
     
     % Simulate
     t = 0:dt:N;
@@ -19,20 +15,20 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
         % Build cost func
             % small overshoot, small control effort, and short settle time seem to also
             % provide good stability margins (GM and PM)
-        R= .01/stepMag; % penalize conttrol effort
+        R= .1/stepMag; % penalize conttrol effort
         Q1=@(t) 2*t/stepMag; % linearly increasing penalty for deviation
         devTerm=abs(yref-y(:));
-        OS=max(max(y(2/dt:end)-yref),0)/stepMag; % start measuring after 2s so have time to rise, outer max is because OS is only for when go above yref
+        OS=max(max(y(2/dt:end)-yref),0)/stepMag % start measuring after 2s so have time to rise, outer max is because OS is only for when go above yref
         uEffortTerm=u(:);
         logBarr=@(z,zref,zMax) (((z-zref)<zMax).*(-(zMax^2)*log10(1-((z-zref)/zMax).^2)) + ((z-zref)>=zMax).*(100));
-        ssBound=0.1*stepMag; a=abs(devTerm)<ssBound; % 10% error bound
+        ssBound=0.08*stepMag; a=abs(devTerm)<ssBound; % 10% error bound
         settle=(length(a)-(find(0==flipud(a),1)-2))*dt; % settling time, in seconds
-        if (isempty(settle) || settle>=settleMax) % case of not settling or settle is beyond settle max
+        if (isempty(settle) || settle>=settleMax || devTerm(end)>ssBound) % case of not settling or settle is beyond settle max
             disp('didnt settle');
             settle=settleMax+0.05
         end
-        settlePen=15*logBarr(settle,0,settleMax); % normalize with desired max/actual max
-        OSPen=100*logBarr(OS,0,OSmax);
+        settlePen=10*logBarr(settle,0,settleMax); % normalize with desired max/actual max
+        OSPen=1000000*logBarr(OS,0,OSmax);
 
         optTerms=[sum(Q1(t).*(devTerm)) settlePen.*settle OSPen.*OS sum(R*uEffortTerm.^2)]
         %figure; plot(t,devTerm,t,uEffortTerm,'LineWidth',2); legend('devTerm','uEffortTerm');
