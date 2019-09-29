@@ -20,18 +20,32 @@ function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData)
     end
     
    % totPh is number of dbc phase-actuators
-   % At every dbcStart, 1 to totPh disturbances occur (single double and 3ph totally random), each phase-dbc varying in amp but of the SAME duration
+   % At every dbcStart, a diff set of 1 to totPh disturbances occur (single double and 3ph totally random), each phase-dbc varying in amp but of the SAME duration
     
     numDbc=length(dbcStart); % 
-    phIdx=randi(totPh,[totPh 1]) % indices a dbc occurs
-    phIdx=unique(phIdx.','rows').' % delete off repeated indices
-    numPh=length(phIdx); % At every dbcStart, 1 to totPh disturbances occur
+    eventType=randsrc(numDbc,1,[0 1]); % half of dbs are cloud cover, half are load changes
    
     for i=1:numDbc
-        dbcAmp=(3-0.5)*rand(2,numPh(i))+0.2; % scaling factor for stepP/Q
-        dbcDur=randi([10 120],1,1); % in seconds, dbcs are 10 to 120 second sq waves
-        
-        dbcEnd=(dbcStart(i)+dbcDur)
+        eventType(i)
+        if eventType(i)==1 % load change event, change in net load at a random num of dbc nodes
+            numPh=randi(totPh); % At every dbcStart, 1 to totPh disturbances occur
+            % det which among totPh get dbc
+            phIdx=randi(totPh,[numPh 1]) % indices that a dbc occurs
+            % delete off repeated indices
+             [b,m1,n1] = unique(phIdx,'first');
+            [c1,d1] =sort(m1);
+            phIdx= b(d1);
+            numPh=length(phIdx) % because removed duplicates need to reassign
+
+            dbcAmp=(1.2-(-1.2))*rand(2,numPh)+(-1.2) % scaling factor for stepP/Q
+            dbcDur=randi([10 330],1,1) % in seconds, dbcs are 10 to 330 second sq waves
+        else % cloud cover event, net load inc at all dbc nodes
+            phIdx=1:totPh;
+            numPh=length(phIdx);
+            dbcAmp=(1.2-(0))*rand(2,numPh)+(0) % scaling factor for stepP/Q
+            dbcDur=randi([10 330],1,1) % in seconds, dbcs are 10 to 330 second sq waves
+        end
+        dbcEnd=(dbcStart(i)+dbcDur);
         actualDbcData(dbcStart(i)/Ts:dbcEnd/Ts,phIdx+1)=repmat(dbcAmp(1,:)*stepP,length(dbcStart(i)/Ts:dbcEnd/Ts),1);
         actualDbcData(dbcStart(i)/Ts:dbcEnd/Ts,phIdx+1+totPh)=repmat(dbcAmp(2,:)*stepQ,length(dbcStart(i)/Ts:dbcEnd/Ts),1);
     end
