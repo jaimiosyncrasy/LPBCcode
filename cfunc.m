@@ -1,9 +1,5 @@
-function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,YNplot,parms)
-    
-    % convert CT to DT
-    Cd1=c2d(Cd1_cont,dt);
-    Cd2=c2d(Cd2_cont,dt);
-    Gclosed=c2d(Gclosed_cont,dt);
+function J = cfunc(dt,N,Gclosed,Cd,settleMax,OSmax,stepMag,YNplot,parms)
+   
     
     % Simulate
     t = 0:dt:N;
@@ -14,7 +10,7 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
         disp('output from step of Gclosed is NaN or inf');
     else
         yref=stepMag;
-        u = lsim(Cd1,yref-y,t)+lsim(Cd2,yref-y,t); % u produced from passing y-yref through Gc
+        u = lsim(Cd,yref-y,t); % u produced from passing y-yref through Gc
 
         % Build cost func
             % small overshoot, small control effort, and short settle time seem to also
@@ -27,12 +23,12 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
         logBarr=@(z,zref,zMax) (((z-zref)<zMax).*(-(zMax^2)*log10(1-((z-zref)/zMax).^2)) + ((z-zref)>=zMax).*(100));
         ssBound=0.1*stepMag; a=abs(devTerm)<ssBound; % 10% error bound
         settle=(length(a)-(find(0==flipud(a),1)-2))*dt; % settling time, in seconds
-        if (isempty(settle) || settle>=settleMax) % case of not settling or settle is beyond settle max
+        if (isempty(settle) || settle>=settleMax || devTerm(end)>ssBound) % case of not settling or settle is beyond settle max
             disp('didnt settle');
             settle=settleMax+0.05
         end
-        settlePen=15*logBarr(settle,0,settleMax); % normalize with desired max/actual max
-        OSPen=100*logBarr(OS,0,OSmax);
+        settlePen=10*logBarr(settle,0,settleMax); % normalize with desired max/actual max
+        OSPen=100000*logBarr(OS,0,OSmax);
 
         optTerms=[sum(Q1(t).*(devTerm)) settlePen.*settle OSPen.*OS sum(R*uEffortTerm.^2)]
         %figure; plot(t,devTerm,t,uEffortTerm,'LineWidth',2); legend('devTerm','uEffortTerm');
@@ -45,9 +41,8 @@ function J = cfunc(dt,N,Gclosed_cont,Cd1_cont,Cd2_cont,settleMax,OSmax,stepMag,Y
             plot(t, squeeze(y), [0 N],[stepMag stepMag],'k','LineWidth',2);
     %         h = findobj(gcf,'type','line');
     %         set(h,'linewidth',2); 
-            title({'PItuner: CL step resp, of ploop or qloop';strcat('(Kp_{vmag},Ki_{vmag},Kp_{vang},Ki_{vang})=',num2str(parms))});
-            %drawnow{'First line';'Second line'}
-            
+             title(strcat('PItuner: CL step resp, (kp,ki)=',num2str(parms)));
+            %drawnow
     %pause
         end
     end 
