@@ -12,3 +12,4 @@ function idx=strToIdx(inputStr,nodeNames)
         idx=[idx foo];
     end
 end
+

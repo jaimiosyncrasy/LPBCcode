@@ -36,7 +36,8 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
         Kp_vang=zeros(r,1);
         Ki_vang=zeros(r,1);
     else 
-        m1=0.05;
+        %m1=0.05;
+        m1=0; % if set to zero, param space includes zero (filled box)
         m2=0.7;
         for i =1:length(dvdq) % for each phase-actuator
              % allowable range of kgains, vmag first 2 col, vang 2nd 2 cols
@@ -48,7 +49,8 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
 %              ub=[a(2) 0 0 0]
             N=30; % horizon, in seconds
 
-            % create all 4 open-loop TFs
+            % create all 4 open-loop TFs. The ss and tau have meaning in CT
+            % model, so must convert to discrete AFTER
             H11=c2d(tf([dvdq(i)],[tau 1]),dt);
             H12=c2d(tf([dvdp(i)],[tau 1]),dt);
             H21=c2d(tf([ddeldq(i)],[tau 1]),dt); 

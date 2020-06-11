@@ -8,15 +8,12 @@ function Jtot=bfunc(Hmat,dt,parms,N,settleMax,OSmax,stepMag,plot)
     % Create PID controller
     disp('----------------------------------');
     k_try=[parms(1) parms(2) parms(3) parms(4)] % [Kp_vmag, Ki_vmag, Kp_vang, Ki_vang]
-	% The right way to do, it but, get worse perf
-%     z = tf('z',dt);
-% 	C1=parms(1) + parms(2)*(dt/(z-1)); % PI control, vmag loop
-%     D2=parms(3) + parms(4)*(dt/(z-1)); % PI control, vang loop
+	% same perf whether you discreytize after or this way, but this way is
+	% mathematically more correct
+    z = tf('z',dt);
+	C1=parms(1) + parms(2)*(dt/(z-1)); % PI control, vmag loop
+    D2=parms(3) + parms(4)*(dt/(z-1)); % PI control, vang loop
 
-    s = tf('s');
-	C1=c2d(parms(1) + parms(2)/s,dt); % PI control, vmag loop
-    D2=c2d(parms(3) + parms(4)/s,dt); % PI control, vang loop
-    
 % SISO control, MIMO plant
 % the vmag_ref-->vmag relation:
     alpha=Hmat(1,1)*C1; beta=Hmat(1,2)*D2; gamma=Hmat(2,1)*C1/(1+Hmat(2,2)*D2);

@@ -1,4 +1,4 @@
-function [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas,stepP,stepQ, dbcDur, vmag_new,vang_new,ctrl_idx,loadNames)
+function [dvdq dvdp ddeldq ddeldp sensMats]=computeSens(dbcMeas,stepP,stepQ, dbcDur, vmag_new,vang_new,ctrl_idx,loadNames,Sbase)
     % This func computes sensitivities between vmag, vang, P, Q from gains of step
     % response data; these sensitivities encapsulates consideration of how heavily loaded
     % each phase is as well as how much impedance/losses is between the
@@ -6,24 +6,42 @@ function [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas,stepP,stepQ, dbcDur, vmag
     
     % dvdq is dim rx1, and so are the other sens vars. r is number of
     % actuator-phases
-
-sense=zeros(length(ctrl_idx),2);
-for i= 1:length(ctrl_idx) % 2r, r is num of phase actuators
-        str=loadNames{ctrl_idx(i)};
-        phase=str2num(str(end)); % last char is phase number
-        if ~isempty(strfind(loadNames{ctrl_idx(i)},'/P')) % if actuator label contains /P
-            sense(i,1)=(vmag_new(dbcMeas(i),phase)-vmag_new(dbcMeas(i)-dbcDur,phase))/(stepP);
-            sense(i,2)=(vang_new(dbcMeas(i),phase)-vang_new(dbcMeas(i)-dbcDur,phase))/(stepP);
-        elseif ~isempty(strfind(loadNames{ctrl_idx(i)},'/Q'))
-            sense(i,1)=(vmag_new(dbcMeas(i),phase)-vmag_new(dbcMeas(i)-dbcDur,phase))/(stepQ);
-            sense(i,2)=(vang_new(dbcMeas(i),phase)-vang_new(dbcMeas(i)-dbcDur,phase))/(stepQ);
-        end
+r=length(ctrl_idx)/2; %r is num of phase actuators 
+for i= 1:2*r % 2r, r is num of phase actuators      
+    str=loadNames{ctrl_idx(i)};
+    % each dvdpMat is nxn matrix, where n is number of phase actuators
+    % dvdp=[dV1/dQ1 dV2/dQ1 ...
+    %    dV1/dQ2 dV2/dQ2 ...
+    for j=1:r
+        % ctrl_idx groups Ps, then Qs; however dbcMeas is ordered [P Q P Q...]
+            phase=str2num(str(end)); % last char is phase-actuator index number
+            if ~isempty(strfind(loadNames{ctrl_idx(i)},'/P')) % if actuator label contains /P
+                dvdpMat(i,j)=(vmag_new(dbcMeas(2*i-1),j)-vmag_new(dbcMeas(2*i-1)-dbcDur,j))/(stepP/Sbase);
+                dv2dpMat(i,j)=(vmag_new(dbcMeas(2*i-1),j)^2-vmag_new(dbcMeas(2*i-1)-dbcDur,j)^2)/(stepP/Sbase);
+                ddeldpMat(i,j)=(vang_new(dbcMeas(2*i-1),j)-vang_new(dbcMeas(2*i-1)-dbcDur,j))/(stepP/Sbase);
+            elseif ~isempty(strfind(loadNames{ctrl_idx(i)},'/Q'))
+                dvdqMat(i-r,j)=(vmag_new(dbcMeas(2*i-length(ctrl_idx)),j)-vmag_new(dbcMeas(2*i-length(ctrl_idx))-dbcDur,j))/(stepQ/Sbase);
+                dv2dqMat(i-r,j)=(vmag_new(dbcMeas(2*i-length(ctrl_idx)),j)^2-vmag_new(dbcMeas(2*i-length(ctrl_idx))-dbcDur,j)^2)/(stepQ/Sbase);
+                ddeldqMat(i-r,j)=(vang_new(dbcMeas(2*i-length(ctrl_idx)),j)-vang_new(dbcMeas(2*i-length(ctrl_idx))-dbcDur,j))/(stepQ/Sbase);
+            end
+    end
 end
+
+% collect all sensitivities
+sensMats{1}=dvdpMat;
+sensMats{2}=ddeldpMat;
+sensMats{3}=dvdqMat;
+sensMats{4}=ddeldqMat;
+sensMats{5}=dv2dpMat;
+sensMats{6}=dv2dqMat;
+
+%%
+   
     % sens should be positive because a load inc (dec in nodal pow inj)
     % should cause a dec in voltage; so mult by -1 to fix sign convention
-    dvdp=-1*sense(1:2:end,1);
-    ddeldp=-1*sense(1:2:end,2);
-    dvdq=-1*sense(2:2:end,1);
-    ddeldq=-1*sense(2:2:end,2);
-% sensitivity values are NOT in pu, sens=V/kW
+    dvdp=-diag(dvdpMat);
+    ddeldp=-diag(ddeldpMat);
+    dvdq=-diag(dvdqMat);
+    ddeldq=-diag(ddeldqMat);
+% sensitivity values are in pu, sens=Vpu/Spu
 end

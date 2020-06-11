@@ -1,0 +1,5 @@
+format:(number)1|
+format_opts:Lizorig_phasor08_IEEE13.xls|
+lib_opts:'FMU'|(logical)0|
+sim_opts:(logical)1|(logical)0|1|(logical)0|Ts|(logical)0|
+post_init:(logical)0|

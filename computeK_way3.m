@@ -4,8 +4,8 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
     % this func calls PItuner_GA_RT which runs an algo to automatically
     % det kgains for each actuator-phase
     
-    Vang_ctrlStart = 5; % 
-    Vmag_ctrlStart = 5; % in seconds, time for turning on controllers
+    Vang_ctrlStart = (20+80*r)*Ts; % wait until after interval over which you tuned controller
+    Vmag_ctrlStart = (20+80*r)*Ts; % in seconds, time for turning on controllers
 
          % hardcode for now
         tau=0.1; % first order TF time const for plat model

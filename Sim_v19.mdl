@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.516"
+    ComputedModelVersion    "1.564"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -33,7 +33,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [-8.0, 0.0, 1604.0, 876.0]
+      Location		      [-8.0, 0.0, 1292.0, 732.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -58,7 +58,7 @@ Model {
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkTopLevel"
 	  LoadSaveID		  "0"
-	  Extents		  [1554.0, 690.0]
+	  Extents		  [1242.0, 554.0]
 	  ZoomFactor		  [2.0]
 	  Offset		  [0.0, 0.0]
 	}
@@ -67,36 +67,36 @@ Model {
 	  IsActive		  [1]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "44"
-	  Extents		  [1554.0, 698.0]
+	  Extents		  [1242.0, 554.0]
 	  ZoomFactor		  [1.0]
-	  Offset		  [264.35714285714369, 256.18831368502697]
+	  Offset		  [294.53637941966429, 358.04934957281455]
 	}
 	Object {
 	  $ObjectID		  7
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2084"
-	  Extents		  [1554.0, 690.0]
-	  ZoomFactor		  [0.6]
-	  Offset		  [-992.91517946031036, -479.16666666666669]
+	  Extents		  [1242.0, 554.0]
+	  ZoomFactor		  [1.5]
+	  Offset		  [-39.16024656722584, 205.10243510921455]
 	}
 	Object {
 	  $ObjectID		  8
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2015"
-	  Extents		  [1554.0, 690.0]
+	  Extents		  [1242.0, 554.0]
 	  ZoomFactor		  [1.75]
-	  Offset		  [0.0, 0.0]
+	  Offset		  [0.0, 106.28571428571428]
 	}
 	Object {
 	  $ObjectID		  9
 	  IsActive		  [0]
 	  ViewObjType		  "SimulinkSubsys"
 	  LoadSaveID		  "2089"
-	  Extents		  [1874.0, 750.0]
-	  ZoomFactor		  [1.7499999999999996]
-	  Offset		  [-46.982142857142492, 9.4285714285714448]
+	  Extents		  [1242.0, 554.0]
+	  ZoomFactor		  [1.75]
+	  Offset		  [594.07427620648048, 171.79154104716935]
 	}
 	PropName		"EditorsInfo"
       }
@@ -108,9 +108,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Jaimie.Swartz"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Sep 09 12:59:56 2019"
-  RTWModifiedTimeStamp	  489934788
-  ModelVersionFormat	  "1.%<AutoIncrement:516>"
+  LastModifiedDate	  "Wed Jan 29 19:24:57 2020"
+  RTWModifiedTimeStamp	  502226689
+  ModelVersionFormat	  "1.%<AutoIncrement:564>"
   ConfigurationManager	  "none"
   SampleTimeColors	  on
   SampleTimeAnnotations	  off
@@ -388,7 +388,7 @@ Model {
   ShowModelReferenceBlockIO off
   Array {
     Type		    "Handle"
-    Dimension		    12
+    Dimension		    13
     Simulink.ConfigSet {
       $ObjectID		      12
       Version		      "1.15.0"
@@ -7877,15 +7877,640 @@ Model {
       CurrentDlgPage	      "Diagnostics"
       ConfigPrmDlgPosition     [ 219, 70, 1147, 629 ] 
     }
+    Simulink.ConfigSet {
+      $ObjectID		      204
+      Version		      "1.15.0"
+      Array {
+	Type			"Handle"
+	Dimension		9
+	Simulink.SolverCC {
+	  $ObjectID		  205
+	  Version		  "1.15.0"
+	  StartTime		  "0.0"
+	  StopTime		  "300"
+	  AbsTol		  "auto"
+	  FixedStep		  "Ts"
+	  InitialStep		  "auto"
+	  MaxNumMinSteps	  "-1"
+	  MaxOrder		  5
+	  ZcThreshold		  "auto"
+	  ConsecutiveZCsStepRelTol "10*128*eps"
+	  MaxConsecutiveZCs	  "1000"
+	  ExtrapolationOrder	  4
+	  NumberNewtonIterations  1
+	  MaxStep		  "auto"
+	  MinStep		  "auto"
+	  MaxConsecutiveMinStep	  "1"
+	  RelTol		  "1e-3"
+	  SolverMode		  "Auto"
+	  EnableConcurrentExecution off
+	  ConcurrentTasks	  off
+	  Solver		  "ode4"
+	  SolverName		  "ode4"
+	  SolverJacobianMethodControl "auto"
+	  ShapePreserveControl	  "DisableAll"
+	  ZeroCrossControl	  "UseLocalSettings"
+	  ZeroCrossAlgorithm	  "Nonadaptive"
+	  AlgebraicLoopSolver	  "LineSearch"
+	  SolverResetMethod	  "Fast"
+	  PositivePriorityOrder	  off
+	  AutoInsertRateTranBlk	  off
+	  SampleTimeConstraint	  "Unconstrained"
+	  InsertRTBMode		  "Whenever possible"
+	}
+	Simulink.DataIOCC {
+	  $ObjectID		  206
+	  Version		  "1.15.0"
+	  Decimation		  "1"
+	  ExternalInput		  "[t, u]"
+	  FinalStateName	  "xFinal"
+	  InitialState		  "xInitial"
+	  LimitDataPoints	  on
+	  MaxDataPoints		  "1000"
+	  LoadExternalInput	  off
+	  LoadInitialState	  off
+	  SaveFinalState	  off
+	  SaveCompleteFinalSimState off
+	  SaveFormat		  "Array"
+	  SignalLoggingSaveFormat "ModelDataLogs"
+	  SaveOutput		  on
+	  SaveState		  off
+	  SignalLogging		  off
+	  DSMLogging		  off
+	  InspectSignalLogs	  off
+	  VisualizeSimOutput	  off
+	  SaveTime		  on
+	  ReturnWorkspaceOutputs  off
+	  StateSaveName		  "xout"
+	  TimeSaveName		  "tout"
+	  OutputSaveName	  "yout"
+	  SignalLoggingName	  "logsout"
+	  DSMLoggingName	  "dsmout"
+	  OutputOption		  "RefineOutputTimes"
+	  OutputTimes		  "[]"
+	  ReturnWorkspaceOutputsName "out"
+	  Refine		  "1"
+	}
+	Simulink.OptimizationCC {
+	  $ObjectID		  207
+	  Version		  "1.15.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    8
+	    Cell		    "BooleansAsBitfields"
+	    Cell		    "PassReuseOutputArgsAs"
+	    Cell		    "PassReuseOutputArgsThreshold"
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "OptimizeModelRefInitCode"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    Cell		    "UseSpecifiedMinMax"
+	    PropName		    "DisabledProps"
+	  }
+	  BlockReduction	  on
+	  BooleanDataType	  on
+	  ConditionallyExecuteInputs on
+	  InlineParams		  off
+	  UseDivisionForNetSlopeComputation "off"
+	  UseFloatMulNetSlope	  off
+	  DefaultUnderspecifiedDataType	"double"
+	  UseSpecifiedMinMax	  off
+	  InlineInvariantSignals  off
+	  OptimizeBlockIOStorage  on
+	  BufferReuse		  on
+	  EnhancedBackFolding	  off
+	  CachingGlobalReferences off
+	  GlobalBufferReuse	  on
+	  StrengthReduction	  off
+	  ExpressionFolding	  on
+	  BooleansAsBitfields	  off
+	  BitfieldContainerType	  "uint_T"
+	  EnableMemcpy		  on
+	  MemcpyThreshold	  64
+	  PassReuseOutputArgsAs	  "Structure reference"
+	  PassReuseOutputArgsThreshold 12
+	  ExpressionDepthLimit	  2147483647
+	  LocalBlockOutputs	  on
+	  RollThreshold		  5
+	  StateBitsets		  off
+	  DataBitsets		  off
+	  ActiveStateOutputEnumStorageType "Native Integer"
+	  ZeroExternalMemoryAtStartup on
+	  ZeroInternalMemoryAtStartup on
+	  InitFltsAndDblsToZero	  off
+	  NoFixptDivByZeroProtection off
+	  EfficientFloat2IntCast  off
+	  EfficientMapNaN2IntZero on
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
+	  MaxStackSize		  "Inherit from target"
+	  BufferReusableBoundary  on
+	  SimCompilerOptimization "off"
+	  AccelVerboseBuild	  off
+	}
+	Simulink.DebuggingCC {
+	  $ObjectID		  208
+	  Version		  "1.15.0"
+	  RTPrefix		  "error"
+	  ConsistencyChecking	  "none"
+	  ArrayBoundsChecking	  "none"
+	  SignalInfNanChecking	  "none"
+	  SignalRangeChecking	  "none"
+	  ReadBeforeWriteMsg	  "UseLocalSettings"
+	  WriteAfterWriteMsg	  "UseLocalSettings"
+	  WriteAfterReadMsg	  "UseLocalSettings"
+	  AlgebraicLoopMsg	  "warning"
+	  ArtificialAlgebraicLoopMsg "warning"
+	  SaveWithDisabledLinksMsg "warning"
+	  SaveWithParameterizedLinksMsg	"warning"
+	  CheckSSInitialOutputMsg on
+	  UnderspecifiedInitializationDetection	"Classic"
+	  MergeDetectMultiDrivingBlocksExec "none"
+	  CheckExecutionContextPreStartOutputMsg off
+	  CheckExecutionContextRuntimeOutputMsg	off
+	  SignalResolutionControl "UseLocalSettings"
+	  BlockPriorityViolationMsg "warning"
+	  MinStepSizeMsg	  "warning"
+	  TimeAdjustmentMsg	  "none"
+	  MaxConsecutiveZCsMsg	  "error"
+	  MaskedZcDiagnostic	  "warning"
+	  IgnoredZcDiagnostic	  "warning"
+	  SolverPrmCheckMsg	  "warning"
+	  InheritedTsInSrcMsg	  "warning"
+	  DiscreteInheritContinuousMsg "warning"
+	  MultiTaskDSMMsg	  "error"
+	  MultiTaskCondExecSysMsg "error"
+	  MultiTaskRateTransMsg	  "error"
+	  SingleTaskRateTransMsg  "none"
+	  TasksWithSamePriorityMsg "warning"
+	  SigSpecEnsureSampleTimeMsg "warning"
+	  CheckMatrixSingularityMsg "none"
+	  IntegerOverflowMsg	  "warning"
+	  Int32ToFloatConvMsg	  "warning"
+	  ParameterDowncastMsg	  "error"
+	  ParameterOverflowMsg	  "error"
+	  ParameterUnderflowMsg	  "none"
+	  ParameterPrecisionLossMsg "warning"
+	  ParameterTunabilityLossMsg "warning"
+	  FixptConstUnderflowMsg  "none"
+	  FixptConstOverflowMsg	  "none"
+	  FixptConstPrecisionLossMsg "none"
+	  UnderSpecifiedDataTypeMsg "none"
+	  UnnecessaryDatatypeConvMsg "none"
+	  VectorMatrixConversionMsg "none"
+	  InvalidFcnCallConnMsg	  "error"
+	  FcnCallInpInsideContextMsg "EnableAllAsWarning"
+	  SignalLabelMismatchMsg  "none"
+	  UnconnectedInputMsg	  "warning"
+	  UnconnectedOutputMsg	  "warning"
+	  UnconnectedLineMsg	  "warning"
+	  SFcnCompatibilityMsg	  "none"
+	  FrameProcessingCompatibilityMsg "error"
+	  UniqueDataStoreMsg	  "none"
+	  BusObjectLabelMismatch  "warning"
+	  RootOutportRequireBusObject "warning"
+	  AssertControl		  "UseLocalSettings"
+	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
+	  ModelReferenceVersionMismatchMessage "none"
+	  ModelReferenceIOMismatchMessage "none"
+	  UnknownTsInhSupMsg	  "warning"
+	  ModelReferenceDataLoggingMessage "warning"
+	  ModelReferenceSymbolNameMessage "warning"
+	  ModelReferenceExtraNoncontSigs "error"
+	  StateNameClashWarn	  "warning"
+	  SimStateInterfaceChecksumMismatchMsg "warning"
+	  SimStateOlderReleaseMsg "error"
+	  InitInArrayFormatMsg	  "warning"
+	  StrictBusMsg		  "ErrorLevel1"
+	  BusNameAdapt		  "WarnAndRepair"
+	  NonBusSignalsTreatedAsBus "none"
+	  BlockIODiagnostic	  "none"
+	  SFUnusedDataAndEventsDiag "warning"
+	  SFUnexpectedBacktrackingDiag "warning"
+	  SFInvalidInputDataAccessInChartInitDiag "warning"
+	  SFNoUnconditionalDefaultTransitionDiag "warning"
+	  SFTransitionOutsideNaturalParentDiag "warning"
+	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUndirectedBroadcastEventsDiag "warning"
+	  SFTransitionActionBeforeConditionDiag	"warning"
+	  SFOutputUsedAsStateInMooreChartDiag "error"
+	  IntegerSaturationMsg	  "warning"
+	}
+	Simulink.HardwareCC {
+	  $ObjectID		  209
+	  Version		  "1.15.0"
+	  ProdBitPerChar	  8
+	  ProdBitPerShort	  16
+	  ProdBitPerInt		  32
+	  ProdBitPerLong	  32
+	  ProdBitPerLongLong	  64
+	  ProdBitPerFloat	  32
+	  ProdBitPerDouble	  64
+	  ProdBitPerPointer	  32
+	  ProdLargestAtomicInteger "Char"
+	  ProdLargestAtomicFloat  "None"
+	  ProdIntDivRoundTo	  "Undefined"
+	  ProdEndianess		  "Unspecified"
+	  ProdWordSize		  32
+	  ProdShiftRightIntArith  on
+	  ProdLongLongMode	  off
+	  ProdHWDeviceType	  "32-bit Generic"
+	  TargetBitPerChar	  8
+	  TargetBitPerShort	  16
+	  TargetBitPerInt	  32
+	  TargetBitPerLong	  32
+	  TargetBitPerLongLong	  64
+	  TargetBitPerFloat	  32
+	  TargetBitPerDouble	  64
+	  TargetBitPerPointer	  32
+	  TargetLargestAtomicInteger "Char"
+	  TargetLargestAtomicFloat "None"
+	  TargetShiftRightIntArith on
+	  TargetLongLongMode	  off
+	  TargetIntDivRoundTo	  "Undefined"
+	  TargetEndianess	  "Unspecified"
+	  TargetWordSize	  32
+	  TargetPreprocMaxBitsSint 32
+	  TargetPreprocMaxBitsUint 32
+	  TargetHWDeviceType	  "Specified"
+	  TargetUnknown		  off
+	  ProdEqTarget		  on
+	}
+	Simulink.ModelReferenceCC {
+	  $ObjectID		  210
+	  Version		  "1.15.0"
+	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  CheckModelReferenceTargetMessage "error"
+	  EnableParallelModelReferenceBuilds off
+	  ParallelModelReferenceErrorOnInvalidPool on
+	  ParallelModelReferenceMATLABWorkerInit "None"
+	  ModelReferenceNumInstancesAllowed "Multi"
+	  PropagateVarSize	  "Infer from blocks in model"
+	  ModelReferencePassRootInputsByReference on
+	  ModelReferenceMinAlgLoopOccurrences off
+	  PropagateSignalLabelsOutOfModel off
+	  SupportModelReferenceSimTargetCustomCode off
+	}
+	Simulink.SFSimCC {
+	  $ObjectID		  211
+	  Version		  "1.15.0"
+	  SFSimOverflowDetection  on
+	  SFSimEcho		  on
+	  SimCtrlC		  on
+	  SimIntegrity		  on
+	  SimUseLocalCustomCode	  off
+	  SimParseCustomCode	  on
+	  SimBuildMode		  "sf_incremental_build"
+	  SimGenImportedTypeDefs  off
+	}
+	Simulink.RTWCC {
+	  $BackupClass		  "Simulink.RTWCC"
+	  $ObjectID		  212
+	  Version		  "1.15.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    16
+	    Cell		    "IncludeHyperlinkInReport"
+	    Cell		    "GenerateTraceInfo"
+	    Cell		    "GenerateTraceReport"
+	    Cell		    "GenerateTraceReportSl"
+	    Cell		    "GenerateTraceReportSf"
+	    Cell		    "GenerateTraceReportEml"
+	    Cell		    "GenerateCodeMetricsReport"
+	    Cell		    "PortableWordSizes"
+	    Cell		    "GenerateWebview"
+	    Cell		    "GenerateCodeReplacementReport"
+	    Cell		    "GenerateMissedCodeReplacementReport"
+	    Cell		    "GenerateErtSFunction"
+	    Cell		    "CreateSILPILBlock"
+	    Cell		    "CodeExecutionProfiling"
+	    Cell		    "CodeProfilingSaveOptions"
+	    Cell		    "CodeProfilingInstrumentation"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
+	  TLCOptions		  ""
+	  GenCodeOnly		  off
+	  MakeCommand		  "make_rtw"
+	  GenerateMakefile	  on
+	  PackageGeneratedCodeAndArtifacts off
+	  PackageName		  ""
+	  TemplateMakefile	  "grt_default_tmf"
+	  PostCodeGenCommand	  ""
+	  Description		  ""
+	  GenerateReport	  off
+	  SaveLog		  off
+	  RTWVerbose		  on
+	  RetainRTWFile		  off
+	  ProfileTLC		  off
+	  TLCDebug		  off
+	  TLCCoverage		  off
+	  TLCAssert		  off
+	  RTWUseLocalCustomCode	  off
+	  RTWUseSimCustomCode	  off
+	  CustomSourceCode	  ""
+	  CustomHeaderCode	  ""
+	  CustomInclude		  ""
+	  CustomSource		  ""
+	  CustomLibrary		  ""
+	  CustomInitializer	  ""
+	  CustomTerminator	  ""
+	  Toolchain		  "Automatically locate an installed toolchain"
+	  BuildConfiguration	  "Faster Builds"
+	  IncludeHyperlinkInReport off
+	  LaunchReport		  off
+	  PortableWordSizes	  off
+	  CreateSILPILBlock	  "None"
+	  CodeExecutionProfiling  off
+	  CodeExecutionProfileVariable "executionProfile"
+	  CodeProfilingSaveOptions "SummaryOnly"
+	  CodeProfilingInstrumentation off
+	  SILDebugging		  off
+	  TargetLang		  "C"
+	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
+	  GenerateTraceInfo	  off
+	  GenerateTraceReport	  off
+	  GenerateTraceReportSl	  off
+	  GenerateTraceReportSf	  off
+	  GenerateTraceReportEml  off
+	  GenerateWebview	  off
+	  GenerateCodeMetricsReport off
+	  GenerateCodeReplacementReport	off
+	  GenerateMissedCodeReplacementReport off
+	  RTWCompilerOptimization "off"
+	  RTWCustomCompilerOptimizations ""
+	  CheckMdlBeforeBuild	  "Off"
+	  SharedConstantsCachingThreshold 1024
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    Simulink.CodeAppCC {
+	      $ObjectID		      213
+	      Version		      "1.15.0"
+	      Array {
+		Type			"Cell"
+		Dimension		24
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"IgnoreTestpoints"
+		Cell			"InsertBlockDesc"
+		Cell			"InsertPolySpaceComments"
+		Cell			"SFDataObjDesc"
+		Cell			"MATLABFcnDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrFcnArg"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		Cell			"ReqsInCode"
+		Cell			"ParameterTuningSideEffectCode"
+		Cell			"InternalIdentifier"
+		Cell			"CustomSymbolStrUtil"
+		PropName		"DisabledProps"
+	      }
+	      ForceParamTrailComments off
+	      GenerateComments	      on
+	      CommentStyle	      "Auto"
+	      IgnoreCustomStorageClasses on
+	      IgnoreTestpoints	      off
+	      IncHierarchyInIds	      off
+	      MaxIdLength	      31
+	      PreserveName	      off
+	      PreserveNameWithParent  off
+	      ShowEliminatedStatement off
+	      OperatorAnnotations     off
+	      IncAutoGenComments      off
+	      SimulinkDataObjDesc     off
+	      SFDataObjDesc	      off
+	      MATLABFcnDesc	      off
+	      IncDataTypeInIds	      off
+	      MangleLength	      1
+	      CustomSymbolStrGlobalVar "$R$N$M"
+	      CustomSymbolStrType     "$N$R$M_T"
+	      CustomSymbolStrField    "$N$M"
+	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrFcnArg   "rt$I$N$M"
+	      CustomSymbolStrBlkIO    "rtb_$N$M"
+	      CustomSymbolStrTmpVar   "$N$M"
+	      CustomSymbolStrMacro    "$R$N$M"
+	      CustomSymbolStrUtil     "$N$C"
+	      DefineNamingRule	      "None"
+	      ParamNamingRule	      "None"
+	      SignalNamingRule	      "None"
+	      InsertBlockDesc	      off
+	      InsertPolySpaceComments off
+	      SimulinkBlockComments   on
+	      MATLABSourceComments    off
+	      EnableCustomComments    off
+	      InternalIdentifier      "Shortened"
+	      InlinedPrmAccess	      "Literals"
+	      ReqsInCode	      off
+	      UseSimReservedNames     off
+	    }
+	    Simulink.GRTTargetCC {
+	      $BackupClass	      "Simulink.TargetCC"
+	      $ObjectID		      214
+	      Version		      "1.15.0"
+	      Array {
+		Type			"Cell"
+		Dimension		15
+		Cell			"GeneratePreprocessorConditionals"
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"GenerateAllocFcn"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"CPPClassGenCompliant"
+		Cell			"PortableWordSizes"
+		Cell			"PurelyIntegerCode"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		Cell			"SupportNonInlinedSFcns"
+		PropName		"DisabledProps"
+	      }
+	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
+	      TargetLibSuffix	      ""
+	      TargetPreCompLibLocation ""
+	      GenFloatMathFcnCalls    "NOT IN USE"
+	      TargetLangStandard      "C89/C90 (ANSI)"
+	      CodeReplacementLibrary  "None"
+	      UtilityFuncGeneration   "Auto"
+	      ERTMultiwordTypeDef     "System defined"
+	      ERTMultiwordLength      256
+	      MultiwordLength	      2048
+	      GenerateFullHeader      on
+	      InferredTypesCompatibility off
+	      GenerateSampleERTMain   off
+	      GenerateTestInterfaces  off
+	      ModelReferenceCompliant on
+	      ParMdlRefBuildCompliant on
+	      CompOptLevelCompliant   on
+	      ConcurrentExecutionCompliant on
+	      IncludeMdlTerminateFcn  on
+	      GeneratePreprocessorConditionals "Disable all"
+	      CombineOutputUpdateFcns off
+	      CombineSignalStateStructs	off
+	      SuppressErrorStatus     off
+	      ERTFirstTimeCompliant   off
+	      IncludeFileDelimiter    "Auto"
+	      ERTCustomFileBanners    off
+	      SupportAbsoluteTime     on
+	      LogVarNameModifier      "rt_"
+	      MatFileLogging	      on
+	      MultiInstanceERTCode    off
+	      CodeInterfacePackaging  "Nonreusable function"
+	      SupportNonFinite	      on
+	      SupportComplex	      on
+	      PurelyIntegerCode	      off
+	      SupportContinuousTime   on
+	      SupportNonInlinedSFcns  on
+	      SupportVariableSizeSignals off
+	      ParenthesesLevel	      "Nominal"
+	      CastingMode	      "Nominal"
+	      MATLABClassNameForMDSCustomization "Simulink.SoftwareTarget.GRTCustomization"
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    on
+	      AutosarCompliant	      off
+	      GRTInterface	      on
+	      GenerateAllocFcn	      off
+	      GenerateSharedConstants on
+	      UseMalloc		      off
+	      ExtMode		      off
+	      ExtModeStaticAlloc      off
+	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
+	      ExtModeMexFile	      "ext_comm"
+	      ExtModeIntrfLevel	      "Level1"
+	      RTWCAPISignals	      off
+	      RTWCAPIParams	      off
+	      RTWCAPIStates	      off
+	      RTWCAPIRootIO	      off
+	      GenerateASAP2	      off
+	      MultiInstanceErrorCode  "Error"
+	    }
+	    PropName		    "Components"
+	  }
+	}
+	SSC.SimscapeCC {
+	  $ObjectID		  215
+	  Version		  "1.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    1
+	    Cell		    "Name"
+	    PropName		    "DisabledProps"
+	  }
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    MECH.SimMechanicsCC {
+	      $ObjectID		      216
+	      Version		      "1.15.0"
+	      Name		      "SimMechanics"
+	      WarnOnRedundantConstraints on
+	      WarnOnSingularInitialAssembly off
+	      ShowCutJoints	      off
+	      VisOnUpdateDiagram      off
+	      VisDuringSimulation     off
+	      EnableVisSimulationTime on
+	      VisSampleTime	      "0"
+	      DisableBodyVisControl   off
+	      ShowCG		      on
+	      ShowCS		      on
+	      ShowOnlyPortCS	      off
+	      HighlightModel	      on
+	      FramesToBeSkipped	      "0"
+	      AnimationDelay	      "3"
+	      RecordAVI		      off
+	      CompressAVI	      on
+	      AutoFitVis	      "off"
+	      EnableSelection	      on
+	      LastVizWinPosition      "[-1 -1 -1 -1]"
+	      CamPosition	      "[0 0 0]"
+	      CamTarget		      "[0 0 -1]"
+	      CamUpVector	      "[0 1 0]"
+	      CamHeight		      "-1"
+	      CamViewAngle	      "0"
+	      VisBackgroundColor      "[0.9 0.9 0.95]"
+	      DefaultBodyColor	      "[1 0 0]"
+	      MDLBodyVisualizationType "Convex hull from body CS locations"
+	      OVRRIDBodyVisualizationType "NONE"
+	    }
+	    simmechanics.ConfigurationSet {
+	      $ObjectID		      217
+	      Version		      "1.15.0"
+	      Description	      "SimMechanics 2G"
+	      Array {
+		Type			"Handle"
+		Dimension		2
+		simmechanics.DiagnosticsConfigSet {
+		  $ObjectID		  218
+		  Version		  "1.15.0"
+		  Description		  "Diagnostics"
+		  Name			  "DiagnosticsConfigSet"
+		  SimMechanicsInvalidVisualProperty "warning"
+		  SimMechanicsCrossSectionNullEdge "warning"
+		  SimMechanicsUnconnectedFramePorts "warning"
+		  SimMechanicsRedundantBlock "warning"
+		  SimMechanicsConflictingReferenceFrames "warning"
+		  SimMechanicsRigidlyBoundBlock	"error"
+		  SimMechanicsUnsatisfiedHighPriorityTargets "warning"
+		  SimMechanicsJointTargetOverSpecification "error"
+		}
+		simmechanics.ExplorerConfigSet {
+		  $ObjectID		  219
+		  Version		  "1.15.0"
+		  Description		  "Explorer"
+		  Name			  "ExplorerConfigSet"
+		  SimMechanicsOpenEditorOnUpdate on
+		}
+		PropName		"Components"
+	      }
+	      Name		      "SimMechanics2G"
+	    }
+	    PropName		    "Components"
+	  }
+	  Name			  "Simscape"
+	  EditingMode		  "Full"
+	  ExplicitSolverDiagnosticOptions "warning"
+	  GlobalZcOffDiagnosticOptions "warning"
+	  SimscapeLogType	  "none"
+	  SimscapeLogSimulationStatistics off
+	  SimscapeLogOpenViewer	  off
+	  SimscapeLogName	  "simlog"
+	  SimscapeLogDecimation	  1
+	  SimscapeLogLimitData	  on
+	  SimscapeLogDataHistory  5000
+	}
+	PropName		"Components"
+      }
+      Name		      "Configuration12"
+      ExtraOptions	      "-aGenerateTraceInfo=0 -aIgnoreTestpoints=0 "
+      CurrentDlgPage	      "Diagnostics"
+      ConfigPrmDlgPosition     [ 219, 70, 1147, 629 ] 
+    }
     PropName		    "ConfigurationSets"
   }
   Simulink.ConfigSet {
     $PropName		    "ActiveConfigurationSet"
-    $ObjectID		    188
+    $ObjectID		    204
   }
   Object {
     $PropName		    "DataTransfer"
-    $ObjectID		    204
+    $ObjectID		    220
     $ClassName		    "Simulink.GlobalDataTransfer"
     DefaultTransitionBetweenSyncTasks "Ensure deterministic transfer (maximum delay)"
     DefaultTransitionBetweenAsyncTasks "Ensure data integrity only"
@@ -8074,20 +8699,6 @@ Model {
       Interpolate	      on
     }
     Block {
-      BlockType		      MinMax
-      Function		      "min"
-      Inputs		      "1"
-      InputSameDT	      on
-      OutMin		      "[]"
-      OutMax		      "[]"
-      OutDataTypeStr	      "Inherit: Inherit via internal rule"
-      LockScale		      off
-      RndMeth		      "Floor"
-      SaturateOnIntegerOverflow	on
-      ZeroCross		      on
-      SampleTime	      "-1"
-    }
-    Block {
       BlockType		      Outport
       Port		      "1"
       OutMin		      "[]"
@@ -8272,7 +8883,7 @@ Model {
   }
   System {
     Name		    "Sim_v19"
-    Location		    [-8, 0, 1596, 876]
+    Location		    [-8, 0, 1284, 732]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -8286,7 +8897,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "200"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "2443"
+    SIDHighWatermark	    "2446"
     Block {
       BlockType		      Reference
       Name		      "Help"
@@ -8328,7 +8939,7 @@ Model {
       RequestExecContextInheritance off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		205
+	$ObjectID		221
 	$ClassName		"Simulink.Mask"
 	Type			"Model Functions"
 	Initialization		"currentBlock = gcb;\nroot = bdroot(currentBlock);\n\nif ~strcmp(get_param(root,'BlockDiagramType'),'"
@@ -8344,7 +8955,7 @@ Model {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  5
 	  Object {
-	    $ObjectID		    206
+	    $ObjectID		    222
 	    Type		    "edit"
 	    Name		    "InitFcnX"
 	    Prompt		    "Initialisation"
@@ -8352,28 +8963,28 @@ Model {
 	    Evaluate		    "off"
 	  }
 	  Object {
-	    $ObjectID		    207
+	    $ObjectID		    223
 	    Type		    "checkbox"
 	    Name		    "prel"
 	    Prompt		    "Preload Function"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    208
+	    $ObjectID		    224
 	    Type		    "checkbox"
 	    Name		    "posl"
 	    Prompt		    "PostLoad Function"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    209
+	    $ObjectID		    225
 	    Type		    "checkbox"
 	    Name		    "inif"
 	    Prompt		    "InitFcn"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    210
+	    $ObjectID		    226
 	    Type		    "checkbox"
 	    Name		    "strf"
 	    Prompt		    "StartFcn"
@@ -8409,7 +9020,7 @@ Model {
       RequestExecContextInheritance off
       System {
 	Name			"Sm_master"
-	Location		[-8, 0, 1596, 876]
+	Location		[-8, 0, 1284, 732]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -8472,7 +9083,7 @@ Model {
 	  BlockRotation		  270
 	  BlockMirror		  on
 	  ForegroundColor	  "red"
-	  Gain			  "1./V1base"
+	  Gain			  "1./Vbase"
 	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
 	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
 	  SaturateOnIntegerOverflow off
@@ -8921,7 +9532,7 @@ Model {
 	  }
 	  System {
 	    Name		    "P-del PI controllers\n( r SISO controllers)"
-	    Location		    [-8, 0, 1596, 876]
+	    Location		    [-8, 0, 1284, 732]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -9017,42 +9628,6 @@ Model {
 	      ZeroCross		      on
 	    }
 	    Block {
-	      BlockType		      Constant
-	      Name		      "If negative sign, output 1"
-	      SID		      "2434"
-	      Position		      [1325, 482, 1400, 508]
-	      ZOrder		      818
-	      BlockMirror	      on
-	      Value		      "0"
-	    }
-	    Block {
-	      BlockType		      MinMax
-	      Name		      "MinMax1"
-	      SID		      "2435"
-	      Ports		      [2, 1]
-	      Position		      [1280, 447, 1310, 478]
-	      ZOrder		      817
-	      BlockMirror	      on
-	      Function		      "max"
-	      Inputs		      "2"
-	      InputSameDT	      off
-	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
-	      BlockType		      Reference
-	      Name		      "Multiport\nSelector2"
-	      SID		      "2430"
-	      Ports		      [1, 1]
-	      Position		      [455, 18, 535, 62]
-	      ZOrder		      814
-	      LibraryVersion	      "1.462"
-	      SourceBlock	      "dspindex/Multiport\nSelector"
-	      SourceType	      "Multiport Selector"
-	      rowsOrCols	      "Columns"
-	      idxCellArray	      "{ridx}"
-	      idxErrMode	      "Clip Index"
-	    }
-	    Block {
 	      BlockType		      Relay
 	      Name		      "Output not sat when input is 0 or 1 "
 	      SID		      "2433"
@@ -9116,181 +9691,6 @@ Model {
 		RTWStorageClass		"Auto"
 		DataLoggingNameMode	"SignalName"
 	      }
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope1"
-	      SID		      "2111"
-	      Ports		      [2]
-	      Position		      [1155, 216, 1185, 249]
-	      ZOrder		      759
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [281, 252, 1647, 932]
-	      Open		      off
-	      NumInputPorts	      "2"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-		axes2			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-46.25~-5"
-	      YMax		      "6.25~5"
-	      SaveName		      "ScopeData8"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope2"
-	      SID		      "2112"
-	      Ports		      [2]
-	      Position		      [785, 176, 815, 209]
-	      ZOrder		      760
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [168, 197, 1604, 996]
-	      Open		      off
-	      NumInputPorts	      "2"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-		axes2			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      YMin		      "-23.625~-5"
-	      YMax		      "2.625~5"
-	      SaveName		      "ScopeData2"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope3"
-	      SID		      "2113"
-	      Ports		      [1]
-	      Position		      [785, 364, 815, 396]
-	      ZOrder		      761
-	      ForegroundColor	      "red"
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [11, 180, 1919, 1069]
-	      Open		      off
-	      NumInputPorts	      "1"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-0.125"
-	      YMax		      "1.125"
-	      SaveName		      "ScopeData9"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope4"
-	      SID		      "2359"
-	      Ports		      [1]
-	      Position		      [300, 124, 330, 156]
-	      ZOrder		      786
-	      ForegroundColor	      "red"
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [10, 84, 1926, 1095]
-	      Open		      off
-	      NumInputPorts	      "1"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      YMin		      "-0.125"
-	      YMax		      "1.125"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope5"
-	      SID		      "2385"
-	      Ports		      [1]
-	      Position		      [570, 174, 600, 206]
-	      ZOrder		      788
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [301, 600, 1354, 1301]
-	      Open		      off
-	      NumInputPorts	      "1"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-0.125"
-	      YMax		      "1.125"
-	      SaveName		      "ScopeData3"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	      ScrollMode	      on
-	    }
-	    Block {
-	      BlockType		      Signum
-	      Name		      "Sign1"
-	      SID		      "2436"
-	      Position		      [1335, 440, 1365, 470]
-	      ZOrder		      816
-	      BlockMirror	      on
 	    }
 	    Block {
 	      BlockType		      Signum
@@ -9422,54 +9822,6 @@ Model {
 	      SampleTime	      "-1"
 	    }
 	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot1"
-	      SID		      "2355"
-	      Ports		      [1]
-	      Position		      [1125, 135, 1195, 165]
-	      ZOrder		      785
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "Pcmd"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot2"
-	      SID		      "2388"
-	      Ports		      [1]
-	      Position		      [575, 340, 645, 370]
-	      ZOrder		      790
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "test"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot3"
-	      SID		      "2361"
-	      Ports		      [1]
-	      Position		      [65, 310, 135, 340]
-	      ZOrder		      787
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "vang_meas"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot4"
-	      SID		      "2408"
-	      Ports		      [1]
-	      Position		      [395, 110, 465, 140]
-	      ZOrder		      803
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "vang_err"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
 	      BlockType		      Step
 	      Name		      "turn on controller at right time"
 	      SID		      "2295"
@@ -9492,28 +9844,8 @@ Model {
 	      Labels		      [0, 0]
 	      SrcBlock		      "Sum4"
 	      SrcPort		      1
-	      Points		      [18, 0]
-	      Branch {
-		ZOrder			347
-		Points			[29, 0]
-		Branch {
-		  ZOrder		  453
-		  DstBlock		  "Variable\nSelector"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  449
-		  Points		  [0, -57; 33, 0; 0, -58]
-		  DstBlock		  "sample every second to plot4"
-		  DstPort		  1
-		}
-	      }
-	      Branch {
-		ZOrder			346
-		Points			[0, -100]
-		DstBlock		"Scope4"
-		DstPort			1
-	      }
+	      DstBlock		      "Variable\nSelector"
+	      DstPort		      1
 	    }
 	    Line {
 	      ZOrder		      250
@@ -9534,36 +9866,16 @@ Model {
 	      ZOrder		      5
 	      SrcBlock		      "Product1"
 	      SrcPort		      1
-	      Points		      [2, 0]
+	      Points		      [78, 0]
 	      Branch {
-		ZOrder			227
-		Points			[4, 0]
-		Branch {
-		  ZOrder		  249
-		  Points		  [72, 0]
-		  Branch {
-		    ZOrder		    251
-		    Points		    [0, -80]
-		    DstBlock		    "Product"
-		    DstPort		    2
-		  }
-		  Branch {
-		    ZOrder		    9
-		    DstBlock		    "Product4"
-		    DstPort		    1
-		  }
-		}
-		Branch {
-		  ZOrder		  247
-		  Points		  [0, 120]
-		  DstBlock		  "sample every second to plot2"
-		  DstPort		  1
-		}
+		ZOrder			251
+		Points			[0, -80]
+		DstBlock		"Product"
+		DstPort			2
 	      }
 	      Branch {
-		ZOrder			226
-		Points			[0, -45]
-		DstBlock		"Scope5"
+		ZOrder			9
+		DstBlock		"Product4"
 		DstPort			1
 	      }
 	    }
@@ -9581,19 +9893,9 @@ Model {
 	      Labels		      [1, 1]
 	      SrcBlock		      "Product"
 	      SrcPort		      1
-	      Points		      [89, 0]
-	      Branch {
-		ZOrder			12
-		Points			[0, 35]
-		DstBlock		"Scope2"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			13
-		Points			[246, 0]
-		DstBlock		"Sum1"
-		DstPort			1
-	      }
+	      Points		      [335, 0]
+	      DstBlock		      "Sum1"
+	      DstPort		      1
 	    }
 	    Line {
 	      Name		      "Pcmd"
@@ -9604,53 +9906,24 @@ Model {
 	      Points		      [35, 0]
 	      Branch {
 		ZOrder			116
-		Points			[0, 30]
-		Branch {
-		  ZOrder		  21
-		  DstBlock		  "Abs"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  22
-		  DstBlock		  "Scope1"
-		  DstPort		  1
-		}
+		DstBlock		"Abs"
+		DstPort			1
 	      }
 	      Branch {
 		ZOrder			19
-		Points			[15, 0]
-		Branch {
-		  ZOrder		  181
-		  Points		  [0, -45]
-		  DstBlock		  "sample every second to plot1"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  128
-		  DstBlock		  "Pcmd"
-		  DstPort		  1
-		}
+		DstBlock		"Pcmd"
+		DstPort			1
 	      }
 	    }
 	    Line {
 	      Name		      "|Pmax|-|Pcmd"
 	      ZOrder		      23
+	      Labels		      [0, 0]
 	      SrcBlock		      "Sum3"
 	      SrcPort		      1
-	      Points		      [0, 58]
-	      Branch {
-		ZOrder			467
-		Points			[0, 27]
-		DstBlock		"Sign2"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			24
-		Labels			[0, 0]
-		Points			[28, 0; 0, -148]
-		DstBlock		"Scope1"
-		DstPort			2
-	      }
+	      Points		      [0, 85]
+	      DstBlock		      "Sign2"
+	      DstPort		      1
 	    }
 	    Line {
 	      ZOrder		      344
@@ -9691,36 +9964,17 @@ Model {
 	      Labels		      [-1, 1]
 	      SrcBlock		      "Output not sat when input is 0 or 1 "
 	      SrcPort		      1
-	      Points		      [-102, 0]
-	      Branch {
-		ZOrder			33
-		Points			[0, -35]
-		DstBlock		"Scope3"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			34
-		Points			[-34, 0; 0, -155]
-		DstBlock		"if saturated, mult by zero\n (zero out integrator)"
-		DstPort			2
-	      }
+	      Points		      [-136, 0; 0, -155]
+	      DstBlock		      "if saturated, mult by zero\n (zero out integrator)"
+	      DstPort		      2
 	    }
 	    Line {
 	      ZOrder		      345
 	      SrcBlock		      "Discrete-Time\nIntegrator"
 	      SrcPort		      1
-	      Points		      [90, 0; 0, -26]
-	      Branch {
-		ZOrder			38
-		Points			[-254, 0; 0, -24]
-		DstBlock		"Scope2"
-		DstPort			2
-	      }
-	      Branch {
-		ZOrder			39
-		DstBlock		"Sum1"
-		DstPort			2
-	      }
+	      Points		      [90, 0]
+	      DstBlock		      "Sum1"
+	      DstPort		      2
 	    }
 	    Line {
 	      ZOrder		      44
@@ -9740,18 +9994,8 @@ Model {
 	      ZOrder		      45
 	      SrcBlock		      "Vang_meas"
 	      SrcPort		      1
-	      Points		      [32, 0]
-	      Branch {
-		ZOrder			464
-		DstBlock		"Sum4"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			185
-		Points			[0, 45; -62, 0; 0, 40]
-		DstBlock		"sample every second to plot3"
-		DstPort			1
-	      }
+	      DstBlock		      "Sum4"
+	      DstPort		      1
 	    }
 	    Line {
 	      ZOrder		      43
@@ -9774,21 +10018,6 @@ Model {
 	      SrcBlock		      "Variable\nSelector"
 	      SrcPort		      1
 	      DstBlock		      "Product1"
-	      DstPort		      2
-	    }
-	    Line {
-	      ZOrder		      460
-	      SrcBlock		      "Sign1"
-	      SrcPort		      1
-	      DstBlock		      "MinMax1"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      461
-	      SrcBlock		      "If negative sign, output 1"
-	      SrcPort		      1
-	      Points		      [-2, 0; 0, -25]
-	      DstBlock		      "MinMax1"
 	      DstPort		      2
 	    }
 	    Line {
@@ -9818,7 +10047,7 @@ Model {
 	  }
 	  System {
 	    Name		    "Q-V PI controllers\n( r SISO controllers)"
-	    Location		    [-8, 0, 1596, 876]
+	    Location		    [-8, 0, 1284, 732]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -9830,7 +10059,7 @@ Model {
 	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
 	    TiledPageScale	    1
 	    ShowPageBoundaries	    off
-	    ZoomFactor		    "60"
+	    ZoomFactor		    "150"
 	    Block {
 	      BlockType		      Inport
 	      Name		      "Vmag_meas"
@@ -9914,32 +10143,10 @@ Model {
 	      ZeroCross		      on
 	    }
 	    Block {
-	      BlockType		      Constant
-	      Name		      "If negative sign, output 0"
-	      SID		      "2403"
-	      Position		      [1320, 522, 1395, 548]
-	      ZOrder		      815
-	      BlockMirror	      on
-	      Value		      "0"
-	    }
-	    Block {
-	      BlockType		      MinMax
-	      Name		      "MinMax"
-	      SID		      "2402"
-	      Ports		      [2, 1]
-	      Position		      [1270, 487, 1300, 518]
-	      ZOrder		      814
-	      BlockMirror	      on
-	      Function		      "max"
-	      Inputs		      "2"
-	      InputSameDT	      off
-	      SaturateOnIntegerOverflow	off
-	    }
-	    Block {
 	      BlockType		      Relay
 	      Name		      "Output not sat when input is 0 or 1"
 	      SID		      "2432"
-	      Position		      [845, 455, 875, 485]
+	      Position		      [800, 455, 830, 485]
 	      ZOrder		      812
 	      BlockMirror	      on
 	      OnSwitchValue	      "-0.5"
@@ -9999,148 +10206,6 @@ Model {
 		RTWStorageClass		"Auto"
 		DataLoggingNameMode	"SignalName"
 	      }
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope1"
-	      SID		      "2073"
-	      Ports		      [2]
-	      Position		      [1110, 266, 1140, 299]
-	      ZOrder		      759
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [1, 96, 2561, 1359]
-	      Open		      off
-	      NumInputPorts	      "2"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-		axes2			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-46.25~-5"
-	      YMax		      "6.25~5"
-	      SaveName		      "ScopeData8"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope2"
-	      SID		      "2074"
-	      Ports		      [2]
-	      Position		      [740, 231, 770, 264]
-	      ZOrder		      760
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [-1, 204, 1916, 1230]
-	      Open		      off
-	      NumInputPorts	      "2"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-		axes2			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-23.625~-5"
-	      YMax		      "2.625~5"
-	      SaveName		      "ScopeData2"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope3"
-	      SID		      "2075"
-	      Ports		      [1]
-	      Position		      [740, 484, 770, 516]
-	      ZOrder		      761
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [10, 180, 1919, 1069]
-	      Open		      off
-	      NumInputPorts	      "1"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-0.125"
-	      YMax		      "1.125"
-	      SaveName		      "ScopeData9"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Scope
-	      Name		      "Scope4"
-	      SID		      "2382"
-	      Ports		      [1]
-	      Position		      [325, 379, 355, 411]
-	      ZOrder		      786
-	      BackgroundColor	      "orange"
-	      Floating		      off
-	      Location		      [86, 136, 1527, 1148]
-	      Open		      off
-	      NumInputPorts	      "1"
-	      List {
-		ListType		AxesTitles
-		axes1			"%<SignalLabel>"
-	      }
-	      List {
-		ListType		ScopeGraphics
-		FigureColor		"[0.156862745098039 0.156862745098039 0.156862745098039]"
-		AxesColor		"[0 0 0]"
-		AxesTickColor		"[0.686274509803922 0.686274509803922 0.686274509803922]"
-		LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-		LineStyles		"-|-|-|-|-|-"
-		LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
-		MarkerStyles		"none|none|none|none|none|none"
-	      }
-	      ShowLegends	      on
-	      YMin		      "-0.125"
-	      YMax		      "1.125"
-	      SaveName		      "ScopeData4"
-	      DataFormat	      "StructureWithTime"
-	      LimitDataPoints	      off
-	    }
-	    Block {
-	      BlockType		      Signum
-	      Name		      "Sign"
-	      SID		      "2401"
-	      Position		      [1320, 445, 1350, 475]
-	      ZOrder		      813
-	      BlockMirror	      on
 	    }
 	    Block {
 	      BlockType		      Signum
@@ -10272,78 +10337,6 @@ Model {
 	      SampleTime	      "-1"
 	    }
 	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot1"
-	      SID		      "2354"
-	      Ports		      [1]
-	      Position		      [1155, 190, 1225, 220]
-	      ZOrder		      783
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "Qcmd"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot2"
-	      SID		      "2356"
-	      Ports		      [1]
-	      Position		      [580, 555, 650, 585]
-	      ZOrder		      784
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "Saturated"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot3"
-	      SID		      "2360"
-	      Ports		      [1]
-	      Position		      [80, 380, 150, 410]
-	      ZOrder		      785
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "vmag_meas"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot4"
-	      SID		      "2407"
-	      Ports		      [1]
-	      Position		      [270, 220, 340, 250]
-	      ZOrder		      800
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "vmag_err"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot5"
-	      SID		      "2426"
-	      Ports		      [1]
-	      Position		      [460, 410, 530, 440]
-	      ZOrder		      808
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "reshape"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
-	      BlockType		      ToWorkspace
-	      Name		      "sample every second to plot6"
-	      SID		      "2427"
-	      Ports		      [1]
-	      Position		      [400, 90, 470, 120]
-	      ZOrder		      809
-	      BackgroundColor	      "[1.000000, 0.901961, 0.815686]"
-	      VariableName	      "select_cols"
-	      MaxDataPoints	      "inf"
-	      SampleTime	      "-1"
-	    }
-	    Block {
 	      BlockType		      Step
 	      Name		      "turn on controller at right time"
 	      SID		      "2294"
@@ -10366,28 +10359,8 @@ Model {
 	      Labels		      [0, 0]
 	      SrcBlock		      "Sum2"
 	      SrcPort		      1
-	      Points		      [11, 0]
-	      Branch {
-		ZOrder			3451
-		Points			[4, 0]
-		Branch {
-		  ZOrder		  3450
-		  DstBlock		  "Variable\nSelector"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  3437
-		  Points		  [0, -28; -80, 0; 0, -47]
-		  DstBlock		  "sample every second to plot4"
-		  DstPort		  1
-		}
-	      }
-	      Branch {
-		ZOrder			3330
-		Points			[0, 85]
-		DstBlock		"Scope4"
-		DstPort			1
-	      }
+	      DstBlock		      "Variable\nSelector"
+	      DstPort		      1
 	    }
 	    Line {
 	      ZOrder		      2990
@@ -10435,19 +10408,9 @@ Model {
 	      Labels		      [1, 1]
 	      SrcBlock		      "Product3"
 	      SrcPort		      1
-	      Points		      [89, 0]
-	      Branch {
-		ZOrder			2998
-		Points			[0, 35]
-		DstBlock		"Scope2"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			2997
-		Points			[246, 0]
-		DstBlock		"Sum1"
-		DstPort			1
-	      }
+	      Points		      [335, 0]
+	      DstBlock		      "Sum1"
+	      DstPort		      1
 	    }
 	    Line {
 	      Name		      "Qcmd"
@@ -10458,32 +10421,13 @@ Model {
 	      Points		      [35, 0]
 	      Branch {
 		ZOrder			3131
-		Points			[0, 25]
-		Branch {
-		  ZOrder		  3203
-		  DstBlock		  "Abs"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  3005
-		  DstBlock		  "Scope1"
-		  DstPort		  1
-		}
+		DstBlock		"Abs"
+		DstPort			1
 	      }
 	      Branch {
 		ZOrder			3123
-		Points			[85, 0]
-		Branch {
-		  ZOrder		  3125
-		  Points		  [0, -45]
-		  DstBlock		  "sample every second to plot1"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  3124
-		  DstBlock		  "Qcmd"
-		  DstPort		  1
-		}
+		DstBlock		"Qcmd"
+		DstPort			1
 	      }
 	    }
 	    Line {
@@ -10492,19 +10436,9 @@ Model {
 	      Labels		      [0, 0]
 	      SrcBlock		      "Sum3"
 	      SrcPort		      1
-	      Points		      [0, 7; 1, 0]
-	      Branch {
-		ZOrder			3465
-		Points			[0, 78]
-		DstBlock		"Sign1"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			3336
-		Points			[17, 0; 0, -102]
-		DstBlock		"Scope1"
-		DstPort			2
-	      }
+	      Points		      [0, 7; 1, 0; 0, 78]
+	      DstBlock		      "Sign1"
+	      DstPort		      1
 	    }
 	    Line {
 	      ZOrder		      3327
@@ -10544,47 +10478,17 @@ Model {
 	      Labels		      [-1, 0]
 	      SrcBlock		      "Output not sat when input is 0 or 1"
 	      SrcPort		      1
-	      Points		      [-112, 0]
-	      Branch {
-		ZOrder			3015
-		Labels			[-1, 0]
-		Points			[0, 30]
-		DstBlock		"Scope3"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			3014
-		Points			[-34, 0; 0, -33]
-		Branch {
-		  ZOrder		  3128
-		  Points		  [0, -107]
-		  DstBlock		  "if saturated, mult by zero\n (zero out integrator)"
-		  DstPort		  2
-		}
-		Branch {
-		  ZOrder		  3127
-		  Points		  [-123, 0; 0, 133]
-		  DstBlock		  "sample every second to plot2"
-		  DstPort		  1
-		}
-	      }
+	      Points		      [-101, 0; 0, -140]
+	      DstBlock		      "if saturated, mult by zero\n (zero out integrator)"
+	      DstPort		      2
 	    }
 	    Line {
 	      ZOrder		      3328
 	      SrcBlock		      "Discrete-Time\nIntegrator"
 	      SrcPort		      1
-	      Points		      [90, 0; 0, -36]
-	      Branch {
-		ZOrder			3001
-		Points			[-254, 0; 0, -24]
-		DstBlock		"Scope2"
-		DstPort			2
-	      }
-	      Branch {
-		ZOrder			3000
-		DstBlock		"Sum1"
-		DstPort			2
-	      }
+	      Points		      [90, 0]
+	      DstBlock		      "Sum1"
+	      DstPort		      2
 	    }
 	    Line {
 	      ZOrder		      3031
@@ -10604,18 +10508,8 @@ Model {
 	      ZOrder		      3026
 	      SrcBlock		      "Vmag_meas"
 	      SrcPort		      1
-	      Points		      [25, 0]
-	      Branch {
-		ZOrder			3444
-		DstBlock		"Sum2"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			3443
-		Points			[0, 45; -23, 0; 0, 40]
-		DstBlock		"sample every second to plot3"
-		DstPort			1
-	      }
+	      DstBlock		      "Sum2"
+	      DstPort		      1
 	    }
 	    Line {
 	      ZOrder		      3030
@@ -10637,43 +10531,7 @@ Model {
 	      ZOrder		      3449
 	      SrcBlock		      "Variable\nSelector"
 	      SrcPort		      1
-	      Points		      [5, 0]
-	      Branch {
-		ZOrder			3457
-		Points			[0, -42; -60, 0; 0, -163]
-		DstBlock		"sample every second to plot6"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			3456
-		Points			[50, 0]
-		Branch {
-		  ZOrder		  3446
-		  Points		  [6, 0; 0, 63; -53, 0; 0, 52]
-		  DstBlock		  "sample every second to plot5"
-		  DstPort		  1
-		}
-		Branch {
-		  ZOrder		  3445
-		  DstBlock		  "Product1"
-		  DstPort		  2
-		}
-	      }
-	    }
-	    Line {
-	      ZOrder		      3458
-	      SrcBlock		      "Sign"
-	      SrcPort		      1
-	      Points		      [-5, 0; 0, 35]
-	      DstBlock		      "MinMax"
-	      DstPort		      1
-	    }
-	    Line {
-	      ZOrder		      3459
-	      SrcBlock		      "If negative sign, output 0"
-	      SrcPort		      1
-	      Points		      [-2, 0; 0, -25]
-	      DstBlock		      "MinMax"
+	      DstBlock		      "Product1"
 	      DstPort		      2
 	    }
 	    Line {
@@ -10684,144 +10542,6 @@ Model {
 	      DstPort		      1
 	    }
 	  }
-	}
-	Block {
-	  BlockType		  Scope
-	  Name			  "Scope1"
-	  SID			  "2383"
-	  Ports			  [1]
-	  Position		  [2070, 439, 2100, 471]
-	  ZOrder		  804
-	  BackgroundColor	  "orange"
-	  Floating		  off
-	  Location		  [25, 80, 1469, 934]
-	  Open			  off
-	  NumInputPorts		  "1"
-	  List {
-	    ListType		    AxesTitles
-	    axes1		    "%<SignalLabel>"
-	  }
-	  List {
-	    ListType		    ScopeGraphics
-	    FigureColor		    "[0.156862745098039 0.156862745098039 0.156862745098039]"
-	    AxesColor		    "[0 0 0]"
-	    AxesTickColor	    "[0.686274509803922 0.686274509803922 0.686274509803922]"
-	    LineColors		    "[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-	    LineStyles		    "-|-|-|-|-|-"
-	    LineWidths		    "[0.5 0.5 0.5 0.5 0.5 0.5]"
-	    MarkerStyles	    "none|none|none|none|none|none"
-	  }
-	  ShowLegends		  on
-	  YMin			  "-0.125"
-	  YMax			  "1.125"
-	  SaveName		  "ScopeData5"
-	  DataFormat		  "StructureWithTime"
-	  LimitDataPoints	  off
-	}
-	Block {
-	  BlockType		  Scope
-	  Name			  "Scope2"
-	  SID			  "2344"
-	  Ports			  [2]
-	  Position		  [1690, 621, 1720, 654]
-	  ZOrder		  791
-	  BackgroundColor	  "orange"
-	  Floating		  off
-	  Location		  [382, 109, 2563, 1361]
-	  Open			  off
-	  NumInputPorts		  "2"
-	  List {
-	    ListType		    AxesTitles
-	    axes1		    "%<SignalLabel>"
-	    axes2		    "%<SignalLabel>"
-	  }
-	  List {
-	    ListType		    ScopeGraphics
-	    FigureColor		    "[0.156862745098039 0.156862745098039 0.156862745098039]"
-	    AxesColor		    "[0 0 0]"
-	    AxesTickColor	    "[0.686274509803922 0.686274509803922 0.686274509803922]"
-	    LineColors		    "[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-	    LineStyles		    "-|-|-|-|-|-"
-	    LineWidths		    "[0.5 0.5 0.5 0.5 0.5 0.5]"
-	    MarkerStyles	    "none|none|none|none|none|none"
-	  }
-	  YMin			  "-23.625~-5"
-	  YMax			  "2.625~5"
-	  SaveName		  "ScopeData18"
-	  DataFormat		  "StructureWithTime"
-	  LimitDataPoints	  off
-	}
-	Block {
-	  BlockType		  Scope
-	  Name			  "Scope4"
-	  SID			  "2341"
-	  Ports			  [1]
-	  Position		  [1675, 299, 1705, 331]
-	  ZOrder		  788
-	  BackgroundColor	  "orange"
-	  Floating		  off
-	  Location		  [-1, 109, 1912, 1057]
-	  Open			  off
-	  NumInputPorts		  "1"
-	  List {
-	    ListType		    AxesTitles
-	    axes1		    "%<SignalLabel>"
-	  }
-	  List {
-	    ListType		    ScopeGraphics
-	    FigureColor		    "[0.156862745098039 0.156862745098039 0.156862745098039]"
-	    AxesColor		    "[0 0 0]"
-	    AxesTickColor	    "[0.686274509803922 0.686274509803922 0.686274509803922]"
-	    LineColors		    "[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
-	    LineStyles		    "-|-|-|-|-|-"
-	    LineWidths		    "[0.5 0.5 0.5 0.5 0.5 0.5]"
-	    MarkerStyles	    "none|none|none|none|none|none"
-	  }
-	  YMin			  "-0.125"
-	  YMax			  "1.125"
-	  SaveName		  "ScopeData12"
-	  DataFormat		  "StructureWithTime"
-	  LimitDataPoints	  off
-	}
-	Block {
-	  BlockType		  Reference
-	  Name			  "Static PF Solver"
-	  SID			  "1569"
-	  Ports			  [2, 4]
-	  Position		  [1395, 379, 1550, 766]
-	  ZOrder		  619
-	  LibraryVersion	  "1.136"
-	  SourceBlock		  "rtlab_phasor/Solver"
-	  SourceType		  ""
-	  epname		  "System"
-	  extension		  "Excel"
-	  xls			  "'impedMod_IEEE13.xls'"
-	  raw			  "'4992b.raw'"
-	  dyr			  "'4992b.dyr'"
-	  cyme			  "'ieee13.sxst'"
-	  powerfactory		  "'network.dgs'"
-	  builtin		  on
-	  cyme_pf		  "''"
-	  cyme_unbalanced	  on
-	  lazy_netlist		  on
-	  capidir		  "'CAPI'"
-	  fmudir		  "'FMU'"
-	  capiprefix		  "capicomp_"
-	  fmuprefix		  "fmucomp_"
-	  logging		  off
-	  sim_mode		  "Dynamic simulation only (without power-flow)"
-	  pf_max_it		  "100"
-	  pf_tol_v		  "0.00000001"
-	  pf_flat_start		  off
-	  pf_smart_start	  off
-	  pf_export		  on
-	  np			  "1"
-	  exporty		  off
-	  dt			  "Ts"
-	  optim_threads		  off
-	  perflog_on		  off
-	  script_activate_postinit off
-	  script_postinit_name	  "''"
 	}
 	Block {
 	  BlockType		  SubSystem
@@ -11374,19 +11094,6 @@ Model {
 	}
 	Block {
 	  BlockType		  ToWorkspace
-	  Name			  "To Workspace"
-	  SID			  "2306"
-	  Ports			  [1]
-	  Position		  [815, 870, 875, 900]
-	  ZOrder		  772
-	  VariableName		  "Pmax"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
 	  Name			  "To Workspace1"
 	  SID			  "905"
 	  Ports			  [1]
@@ -11400,92 +11107,26 @@ Model {
 	}
 	Block {
 	  BlockType		  ToWorkspace
-	  Name			  "To Workspace10"
-	  SID			  "2362"
+	  Name			  "To Workspace2"
+	  SID			  "2444"
 	  Ports			  [1]
-	  Position		  [1395, 835, 1455, 865]
-	  ZOrder		  792
-	  VariableName		  "PQact"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace11"
-	  SID			  "2363"
-	  Ports			  [1]
-	  Position		  [945, 585, 1005, 615]
-	  ZOrder		  793
+	  Position		  [1740, 300, 1800, 330]
+	  ZOrder		  809
 	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  VariableName		  "pcmd"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "Ts"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace12"
-	  SID			  "2380"
-	  Ports			  [1]
-	  Position		  [2230, 620, 2290, 650]
-	  ZOrder		  803
-	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  VariableName		  "Vperf1"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace13"
-	  SID			  "2390"
-	  Ports			  [1]
-	  Position		  [1660, 710, 1720, 740]
-	  ZOrder		  806
-	  VariableName		  "allDel"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace14"
-	  SID			  "2391"
-	  Ports			  [1]
-	  Position		  [1760, 270, 1820, 300]
-	  ZOrder		  807
 	  VariableName		  "allV"
 	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace2"
-	  SID			  "2041"
-	  Ports			  [1]
-	  Position		  [1295, 380, 1355, 410]
-	  ZOrder		  736
-	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  VariableName		  "allPQ"
-	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "Ts"
+	  SampleTime		  "-1"
 	}
 	Block {
 	  BlockType		  ToWorkspace
 	  Name			  "To Workspace3"
-	  SID			  "2042"
+	  SID			  "2446"
 	  Ports			  [1]
-	  Position		  [1040, 745, 1100, 775]
-	  ZOrder		  737
+	  Position		  [1070, 365, 1130, 395]
+	  ZOrder		  810
 	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  NamePlacement		  "alternate"
-	  VariableName		  "netloaddata"
+	  VariableName		  "t"
 	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
 	  SampleTime		  "-1"
@@ -11499,71 +11140,6 @@ Model {
 	  ZOrder		  269
 	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
 	  VariableName		  "vmag_new"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace5"
-	  SID			  "2046"
-	  Ports			  [1]
-	  Position		  [1060, 365, 1120, 395]
-	  ZOrder		  741
-	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  VariableName		  "t"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "Ts"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace6"
-	  SID			  "2307"
-	  Ports			  [1]
-	  Position		  [945, 260, 1005, 290]
-	  ZOrder		  773
-	  VariableName		  "Qmax"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace7"
-	  SID			  "2384"
-	  Ports			  [1]
-	  Position		  [970, 885, 1030, 915]
-	  ZOrder		  805
-	  VariableName		  "Pmax1"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "3-D array (concatenate along third dimension)"
-	  FixptAsFi		  on
-	  SampleTime		  "-1"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace8"
-	  SID			  "2321"
-	  Ports			  [1]
-	  Position		  [935, 440, 995, 470]
-	  ZOrder		  778
-	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  VariableName		  "qcmd"
-	  MaxDataPoints		  "inf"
-	  Save2DSignal		  "2-D array (concatenate along first dimension)"
-	  SampleTime		  "Ts"
-	}
-	Block {
-	  BlockType		  ToWorkspace
-	  Name			  "To Workspace9"
-	  SID			  "2322"
-	  Ports			  [1]
-	  Position		  [2080, 575, 2140, 605]
-	  ZOrder		  779
-	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  VariableName		  "Vperf"
 	  MaxDataPoints		  "inf"
 	  Save2DSignal		  "2-D array (concatenate along first dimension)"
 	  SampleTime		  "-1"
@@ -11605,38 +11181,44 @@ Model {
 	  Value			  "[1 1 1]"
 	}
 	Block {
-	  BlockType		  Scope
-	  Name			  "load645_afterLoadChange"
-	  SID			  "944"
-	  Ports			  [1]
-	  Position		  [365, 259, 395, 291]
-	  ZOrder		  404
-	  BackgroundColor	  "[1.000000, 0.901961, 0.815686]"
-	  Floating		  off
-	  Location		  [511, 630, 1456, 1210]
-	  Open			  off
-	  NumInputPorts		  "1"
-	  List {
-	    ListType		    AxesTitles
-	    axes1		    "%<SignalLabel>"
-	  }
-	  List {
-	    ListType		    ScopeGraphics
-	    FigureColor		    "[0.156862745098039 0.156862745098039 0.156862745098039]"
-	    AxesColor		    "[0 0 0]"
-	    AxesTickColor	    "[0.686274509803922 0.686274509803922 0.686274509803922]"
-	    LineColors		    "[1 1 0.0666666666666667;0.0745098039215686 0.623529411764706 1;1 0.411764705882353 0.16078431372"
-	    "549;0.392156862745098 0.831372549019608 0.0745098039215686;0.717647058823529 0.274509803921569 1;0.05882352941176"
-	    "47 1 1]"
-	    LineStyles		    "-|-|-|-|-|-"
-	    LineWidths		    "[2 2 2 2 0.75 0.75]"
-	    MarkerStyles	    "none|none|none|none|none|none"
-	  }
-	  ShowLegends		  on
-	  LegendLocations	  "0.6649     0.75575     0.26032     0.11379"
-	  YMin			  "0.94469"
-	  YMax			  "1.0518"
-	  SaveName		  "ScopeData17"
+	  BlockType		  Reference
+	  Name			  "ePHASORSIM PF Solver"
+	  SID			  "1569"
+	  Ports			  [2, 4]
+	  Position		  [1395, 379, 1550, 766]
+	  ZOrder		  619
+	  LibraryVersion	  "1.136"
+	  SourceBlock		  "rtlab_phasor/Solver"
+	  SourceType		  ""
+	  epname		  "System"
+	  extension		  "Excel"
+	  xls			  "'impedMod_IEEE13.xls'"
+	  raw			  "'4992b.raw'"
+	  dyr			  "'4992b.dyr'"
+	  cyme			  "'ieee13.sxst'"
+	  powerfactory		  "'network.dgs'"
+	  builtin		  on
+	  cyme_pf		  "''"
+	  cyme_unbalanced	  on
+	  lazy_netlist		  on
+	  capidir		  "'CAPI'"
+	  fmudir		  "'FMU'"
+	  capiprefix		  "capicomp_"
+	  fmuprefix		  "fmucomp_"
+	  logging		  off
+	  sim_mode		  "Dynamic simulation only (without power-flow)"
+	  pf_max_it		  "100"
+	  pf_tol_v		  "0.00000001"
+	  pf_flat_start		  off
+	  pf_smart_start	  off
+	  pf_export		  on
+	  np			  "1"
+	  exporty		  off
+	  dt			  "Ts"
+	  optim_threads		  off
+	  perflog_on		  off
+	  script_activate_postinit off
+	  script_postinit_name	  "''"
 	}
 	Block {
 	  BlockType		  SubSystem
@@ -11723,7 +11305,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "measure and plot Q"
-	    Location		    [-9, 1, 1595, 869]
+	    Location		    [-8, 0, 1284, 732]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -11964,7 +11546,7 @@ Model {
 	  RequestExecContextInheritance	off
 	  System {
 	    Name		    "vars from \nmatlab workspace"
-	    Location		    [-8, 0, 1596, 876]
+	    Location		    [-8, 0, 1284, 732]
 	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -12185,18 +11767,8 @@ Model {
 	  ZOrder		  628
 	  SrcBlock		  "Subsystem2"
 	  SrcPort		  1
-	  Points		  [10, 0]
-	  Branch {
-	    ZOrder		    1475
-	    Points		    [0, 60]
-	    DstBlock		    "load645_afterLoadChange"
-	    DstPort		    1
-	  }
-	  Branch {
-	    ZOrder		    1474
-	    DstBlock		    "Goto1"
-	    DstPort		    1
-	  }
+	  DstBlock		  "Goto1"
+	  DstPort		  1
 	}
 	Line {
 	  ZOrder		  4147
@@ -12208,48 +11780,28 @@ Model {
 	}
 	Line {
 	  ZOrder		  4290
-	  SrcBlock		  "Static PF Solver"
+	  SrcBlock		  "ePHASORSIM PF Solver"
 	  SrcPort		  1
-	  Points		  [79, 0; 0, -45]
+	  Points		  [79, 0; 0, -45; 37, 0]
 	  Branch {
-	    ZOrder		    3224
-	    Points		    [0, -70]
-	    DstBlock		    "Scope4"
+	    ZOrder		    4329
+	    Points		    [0, -27; 46, 0; 0, -43]
+	    DstBlock		    "To Workspace2"
 	    DstPort		    1
 	  }
 	  Branch {
-	    ZOrder		    3174
-	    Points		    [59, 0]
-	    Branch {
-	      ZOrder		      3867
-	      Points		      [0, -27; 24, 0; 0, -73]
-	      DstBlock		      "To Workspace14"
-	      DstPort		      1
-	    }
-	    Branch {
-	      ZOrder		      3866
-	      DstBlock		      "select measurement at performance node"
-	      DstPort		      1
-	    }
+	    ZOrder		    4328
+	    DstBlock		    "select measurement at performance node"
+	    DstPort		    1
 	  }
 	}
 	Line {
 	  ZOrder		  2930
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  1
-	  Points		  [59, 0]
-	  Branch {
-	    ZOrder		    4287
-	    Points		    [18, 0; 0, -50]
-	    DstBlock		    "Static PF Solver"
-	    DstPort		    1
-	  }
-	  Branch {
-	    ZOrder		    4036
-	    Points		    [0, -130]
-	    DstBlock		    "To Workspace2"
-	    DstPort		    1
-	  }
+	  Points		  [77, 0; 0, -50]
+	  DstBlock		  "ePHASORSIM PF Solver"
+	  DstPort		  1
 	}
 	Line {
 	  ZOrder		  2938
@@ -12270,19 +11822,9 @@ Model {
 	  ZOrder		  2950
 	  SrcBlock		  "vars from \nmatlab workspace"
 	  SrcPort		  4
-	  Points		  [49, 0]
-	  Branch {
-	    ZOrder		    3798
-	    Points		    [0, 55]
-	    DstBlock		    "To Workspace3"
-	    DstPort		    1
-	  }
-	  Branch {
-	    ZOrder		    3666
-	    Points		    [28, 0; 0, -45]
-	    DstBlock		    "MATLAB Function"
-	    DstPort		    8
-	  }
+	  Points		  [77, 0; 0, -45]
+	  DstBlock		  "MATLAB Function"
+	  DstPort		  8
 	}
 	Line {
 	  ZOrder		  3107
@@ -12290,12 +11832,12 @@ Model {
 	  SrcPort		  1
 	  Points		  [9, 0]
 	  Branch {
-	    ZOrder		    3109
-	    DstBlock		    "To Workspace5"
+	    ZOrder		    4366
+	    DstBlock		    "To Workspace3"
 	    DstPort		    1
 	  }
 	  Branch {
-	    ZOrder		    3108
+	    ZOrder		    4365
 	    Points		    [0, 140]
 	    DstBlock		    "MATLAB Function"
 	    DstPort		    1
@@ -12336,30 +11878,11 @@ Model {
 	}
 	Line {
 	  ZOrder		  4289
-	  SrcBlock		  "Static PF Solver"
+	  SrcBlock		  "ePHASORSIM PF Solver"
 	  SrcPort		  2
-	  Points		  [74, 0]
-	  Branch {
-	    ZOrder		    3937
-	    Points		    [0, 105]
-	    Branch {
-	      ZOrder		      3865
-	      Points		      [0, 95]
-	      DstBlock		      "To Workspace13"
-	      DstPort		      1
-	    }
-	    Branch {
-	      ZOrder		      3713
-	      DstBlock		      "Scope2"
-	      DstPort		      1
-	    }
-	  }
-	  Branch {
-	    ZOrder		    3763
-	    Points		    [0, -85]
-	    DstBlock		    "select measurement at performance node"
-	    DstPort		    2
-	  }
+	  Points		  [74, 0; 0, -85]
+	  DstBlock		  "select measurement at performance node"
+	  DstPort		  2
 	}
 	Line {
 	  ZOrder		  3236
@@ -12372,77 +11895,47 @@ Model {
 	Line {
 	  Name			  "not in pu"
 	  ZOrder		  3552
+	  Labels		  [1, 1]
 	  SrcBlock		  "Gain4"
 	  SrcPort		  1
-	  Points		  [36, 0]
-	  Branch {
-	    ZOrder		    3556
-	    Points		    [0, -85]
-	    DstBlock		    "To Workspace8"
-	    DstPort		    1
-	  }
-	  Branch {
-	    ZOrder		    3555
-	    Labels		    [1, 1]
-	    DstBlock		    "MATLAB Function"
-	    DstPort		    2
-	  }
+	  DstBlock		  "MATLAB Function"
+	  DstPort		  2
 	}
 	Line {
 	  Name			  "also not in pu"
 	  ZOrder		  3557
+	  Labels		  [5, 1]
 	  SrcBlock		  "Gain3"
 	  SrcPort		  1
-	  Points		  [30, 0; 0, -48; 58, 0]
-	  Branch {
-	    ZOrder		    3607
-	    Labels		    [2, 1]
-	    Points		    [0, -12]
-	    DstBlock		    "MATLAB Function"
-	    DstPort		    3
-	  }
-	  Branch {
-	    ZOrder		    3562
-	    Points		    [0, 28]
-	    DstBlock		    "To Workspace11"
-	    DstPort		    1
-	  }
+	  Points		  [30, 0; 0, -48; 58, 0; 0, -12]
+	  DstBlock		  "MATLAB Function"
+	  DstPort		  3
 	}
 	Line {
 	  ZOrder		  3563
 	  SrcBlock		  "Gain"
 	  SrcPort		  1
-	  Points		  [0, 23]
+	  Points		  [0, 290]
 	  Branch {
-	    ZOrder		    3572
-	    Points		    [-60, 0; 0, -148]
-	    DstBlock		    "To Workspace9"
-	    DstPort		    1
-	  }
-	  Branch {
-	    ZOrder		    3571
-	    Points		    [0, 267]
+	    ZOrder		    3564
+	    Points		    [95, 0; 0, -230]
 	    Branch {
-	      ZOrder		      3564
-	      Points		      [95, 0; 0, -230]
-	      Branch {
-		ZOrder			928
-		Points			[0, -80]
-		DstBlock		"To Workspace4"
-		DstPort			1
-	      }
-	      Branch {
-		ZOrder			923
-		DstBlock		"Goto8"
-		DstPort			1
-	      }
-	    }
-	    Branch {
-	      ZOrder		      3418
-	      Points		      [-741, 0; 0, -5]
-	      DstBlock		      "Unit Delay3"
+	      ZOrder		      928
+	      Points		      [0, -80]
+	      DstBlock		      "To Workspace4"
 	      DstPort		      1
 	    }
+	    Branch {
+	      ZOrder		      923
+	      DstBlock		      "Goto8"
+	      DstPort		      1
+	    }
+	  }
+	  Branch {
+	    ZOrder		    3418
+	    Points		    [-741, 0; 0, -5]
+	    DstBlock		    "Unit Delay3"
+	    DstPort		    1
 	  }
 	}
 	Line {
@@ -12473,95 +11966,41 @@ Model {
 	  ZOrder		  3608
 	  SrcBlock		  "Gain1"
 	  SrcPort		  1
-	  Points		  [-22, 0; 0, 1]
-	  Branch {
-	    ZOrder		    4178
-	    Points		    [-263, 0; 0, -161]
-	    DstBlock		    "P-del PI controllers\n( r SISO controllers)"
-	    DstPort		    2
-	  }
-	  Branch {
-	    ZOrder		    4121
-	    Points		    [0, 79]
-	    DstBlock		    "To Workspace"
-	    DstPort		    1
-	  }
+	  Points		  [-22, 0; 0, 1; -263, 0; 0, -161]
+	  DstBlock		  "P-del PI controllers\n( r SISO controllers)"
+	  DstPort		  2
 	}
 	Line {
 	  ZOrder		  2914
 	  SrcBlock		  "select measurement at performance node"
 	  SrcPort		  1
-	  Points		  [150, 0; 0, 55]
-	  Branch {
-	    ZOrder		    3862
-	    Points		    [0, 180]
-	    Branch {
-	      ZOrder		      3928
-	      DstBlock		      "Gain"
-	      DstPort		      1
-	    }
-	    Branch {
-	      ZOrder		      3662
-	      DstBlock		      "To Workspace12"
-	      DstPort		      1
-	    }
-	  }
-	  Branch {
-	    ZOrder		    3861
-	    DstBlock		    "Scope1"
-	    DstPort		    1
-	  }
+	  Points		  [150, 0]
+	  DstBlock		  "Gain"
+	  DstPort		  1
 	}
 	Line {
 	  ZOrder		  3609
 	  SrcBlock		  "Gain2"
 	  SrcPort		  1
-	  Points		  [-37, 0]
-	  Branch {
-	    ZOrder		    4177
-	    Points		    [-248, 0; 0, 155]
-	    DstBlock		    "Q-V PI controllers\n( r SISO controllers)"
-	    DstPort		    2
-	  }
-	  Branch {
-	    ZOrder		    4123
-	    Points		    [0, -70]
-	    DstBlock		    "To Workspace6"
-	    DstPort		    1
-	  }
+	  Points		  [-285, 0; 0, 155]
+	  DstBlock		  "Q-V PI controllers\n( r SISO controllers)"
+	  DstPort		  2
 	}
 	Line {
 	  ZOrder		  3235
 	  SrcBlock		  "MATLAB Function"
 	  SrcPort		  3
-	  Points		  [9, 0; 0, 180; -317, 0]
-	  Branch {
-	    ZOrder		    3853
-	    Points		    [0, 95]
-	    DstBlock		    "To Workspace7"
-	    DstPort		    1
-	  }
-	  Branch {
-	    ZOrder		    3852
-	    DstBlock		    "Gain1"
-	    DstPort		    1
-	  }
+	  Points		  [9, 0; 0, 180]
+	  DstBlock		  "Gain1"
+	  DstPort		  1
 	}
 	Line {
-	  ZOrder		  4288
+	  ZOrder		  4364
 	  SrcBlock		  "don't leave inputs to \nephasorsim open, \ntakes on default val of 0\n[1 1 1] sets default switch to c"
 	  "losed"
 	  SrcPort		  1
-	  DstBlock		  "Static PF Solver"
+	  DstBlock		  "ePHASORSIM PF Solver"
 	  DstPort		  2
-	}
-	Line {
-	  ZOrder		  4097
-	  SrcBlock		  "MATLAB Function"
-	  SrcPort		  4
-	  Points		  [2, 0; 0, 175]
-	  DstBlock		  "To Workspace10"
-	  DstPort		  1
 	}
 	Line {
 	  Name			  "units: Q pu/ V pu"
@@ -13298,7 +12737,10 @@ Stateflow {
     firstTransition	    28
     firstJunction	    27
     viewObj		    12
+    visible		    1
     machine		    1
+    subviewS {
+    }
     ssIdHighWaterMark	    40
     decomposition	    CLUSTER_CHART
     type		    EML_CHART
@@ -13340,28 +12782,28 @@ Stateflow {
       "     Qmax(i) = sqrt((Sinv(i)^2 - Pmax(i)^2)); %sign?\n%             end            \n%             pact(i)=Pmax("
       "i);\n%             qact(i)=Qmax(i);\n%         else\n%             pact(i)=pcmd(i);\n%             qact(i)=qcmd("
       "i);\n%             Pmax(i) = Sinv(i);\n%             Qmax(i) = Sinv(i);\n%         end\n%     end\n% cmd=[pcmd q"
-      "cmd] % print for debugging\n    r = length(ctrl_idx)/2;\n    %Jaimie \n    \n    pact=zeros(1,r); qact=zeros(1,r"
-      "); % initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,r); Qmax=zeros(1,r);\n    for i=1"
-      ":r % across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcm"
-      "d(i)^2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))= 0"
-      "; \n        Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);\n   "
-      "         qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        en"
-      "d\n    end\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose th"
-      "is each time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyChan"
-      "geStart <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch o"
-      "pens at beginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%%\n"
-      "    % all signals being added here must be formatted 'p q p q...'\n%     PQact=[pact(1) qact(1)]'; %TEMP, change"
-      " for different actuator length    \n    % you can print this for debugging\n    actpq = [pact.' qact.']; % P in "
-      "first col, Q in second\n    PQact = reshape(actpq,[1,length(ctrl_idx)]).'; % make col vec with Ps grouped then Q"
-      "s grouped\n    a=reshape(testDbcData,[2,length(ctrl_idx)/2]);\n    testDbcData=reshape(a',[length(ctrl_idx),1]);"
-      " % make col vec with Ps grouped then Qs grouped\n    a=reshape(actualDbcData,[2,length(dbc_idx)/2]);\n    actual"
-      "DbcData=reshape(a',[length(dbc_idx),1]); % make col vec with Ps grouped then Qs grouped\n    \n%     if any(isna"
-      "n(PQact))\n%         error('PQact is NaN');\n%     end\n\n\n    % Note: loadPQ expects P to be grouped together,"
-      " then Qs\n    loadPQ=zeros(size(netLoadData));\n    %loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% jus"
-      "t to check length\n    %coder.varsize('loadPQ',[908 1]);\n    %coder.varsize('netLoadData',[908 1]);\n    loadPQ"
-      "=netLoadData; % P&Q, ordered according to loadNames\n    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData;\n "
-      "   loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData;\n    % Note: it's ok for these values to be neg because it's N"
-      "ET load\nend"
+      "cmd] % print for debugging\n    r = length(ctrl_idx)/2; \n    \n\n    \n    pact=zeros(1,r); qact=zeros(1,r); % "
+      "initialize, TEMP, assume single actuator is on 3 phases\n    Pmax=zeros(1,r); Qmax=zeros(1,r);\n    for i=1:r % "
+      "across phases, TEMP, assuming the single actuator is on 3 phases\n        Pmax(i)=pcmd(i)*Sinv(i)/(sqrt(pcmd(i)^"
+      "2+qcmd(i)^2));\n        Qmax(i)=qcmd(i)*Sinv(i)/(sqrt(pcmd(i)^2+qcmd(i)^2)); \n        Pmax(isnan(Pmax))= 0; \n "
+      "       Qmax(isnan(Qmax))= 0; \n        if pcmd(i)^2+qcmd(i)^2>Sinv(i)^2\n            pact(i)= Pmax(i);\n        "
+      "    qact(i)= Qmax(i);\n        else\n            pact(i)=pcmd(i);\n            qact(i)=qcmd(i);\n        end\n  "
+      "  end\n  \n% %2.1 Topology change \n%      TopologyChangeStart=150; TopologyChangeEnd=200; %TEMP, choose this ea"
+      "ch time \n%      \n%      if TopologyChangeStart <= TimeStep & TimeStep < TopologyChangeEnd  % TopologyChangeSta"
+      "rt <=  %modify the netLoadData matrix to show the disturbance\n%          switchValues = [0 0 0]; %switch opens "
+      "at beginning of disturbance \n%      else\n%          switchValues = [1 1 1];\n%      end\n     \n    \n%%\n    "
+      "% all signals being added here must be formatted 'p q p q...'\n%     PQact=[pact(1) qact(1)]'; %TEMP, change for"
+      " different actuator length    \n    % you can print this for debugging\n    actpq = [pact.' qact.']; % P in firs"
+      "t col, Q in second\n    PQact = reshape(actpq,[1,length(ctrl_idx)]).'; % make col vec with Ps grouped then Qs gr"
+      "ouped\n    a=reshape(testDbcData,[2,length(ctrl_idx)/2]);\n    testDbcData=reshape(a',[length(ctrl_idx),1]); % m"
+      "ake col vec with Ps grouped then Qs grouped\n%     if any(isnan(PQact))\n%         error('PQact is NaN');\n%    "
+      " end\n\n    % Note: loadPQ vec expects P to be grouped together, then Qs\n    loadPQ=zeros(size(netLoadData));\n"
+      "    %loadPQ = zeros(908);%TEMP \n    %disp(length(loadPQ));% just to check length\n    %coder.varsize('loadPQ',["
+      "908 1]);\n    %coder.varsize('netLoadData',[908 1]);\n    loadPQ=netLoadData; % P&Q, ordered according to loadNa"
+      "mes\n%     if TimeStep<70\n%         TimeStep\n%         pcmd'\n%         qcmd'\n%         PQact'\n%     end\n\n"
+      "    loadPQ(ctrl_idx)=loadPQ(ctrl_idx)+PQact+testDbcData;\n    loadPQ(dbc_idx)=loadPQ(dbc_idx)+actualDbcData; % a"
+      "ctualDbcData already formatted like [PPP QQQ]\n    % Note: it's ok for these values to be neg because it's NET l"
+      "oad\nend"
       editorLayout	      "100 M4x1[10 5 700 500]"
     }
   }

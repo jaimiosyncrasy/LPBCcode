@@ -4,23 +4,38 @@ function [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  =
     % instability in all cases
 
     secList=[1:(minEnd-minStart)*60]'; % starts from 1, not actual second of the day
-%     x=[0.96 0.97 0.98 0.99 1 1.01 1.02 1.03 1.04];
+%     x=[0.96 0.97 0.98 0.99];
 %     a=randi(length(x),length(meas_idx));
 %     tarVmag=x(diag(a));
-    tarVmag=[0.99 1.01 1 0.99 1.01 1 0.99];
-    %tarVmag=[0.99 1.01 1];
+   %   tarVmag=[0.99 1.01 1 0.99 1.01 1 0.99]; % mult Act sim
+   % tarVmag=[0.99 1.01 1 1 1.01 1.02 0.98 0.99 1]; % full day sim
+    tarVmag=[0.97 0.98 0.99];
+    tarVmag=[0.9 0.9];
 
+    %tarVmag=[0.99 1.01 1 0.99 1.01 1 0.99 1 1.01 0.99 1 1.01 1];
+    
     Vmag_nom=ones(1,length(meas_idx));
-  
-    tarVang=[-3 -120-3 120-3 -3 -120-3 120-3 -3]; % degrees
-    %tarVang=[-3 -120-3 120-3 -120+3 -120+3 1 -3 -120-3 120-3 -3 -120-3 120-3 120-3]; % degrees
-    %tarVang=[-2 -120-2 120-2]; % degrees
+ %tarVang=[-3 -120-3 120-3 -3 -120-3 120-3 -3]; % mulAct sim
+  %  tarVang=[-2 -120-2 120-2 -1 -120-1 120-1 1 -120+1 120+1]; % full day
+   
+ %    tarVang=[-3 -120-3 120-3 -120-3 -3 -1 -120-1 120-1 ]; % degrees
+    %tarVang=[-3 -120-3 120-3 -120 -120 1 -2 -120-2 120-2 -1 -120-1 120-1]; % degrees
+  tarVang=[0-2 -120-2 120+2]; % degrees
+    tarVang=[-3 -130 113]; % degrees
+    tarVang=[-3 -130]; % degrees
+
+  % tarVang=[0-2 +120-2 -120+2]; % ONLY for AL0001 (b and c nom swapped)
+
     vang_ref=[secList, repmat(tarVang,length(secList),1)];
     vmag_ref=[secList, repmat(tarVmag,length(secList),1)];
 %% initialization step for that first time run RT lab initialize voltages to be steady state values
-  Vang_nom=[0 -120 120 0 -120 120 0];
-   %Vang_nom=[0,-120,120,-120,-120,0,0,-120,120,0,-120,120,120]; % phase, values to settle to at beginning before step response
-    %Vang_nom=[ 0 -120 120]; % phase, values to settle to at beginning before step response
+  % Vang_nom=[0 -120 120 0 -120 120 0]; % mult act sim
+
+   % Vang_nom=[0 -120 120 -120 0 0 -120 120];
+
+  Vang_nom=[0 -120];
+  % Vang_nom=[0,-120,120,-120,-120,0,0,-120,120,0,-120,120]; % phase, values to settle to at beginning before step response
+   % Vang_nom=[ 0 -120 120 0 -120 120 0 -120 120]; % full day sim
     if (length(tarVmag)~=length(meas_idx) || length(Vmag_nom)~=length(meas_idx))
         error('phasor target or IC of meas wrong size');
     end

@@ -1,13 +1,13 @@
 %close all;
 %% Plot
-tidx=0:length(t); % t is cummulative timestep, tidx is integers for indexing
+tidx=0:length(t); % tout is cummulative timestep (non-int), tidx is integers for indexing
 %FOR 1 NODE:
 plotStart=minStart; %minute of the day, should not exceed timeEnd
 plotEnd=minEnd; %minEnd for entire simulation
 inter=1:(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
-inter=1:length(netLoadData)*10;
-inter=1:3000;
+%inter=1:length(netLoadData)*10;
+%inter=1:300-50;
 %%
  
 % Plot Q and Vmag
@@ -17,9 +17,9 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 %put in for loop if want diff control gains for diff nodes
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),qnew(tidx(inter+1),1),'b-','LineWidth',2);
-    plot(tidx(inter+1),qnew(tidx(inter+1),2),'r-','LineWidth',2);
-    plot(tidx(inter+1),qnew(tidx(inter+1),3),'g-','LineWidth',2);
+    plot(tidx(inter+1),qnew(tidx(inter+1),1),'r-','LineWidth',2);
+    plot(tidx(inter+1),qnew(tidx(inter+1),2),'b-','LineWidth',2);
+    plot(tidx(inter+1),qnew(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',2);
     %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',2);
     %plot(s,qnew(s,1),'k.','MarkerSize',20);
     if (Vang_ctrl==true && Vang_ctrlStart>plotStart)
@@ -36,9 +36,9 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 % Plot outputs v
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),1),'b-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),1),'b-.','LineWidth',2);
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),2),'r-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),2),'r-.','LineWidth',2);
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),3),'g-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),3),'g-.','LineWidth',2);
+    plot(tidx(inter+1),vmag_new(tidx(inter+1),1),'r-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),1),'r-.','LineWidth',2);
+    plot(tidx(inter+1),vmag_new(tidx(inter+1),2),'b-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),2),'b-.','LineWidth',2);
+    plot(tidx(inter+1),vmag_new(tidx(inter+1),3),tidx(inter+1),vmag_ref_sig(tidx(inter+1),3),'-.','color',[0.9290 0.6940 0.1250],'LineWidth',2);
     r=tidx(inter+1);
     Ts_bound=0.02;
     % Plot boundaries around settling time
@@ -74,9 +74,9 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 % Plot control inputs u
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),pnew(tidx(inter+1),1),'b-','LineWidth',2);
-    plot(tidx(inter+1),pnew(tidx(inter+1),2),'r-','LineWidth',2);
-    plot(tidx(inter+1),pnew(tidx(inter+1),3),'g-','LineWidth',2);
+    plot(tidx(inter+1),pnew(tidx(inter+1),1),'r-','LineWidth',2);
+    plot(tidx(inter+1),pnew(tidx(inter+1),2),'b-','LineWidth',2);
+    plot(tidx(inter+1),pnew(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',2);
 %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',2);
@@ -96,9 +96,10 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 %Plot outputs vang
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),vang_new(tidx(inter+1),1),'b-',tidx(inter+1),vang_ref_sig(tidx(inter+1),1),'b-.','LineWidth',2);
-    plot(tidx(inter+1),vang_new(tidx(inter+1),2),'r-',tidx(inter+1),vang_ref_sig(tidx(inter+1),2),'r-.','LineWidth',2);
-    plot(tidx(inter+1),vang_new(tidx(inter+1),3),'g-',tidx(inter+1),vang_ref_sig(tidx(inter+1),3),'g-.','LineWidth',2);
+    plot(tidx(inter+1),vang_new(tidx(inter+1),1),'r-',tidx(inter+1),vang_ref_sig(tidx(inter+1),1),'r-.','LineWidth',2);
+    plot(tidx(inter+1),vang_new(tidx(inter+1),2),'b-',tidx(inter+1),vang_ref_sig(tidx(inter+1),2),'b-.','LineWidth',2);
+    plot(tidx(inter+1),vang_new(tidx(inter+1),3),tidx(inter+1),vang_ref_sig(tidx(inter+1),3),'-.','color',[0.9290 0.6940 0.1250],'LineWidth',2);
+  
     %plot(t,repmat(vmin,[1,length(t)]),'k-.',t,repmat(vmax,[1,length(t)]),'k-.','LineWidth',2);
     if (Vmag_ctrl==true && Vmag_ctrlStart>plotStart)
         plot([Vmag_ctrlStart,Vmag_ctrlStart],get(gca,'ylim'),'k-');%,[dbcStart,dbcStart],get(gca,'ylim'),'k');

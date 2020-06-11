@@ -1,5 +1,6 @@
-% check: impedance model pins are exactly 3 rows, and load list is same as
-% TV load/gen data
+% 10/4/19 change back:
+%Vbase, call in driver to set const target, set const target, testidx
+%-------------------------------------
 
 % Jaimie Swartz, PI local controller code, 3/28/19
 %clc; clearvars -except myVars sensCell powCell e; close all;
@@ -8,6 +9,8 @@ clc; clear all; close all;
 disp('Running Local Controller...');
 tic % begin counting sim elapsed time
 %% initialize(loaddata.init)
+% check: impedance model pins are exactly 3 rows, and load list is same as
+% TV load/gen data
 
 Ts=0.1; % should agree with simulink outermost block setting
 % 0.1 is more realistic, but hard to see conceptually on plots
@@ -15,7 +18,7 @@ Ts=0.1; % should agree with simulink outermost block setting
 
 % read initialization fil
     % CHECK THIS
-    testIdx=28; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=1; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file, constant
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -60,12 +63,12 @@ Ts=0.1; % should agree with simulink outermost block setting
     % for adam1 sim:
     %netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     out = csvread('001_IEEE13_secondWise_sigBuilder.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
-    m=0.8;% modifier to scale the net load. With m=1, vmag very low (0.92pu)
+    m=1;% modifier to scale the net load. With m=1, vmag very low (0.92pu)
     netLoadData=m*out;
     loadData_noTS=netLoadData(:,2:end); % remove timestamp
 %     loadData_noTS=loadData_noTS*0;
     netLoadData=[[1:size(loadData_noTS,1)]' loadData_noTS]; % append timestamp starting at 1 so simulink can parse timseries properly
-    figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node');
+    figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node'); xlabel('seconds'); ylabel('kW or kVAR');
     
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
     [txt,num,raw] = xlsread('impedMod_IEEE13.xls','Pins','B1:AJ1');
@@ -113,14 +116,14 @@ Ts=0.1; % should agree with simulink outermost block setting
     [Sbase,V1base,V2base] = computePU(); 
 % Vbase must match the base of the performance nodes
     %Vbase=[repmat(V1base,6,1); repmat(V2base,3,1); repmat(V1base,3,1);]; % for vvc compare
-    Vbase=[repmat(V1base,6,1); repmat(V2base,3,1); repmat(V1base,3,1)]; % for vvc compare
-    %Vbase=[V1base V1base V1base];
-    %Vbase=[repmat(V1base,5,1); repmat(V2base,3,1);]; % for vvc compare
+   % Vbase=[repmat(V1base,6,1); repmat(V2base,3,1); repmat(V1base,3,1)]; % for vvc compare
+    Vbase=[V1base V1base V1base];
+    %Vbase=[repmat(V1base,7,1);]; % multAct sim
 
     
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
+    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx); 
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx); 
    
 %     vmag_ref
 %     vang_ref
@@ -131,7 +134,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     [ZNcritMat,k_singlePh]=ZNtune(V1base, Sbase);   
     Vang_ctrl=true; % boolean
     Vmag_ctrl=true; % boolean
-[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
+[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r,Ts);
  
     
 %% Ability2: det sensitivities by running this
@@ -139,11 +142,11 @@ Ts=0.1; % should agree with simulink outermost block setting
 %     Turn controllers off    
         Vang_ctrl=false; % boolean
         Vmag_ctrl=false; % boolean
-        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r);
+        [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r,Ts);
 
     % Create test disturbance
     n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData);    
+    actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData,r);    
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     %actualDbcData = actualDbcData*0;
     [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx,Sbase);
@@ -162,97 +165,73 @@ Ts=0.1; % should agree with simulink outermost block setting
     % CHECK THIS
         tau=5;
 
-        sim('Sim_v19_dvvc.mdl')
-        set_param('Sim_v19_dvvc','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(40,:);
         vang_init_actual-vang_new(40,:);
         disp('finished simulink');    
         
     % Compute sensitivities
-       [dvdq dvdp ddeldq ddeldp]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
+       [dvdq dvdp ddeldq ddeldp sensMats]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
         % units: [V/kVAR V/kW deg/kVar deg/kW]
-        
- %% for way 3
-%         %
-% r=3;
-% %close all
-% % qnew and vmag_new are in pu
-% % neg so that sign convention is from generator perspective (pos = generate)
-% itvl=1:230;
-% figure;
-% for i = 1:r
-%     subplot(1,r,i);
-%     [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,-testDbcData(itvl,i*2+1));
-%     set(hline1,'LineWidth',1.5);
-% set(hline2,'LineWidth',1.5);
-%     legend('vmag','q');
-% end
-% title('Q-->Vmag');
-% figure;
-% for i = 1:r
-%     subplot(1,r,i);
-%     [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,-testDbcData(itvl,i*2));
-%     set(hline1,'LineWidth',1.5);
-%     set(hline2,'LineWidth',1.5);
-%     legend('vang','p');
-% end
-% title('P-->Vang');
-%        %% 
-%        % things learned: stepmag should not be in pu
-%     mySens=dvdq(1); tau=0.1;
-%     mySens=dvdq(1); tau=0.6;
-%     G=tf([mySens],[tau 1]);
-%     Gd = c2d(G,Ts)
-%     stepMag=stepQ/Sbase; 
-%     TFinal=15;
-%     options = stepDataOptions('StepAmplitude',stepMag);
-%     [y,t]=step(Gd,TFinal,options);
-%      stepCurve=stepMag*(t>=1);
-%      
-%     itvl=65:80;
-%     figure;
-%     ax1=subplot(2,2,1);
-%     plot(itvl-65,-testDbcData(itvl,1*2+1)/Sbase+0.13,'LineWidth',1.5);
-%     ax3=subplot(2,2,3);
-%     plot(itvl-65,vmag_new(itvl,1)-0.9725,'LineWidth',1.5);
-%     
-%     ax2=subplot(2,2,2);
-%     plot(t,stepCurve,'LineWidth',1.5);
-%     ax4=subplot(2,2,4);
-%     plot(t,y,'LineWidth',1.5);
-%     
-%     %linkaxes([ax1,ax2],'xy')
-%     %linkaxes([ax3,ax4],'xy')
+if (any(diff(sign(dvdq(dvdq~=0)))) || any(diff(sign(ddeldp(ddeldp~=0))))) % if not all the same sign
+    error('dvdq or ddeldp not all same sign across all phases. Check whether testDbc step size is exciting enouh (see plots)');
+end
 
-%  %%  for way 3
-%        % things learned: stepmag should not be in pu, timescale
-%        % incongruence
-%     mySens=dvdq(1); tau=0.3*Ts; % should be actual # secs
-%     G=tf([mySens],[tau 1]); % FVT preserved across conversion CT to DT
-%     Gd = c2d(G,Ts)
-%     stepMag=stepQ/Sbase; 
-%     TFinal=0.5;
-%     options = stepDataOptions('StepAmplitude',stepMag);
-%     [y,t]=step(Gd,TFinal,options);
-%      stepCurve=stepMag*(t>=0.1);
-%      
-%     itvl=65:70;
-%     figure;
-%     ax1=subplot(2,1,1);
-%     plot(itvl-65,-testDbcData(itvl,1*2+1)/Sbase+0.45-0.1357,t/Ts,stepCurve,'LineWidth',1.5); legend('Simulation','First order model'); title('Step Disturbance');
-%     xlabel('timestep'); ylabel('Reactive power per unit');
-%     ax3=subplot(2,1,2);
-%     plot(itvl-65,vmag_new(itvl,1),t/Ts,y+0.9725-0.035+0.01622,'LineWidth',1.5); legend('Simulation','First order model'); title('Step Response');
-%     xlabel('timestep'); ylabel('Voltage per unit');
-%  
-% % collect sensitivities across runs of driver so can plot
-% % sensCell{1}(:,e)=dvdp;
-% % sensCell{2}(:,e)=dvdq;
-% % sensCell{3}(:,e)=ddeldq;
-% % sensCell{4}(:,e)=ddeldp;
-% % powCell{1}(e)=stepQ;
-% % powCell{2}(e)=stepP;
-% % e=e+1;
+%	 save(resultsName,'sensMats','dvdp','dvdq','ddeldq','ddeldp');
+
+r=3;
+%close all
+% qnew and vmag_new are in pu
+% neg so that sign convention is from generator perspective (pos = generate)
+itvl=1:230;
+figure;
+for i = 1:r
+    subplot(1,r,i);
+    [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,-testDbcData(itvl,i*2+1));
+    set(hline1,'LineWidth',1.5);
+set(hline2,'LineWidth',1.5);
+    legend('vmag','q');
+end
+title('Q-->Vmag');
+figure;
+for i = 1:r
+    subplot(1,r,i);
+    [haxes hline1 hline2]=plotyy(itvl,vang_new(itvl,i),itvl,-testDbcData(itvl,i*2));
+    set(hline1,'LineWidth',1.5);
+    set(hline2,'LineWidth',1.5);
+    legend('vang','p');
+end
+title('P-->Vang');
+
+
+%% Plot step responses for each phase
+        % extra plot for way 3
+r=length(ctrl_idx)/2;
+%close all
+% qnew and vmag_new are in pu
+itvl=1:230;
+figure;
+for i = 1:r
+    subplot(1,r,i);
+    [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
+    set(hline1,'LineWidth',1.5);
+set(hline2,'LineWidth',1.5);
+    legend('vmag','q');
+end
+title('Q-->Vmag');
+figure;
+for i = 1:r
+    subplot(1,r,i);
+    [haxes hline1, hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
+    set(hline1,'LineWidth',1.5);
+    set(hline2,'LineWidth',1.5);
+    legend('vang','p');
+end
+title('P-->Vang');
+        
+% figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
+% figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
 
  %% Plot sens across diff dbc sizes
@@ -305,7 +284,7 @@ case 1
     [k_singlePh]=ZNset(ZNcritMat)  
         Vang_ctrl=true; % boolean
         Vmag_ctrl=true; % boolean
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r)
+    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r,Ts)
 
 case 2
     %% Set kgains using way 2, save as test1_way2.mat
@@ -328,42 +307,50 @@ end
 % Kp_vang=kgains(3,:)
 % Ki_vang=kgains(4,:)
 
-%detune due to multiple perf nodes
- Kp_vmag=0.33*Kp_vmag
- Ki_vmag=0.33*Ki_vmag
- Ki_vang=0.33*Ki_vang
- Kp_vang=0.33*Kp_vang
+% %detune due to multiple perf nodes
+%  Kp_vmag=0.33*Kp_vmag
+%  Ki_vmag=0.33*Ki_vmag
+%  Ki_vang=0.33*Ki_vang
+%  Kp_vang=0.33*Kp_vang
 
   
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 
 %     
      n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-     %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);
+     %actualDbcData =createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData,r);
      
      % CHECK THIS
-     %actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData);     
-    % save('dbcData_6hr_sim','actualDbcData');
-    load('dbcData_6hr_sim.mat');
+     actualDbcData =createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase, netLoadData,r);     
+     save('dbcData_sunny2','actualDbcData');
+ %   load('dbcData_sunny1.mat');
+%     load('dbcData_multAct2.mat');
+%      save('dbcData_multAct2.mat','actualDbcData');
+    % load('dbcData_sim_multAct_way3.mat');
+
      %actualDbcData(:,2:end)=0.7*actualDbcData(:,2:end);
      
-     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    % n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+   % [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    testDbcData(:,2:end)=0;
     %3.1 for PV gen cut in half: 
     %%%[PV_Disturbance]=PV_Cloud_Disturbance(netLoadData);
     %%%%3.1 PV disturbance 
     %%%%figure; plot(PV_Disturbance(:,1),PV_Disturbance(:,2:end)); title('cloud disturbance for PV generation'); %3.1 test figure 
     
-   figure; plot(actualDbcData(:,[2:6,8,11:12,14:15,17:23,25,28:29,31:32,34:35]),'LineWidth',1.5); title('Disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); 
+    % actualDbcData format = [P...P Q...Q]
+   %figure; plot(actualDbcData(:,[2:6,8,11:12,14:15,17:23,25,28:29,31:32,34:35]),'LineWidth',1.5); title('Disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); 
    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
- 
+    figure; plot(actualDbcData(:,[2:7]),'LineWidth',1.5); title('Disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); 
+legend('Pa','Pb','Pc','Qa','Qb','Qc');
+
 %%  Run sim with controllers ON
 
     disp('------------------- Running controlled sim...');
     % Run simulink
     % CHECK THIS
-        sim('Sim_v19_vvc.mdl')
-        set_param('Sim_v19_vvc','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
+        sim('Sim_v19.mdl')
+        set_param('Sim_v19','AlgebraicLoopSolver','LineSearch'); % so that derivative term in discrete PID controller doesn't have error
         vmag_init_actual=vmag_new(40,:);
         vang_init_actual=vang_new(40,:);
         disp('finished simulink');    
