@@ -11,21 +11,19 @@
 
 %-------------------------------------------------------
 % START of func
-function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
+function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=...
     computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,dt,r)
-
-
-    Vang_ctrlStart = 5; % 
-    Vmag_ctrlStart = 5; % in seconds, time for turning on controllers
 
      % hardcode for now
     tau=0.3*dt; % first order TF time const for plant model
-    settleMax=[15 15]; % vmag vang, units of seconds
     OSmax=[0.1 0.15]; % percentage, vmag vang
     stepMag=[0.05 5]; % hardcoded, TEMP, realistic voltage disturbance mags
     popsize =8; % # candidates per generation
-    MaxGenerations = 6; % # generations
-    options = gaoptimset('PopulationSize',popsize,'Generations',MaxGenerations);
+    MaxGenerations = 6; % # generations    
+    settleMax=[150*dt 150*dt]; % vmag vang, units of seconds
+    N=300*dt; % horizon, in seconds
+    
+options = gaoptimset('PopulationSize',popsize,'Generations',MaxGenerations);
     
     if Vmag_ctrl~=Vang_ctrl
         error('Vmag_ctrl and Vang_ctrl must be both true or both false because way 3 considers MIMO plant model');
@@ -38,7 +36,7 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
     else 
         %m1=0.05;
         m1=0; % if set to zero, param space includes zero (filled box)
-        m2=0.7;
+        m2=0.7*exp(-0.3*dt); % for small timesteps approaches 0.7, for large timesteps decays to zero (want smaller gains for delayed controllers)
         for i =1:length(dvdq) % for each phase-actuator
              % allowable range of kgains, vmag first 2 col, vang 2nd 2 cols
             a=sort([m1*(1/dvdq(i)) m2*(1/dvdq(i))]);
@@ -47,7 +45,6 @@ function [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=...
              ub=[a(2) a(2) b(2) b(2)]
 %              lb=[a(1) 0 0 0]
 %              ub=[a(2) 0 0 0]
-            N=30; % horizon, in seconds
 
             % create all 4 open-loop TFs. The ss and tau have meaning in CT
             % model, so must convert to discrete AFTER

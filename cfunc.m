@@ -18,7 +18,7 @@ function J = cfunc(dt,N,Gclosed,Cd,settleMax,OSmax,stepMag,YNplot,parms)
         R= .01/stepMag; % penalize conttrol effort
         Q1=@(t) 2*t/stepMag; % linearly increasing penalty for deviation
         devTerm=abs(yref-y(:));
-        OS=max(max(y(2/dt:end)-yref),0)/stepMag; % start measuring after 2s so have time to rise, outer max is because OS is only for when go above yref
+        OS=max(max(y(round(0.02*length(t)):end)-yref),0)/stepMag; % start measuring after 2s so have time to rise, outer max is because OS is only for when go above yref
         uEffortTerm=u(:);
         logBarr=@(z,zref,zMax) (((z-zref)<zMax).*(-(zMax^2)*log10(1-((z-zref)/zMax).^2)) + ((z-zref)>=zMax).*(100));
         ssBound=0.1*stepMag; a=abs(devTerm)<ssBound; % 10% error bound
@@ -26,8 +26,10 @@ function J = cfunc(dt,N,Gclosed,Cd,settleMax,OSmax,stepMag,YNplot,parms)
         if (isempty(settle) || settle>=settleMax || devTerm(end)>ssBound) % case of not settling or settle is beyond settle max
             disp('didnt settle');
             settle=settleMax+0.05
+        else
+            disp('settled!');
         end
-        settlePen=10*logBarr(settle,0,settleMax); % normalize with desired max/actual max
+        settlePen=10*logBarr(settle,0,settleMax/dt); % normalize with desired max/actual max
         OSPen=100000*logBarr(OS,0,OSmax);
 
         optTerms=[sum(Q1(t).*(devTerm)) settlePen.*settle OSPen.*OS sum(R*uEffortTerm.^2)]
