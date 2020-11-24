@@ -5,12 +5,13 @@ disp('Running Local Controller...');
 tic % begin counting sim elapsed time
 %% initialize(loaddata.init)
 
-Ts=0.1; % should agree with simulink outermost block setting
+Ts=1; % should agree with simulink outermost block setting
 % 0.1 is more realistic, but hard to see conceptually on plots
 % 1 easier to see, but controller should be faster than this irl
+ctrl_delay=15; % in seconds
 
 % read initialization file
-    testIdx=51; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    testIdx=71; % TEMP (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file
     [num txt raw]=xlsread('init.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
@@ -49,59 +50,64 @@ Ts=0.1; % should agree with simulink outermost block setting
 % tracking constant phasor (when tracking SPBC phasor targets the load
 % data needs to be scaled down), thus the "norm03" in laod data filename
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % needed for csvread, col and row offset so that extract snippet
-    loadData = csvread('PL0001_July_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % secondwise, includes first col as timestamp, needed for simulink loop
+    %loadData = csvread('PL0001_July_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % secondwise, includes first col as timestamp, needed for simulink loop
+    load('loaddata_PL0001unbal.mat'); % populates "data" avr
+        
+    a=data'; loadData=a(1:length(secStart:secEnd),:);
+    
     m=1;% modifier to scale the net load. With m=1, vmag very low (0.92pu)
     netLoadData=m*loadData; % units of kW, kVAR
     % loadData formatted [PPP ... QQQ] LD_634/P1	LD_634/Q1	LD_634/P2	LD_634/Q2	LD_634/P3	LD_634/Q3	LD_671/P1
-    loadData_noTS=netLoadData(:,2:end); % remove timestamp
-%     loadData_noTS=loadData_noTS*0;
  
 % To keep tv load
-   % netLoadData_snippet=netLoadData
+    netLoadData_snippet=netLoadData;
+    loadData_noTS=netLoadData(:,2:end); % remove timestamp
+
 % To make CONST load data:
-    tvdata=netLoadData(:,2:end);
-    netLoadData_snippet=[netLoadData(:,1) repmat(tvdata(1,:),size(tvdata,1),1)];
-    loadData_noTS=netLoadData_snippet(:,2:end); % remove timestamp
-    figure; plot(netLoadData_snippet(:,1),netLoadData_snippet(:,2:end)); title('load data for sim itvl, one curve for each node'); xlabel('seconds'); ylabel('kW or kVAR');
+%     tvdata=netLoadData(:,2:end);
+%     netLoadData_snippet=[netLoadData(:,1) repmat(tvdata(1,:),size(tvdata,1),1)];
+%     loadData_noTS=netLoadData_snippet(:,2:end); % remove timestamp
+
+figure; plot(netLoadData_snippet(:,1),netLoadData_snippet(:,2:end)); title('load data for sim itvl, one curve for each node'); xlabel('seconds'); ylabel('kW or kVAR');
 
 %read impedance model to get loadnames and busnames from header in column chunks
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B1:IV1');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B1:IV1');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames1 =raw(1,2:end); % 
     loadNames1 = cellfun(@(S) S(8:end), loadNames1, 'Uniform', 0); % clean up string format
 
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B4:IV4');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B4:IV4');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
-    loadNames2 =raw(1,1:end); % 
+    loadNames2 =raw(1,2:end); % 
     loadNames2 = cellfun(@(S) S(8:end), loadNames2, 'Uniform', 0); % clean up string format
     
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B7:CV7');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B7:CV7');
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
-    loadNames3 =raw(1,1:end); % 
+    loadNames3 =raw(1,2:end); % 
     loadNames3 = cellfun(@(S) S(8:end), loadNames3, 'Uniform', 0); % clean up string format
     
     loadNames = [loadNames1 loadNames2 loadNames3];
     
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B2:IV3');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B2:IV3');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames1=raw(1,2:end); % used to select meas node
     busNames1=cellfun(@(S) S(3:end-5), busNames1, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging  
     
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B5:IV6');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B5:IV6');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames2=raw(1,2:end); % used to select meas node
     busNames2=cellfun(@(S) S(3:end-5), busNames2, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging 
     
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B8:IV9');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B8:IV9');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames3=raw(1,2:end); % used to select meas node
     busNames3=cellfun(@(S) S(3:end-5), busNames3, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging   
     
-    [txt,num,raw] = xlsread('PL0001_OPAL_working.xlsx','Pins','B10:FR11');
+    [txt,num,raw] = xlsread('PL0001_OPAL_working_simple.xlsx','Pins','B10:FR11');
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     busNames4=raw(1,2:end); % used to select meas node
     busNames4=cellfun(@(S) S(3:end-5), busNames4, 'Uniform', 0); % clean up string format
@@ -114,14 +120,16 @@ Ts=0.1; % should agree with simulink outermost block setting
     dbc_idx=strToIdx(dbcStr,loadNames)
     Sinv=repmat(Sinv_str,1,length(ctrl_idx)/2) % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
     r=length(ctrl_idx)/2 % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r
+   
     
 %     [netLoadData, PV_percent] = PV_Cloud_Disturbance(netLoadData, 200, 210);
 %     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, after PV disturbance');
         controlLoopAlign=[loadNames(ctrl_idx)' repmat(busNames(meas_idx)',2,1)]
+% to find idx of certain node: find(ismember(busNames,'300033983_A'))
 
 %% Set targets/reference for controller to  track
     [Sbase,V1base,V2base] = computePU();
-    Vbase=[V1base V1base];
+     Vbase=repmat(V1base,1,length(meas_idx));
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
     [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx); 
@@ -140,6 +148,14 @@ Ts=0.1; % should agree with simulink outermost block setting
     Vang_ctrlStart = (20+80*r)*Ts; % wait until after interval over which you tuned controller
     Vmag_ctrlStart = (20+80*r)*Ts; % in seconds, time for turning on controllers
 
+    % CHANGES FOR WHEN r=numPhaseAct>24:
+    %only create 24*2 step changes, not r*2 step changes
+    % select these 24 out of r randomly
+    % thus dvdq and sensMats are size 24 not r
+    % kgains are size r not 24
+    % write new func: afunc_manyact
+    % in GA instead of indexing each dvdq(i), compute max dvdq, min dvdq
+    % and use those for all UB and LBs
     
 %%
     % Create test disturbance to collect step response data
@@ -147,7 +163,7 @@ Ts=0.1; % should agree with simulink outermost block setting
     actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData_snippet,r);    
     n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
     %actualDbcData = actualDbcData*0;
-    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx,Sbase);
+    [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx,Sbase); % testDbcData is a load value
     %testDbcData(:,2:7)=0;
 
     % testDbcData is in kW, not pu
@@ -174,6 +190,9 @@ Ts=0.1; % should agree with simulink outermost block setting
 %% Plot step responses for each phase
             % extra plot for way 3
     r=length(ctrl_idx)/2;
+    if r>12
+        r=12; % truncate so only plot step changes for 12 steps
+    end
     %close all
     % qnew and vmag_new are in pu
     itvl=1:230; % timesteps
@@ -183,7 +202,7 @@ Ts=0.1; % should agree with simulink outermost block setting
         [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
         set(hline1,'LineWidth',1.5);
     set(hline2,'LineWidth',1.5);
-        legend('vmag','q');
+        legend('vmag','q load');
         xlabel('timesteps, Ts=0.1');
         ylabel('kW or kVAR, Vpu');
     end
@@ -194,7 +213,7 @@ Ts=0.1; % should agree with simulink outermost block setting
         [haxes hline1, hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
         set(hline1,'LineWidth',1.5);
         set(hline2,'LineWidth',1.5);
-        legend('vang','p');
+        legend('vang','p load');
         xlabel('timesteps, Ts=0.1');
         ylabel('kW or kVAR, degrees');
     end
@@ -203,7 +222,8 @@ Ts=0.1; % should agree with simulink outermost block setting
     
     Vang_ctrl=true; % boolean
     Vmag_ctrl=true; % boolean
-    
+    r=length(ctrl_idx)/2' % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r
+
 %% --------------------- Now ready to compute kgains -------------------------
 % (to choose methdof ro computing controller gains)
 
@@ -214,61 +234,48 @@ Ts=0.1; % should agree with simulink outermost block setting
 % cost function
 
 %kgainCalcType=2; % temp, for debugging
-%% -------------------
-switch kgainCalcType
-case 1
-    %% Set kgains using way 1, save as test1_way1.mat
-    [k_singlePh]=ZNset(ZNcritMat)  
-        Vang_ctrl=true; % boolean
-        Vmag_ctrl=true; % boolean
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZN(Vmag_ctrl,Vang_ctrl,k_singlePh,r)
 
-case 2
-    %% Set kgains using way 2, save as test1_way2.mat
-    [k_singlePh]=ZNset(ZNcritMat)  
-        Vang_ctrl=true; % boolean
-        Vmag_ctrl=true; % boolean    
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_ZNplus(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,k_singlePh)
-case 3 
-    %% Set kgains using way 3, save as test1_way3.mat 
-        Vang_ctrl=true; % boolean
-        Vmag_ctrl=true; % boolean
-    %[Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=computeK_way3(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,Ts,r)
-    [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang,Vmag_ctrlStart,Vang_ctrlStart]=afunc(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,Ts,r)
-
-end
+   %  [Kp_vmag,Ki_vmag,Kp_vang,Ki_vang]=afunc(Vmag_ctrl,Vang_ctrl,dvdq,ddeldp,dvdp,ddeldq,ctrl_delay,r)
+%
 %% If want to load kgains instead to computing them
-   % load('simRainy_2_150pen_way3.mat','kgains'); % gives us "kgains"
+    load('simPL0001unbal_T9.3_15min.mat','kgains'); % gives us "kgains"
+     Kp_vmag=kgains(1,:)
+     Ki_vmag=kgains(2,:)
+     Kp_vang=kgains(3,:)
+     Ki_vang=kgains(4,:)
+% % % 
+%  Kp_vmag=Kp_vmag/10;
+%  Ki_vmag=Ki_vmag/10;
+%  Kp_vang=Kp_vang/10;
+%  Ki_vang=Ki_vang/10;
 
-%     load('kgains_bestwithdbc_300063911.mat','kgains'); % gives us "kgains"
-%     Kp_vmag=kgains(1,:)
-%     Ki_vmag=kgains(2,:)
-%     Kp_vang=kgains(3,:)
-%     Ki_vang=kgains(4,:)
+% nomk=[0.1 2.0718 0.0285 0.0614]; % pull from GA, min of each phase
+% m=2.85; % inc starting at 1 until marg stability
+% Kp_vmag=m*nomk(1)*ones(1,3);
+% Ki_vmag=m*nomk(2)*ones(1,3);
+% Kp_vang=m*nomk(3)*ones(1,3);
+% Ki_vang=m*nomk(4)*ones(1,3);
 
-% Kp_vmag=0.1*Kp_vmag;
-% Kp_vang=0.1*Kp_vang;
-% Ki_vmag=0.1*Ki_vmag;
-% Ki_vang=0.1*Ki_vang;
-% 
 %% --------------------- Controller kgains are now set -------------------------
 %% Create disturbance for controlled sim %comment out for 2.1 tests 
     % define disturbance directly in this function below 
-%     
+        r=length(ctrl_idx)/2; % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r 
      n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
      actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData_snippet,r);    
-
+     %actualDbcData=createActualDbc(loadData_noTS(:,dbc_idx(Pidx)),loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv*Sbase,netLoadData_snippet,r);    
+    %save('test12_dbc.mat','actualDbcData');
+    %load('test12_dbc.mat','actualDbcData');
      %actualDbcData(:,2:end)=0.7*actualDbcData(:,2:end);
      
     % n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-   % [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
+    %[testDbmincData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(0*loadData_noTS(:,ctrl_idx(Pidx)),0*loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx);
     testDbcData(:,2:end)=0;
 
     % actualDbcData format = [P...P Q...Q]
    %figure; plot(actualDbcData(:,[2:6,8,11:12,14:15,17:23,25,28:29,31:32,34:35]),'LineWidth',1.5); title('Disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); 
    % figure; plot(testDbcData(1:200/Ts,2:end),'LineWidth',1.5); title('test disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); legend('P','Q');
     figure; plot(actualDbcData(:,[2:7]),'LineWidth',1.5); title('Disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); 
-legend('Pa','Pb','Pc','Qa','Qb','Qc');
+ legend('Pa','Pb','Pc','Qa','Qb','Qc');
 
     
 %%  Run sim with controllers ON
@@ -289,7 +296,7 @@ legend('Pa','Pb','Pc','Qa','Qb','Qc');
     disp('------------------- Outputing results...');
     % save data into .mats
    kgains=[Kp_vmag; Ki_vmag; Kp_vang; Ki_vang];
-	 save(resultsName,'vmag_new','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','kgains')
+	 save(resultsName,'vmag_new','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','kgains','controlLoopAlign')
      %clear all; load('simData_001.mat'); whos
      
 %% ------------------------- End of Code ----------------------------------
@@ -317,3 +324,21 @@ toc % print elapsed sim time
 
 % phasor08_IEEE13_v13_PIDofflineCalc
 % has non-PV disturbance and PV disturbance block
+
+%% Guna requested these matlab variables for demo:
+% load('matlab_inputToSimulink.mat')
+% load('simtestNode_12_wdbc.mat','kgains');
+ save('matlab_inputToSimulink2.mat',...
+ 'Kp_vmag','Ki_vmag','Kp_vang','Ki_vang',...
+ 'vmag_ref','vang_ref',...
+ 'Ts','ctrl_idx','dbc_idx','meas_idx','ridx',...
+ 'testDbcData','actualDbcData','netLoadData_snippet',...
+ 'Sinv','vang_init_actual','vmag_init_actual',...
+     'V1base','Sbase','Vmag_ctrlStart','Vang_ctrlStart')
+ 
+ %% Guna just runs this
+ load('matlab_inputToSimulink2.mat')
+
+
+ 
+ 

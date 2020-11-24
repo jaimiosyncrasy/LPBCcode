@@ -5,22 +5,23 @@
 %     t=1:0.1:600;
 %     minStart=14*60+0; minEnd=14*60+5; % 14:00-14:05
 %     Ts=0.1;
-%     Vmag_ctrlStart=50; % timesteps
-%     Vang_ctrlStart=50; % timesteps
+%     Vmag_ctrlStart=50; % in seconds
+%     Vang_ctrlStart=50; % 
+
+plotIdx=[1 2 3]; % if more than 1 act/perf node pair, assign which 3 indices to plot
 
 %% Plot
 tidx=0:length(t); % tout is cummulative timestep (non-int), tidx is integers for indexing
 %FOR 1 NODE:
 plotStart=minStart; %minute of the day, should not exceed timeEnd
-plotEnd=minStart+1450/600; % minEnd for entire simulation
+%plotEnd=minStart+1450/600; % minEnd for entire simulation
 %^to stop at certain timestep T, plotEnd=minStart+T/600
 plotEnd=minEnd; % minEnd for entire simulation
 
 inter=1:(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
 
-%inter=1:length(netLoadData)*10;
-%inter=1:300-50;
+%size(inter=1:300-50;
 %%
  
 % Plot Q and Vmag
@@ -30,12 +31,12 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 %put in for loop if want diff control gains for diff nodes
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),qnew(tidx(inter+1),1),'r-','LineWidth',2);
-    plot(tidx(inter+1),qnew(tidx(inter+1),2),'b-','LineWidth',2);
-   % plot(tidx(inter+1),qnew(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',2);
-    %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',2);
+    plot(tidx(inter+1),qnew(tidx(inter+1),plotIdx(1)),'r-','LineWidth',1);
+    plot(tidx(inter+1),qnew(tidx(inter+1),plotIdx(2)),'b-','LineWidth',1);
+    plot(tidx(inter+1),qnew(tidx(inter+1),plotIdx(3)),'color',[0.9290 0.6940 0.1250],'LineWidth',1);
+    %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',1);
     %plot(s,qnew(s,1),'k.','MarkerSize',20);
-    plot([Vmag_ctrlStart,Vmag_ctrlStart],get(gca,'ylim'),'k-');
+    plot([Vmag_ctrlStart/Ts,Vmag_ctrlStart/Ts],get(gca,'ylim'),'k-');
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Reactive Power (pu)');title('Q cmd at actuator node, (Qmcd) p.u.'); grid on; legend('Qa','Qb','Qc','Qmin','Qmax');  
     %txt2 = strcat('Sbase (pu)=',num2str(Sbase)); text(get(gca,'xlim')+[0 -1000], get(gca,'ylim'),txt2);
     %set(gca, 'XTick',1:60:(plotEnd-plotStart+1)*60, 'XTickLabel',plotStart:(plotEnd+1))        
@@ -46,10 +47,10 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 % %put in for loop if want diff control gains for diff nodes
 %     figure;     % same plot across phases
 %     hold on;
-%     plot(tidx(inter+1),qinv(tidx(inter+1),1),'r-','LineWidth',2);
-%     plot(tidx(inter+1),qinv(tidx(inter+1),2),'b-','LineWidth',2);
-%     plot(tidx(inter+1),qinv(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',2);
-%     %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',2);
+%     plot(tidx(inter+1),qinv(tidx(inter+1),1),'r-','LineWidth',1);
+%     plot(tidx(inter+1),qinv(tidx(inter+1),2),'b-','LineWidth',1);
+%     plot(tidx(inter+1),qinv(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',1);
+%     %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',1);
 %     %plot(s,qnew(s,1),'k.','MarkerSize',20);
 %     plot([Vmag_ctrlStart,Vmag_ctrlStart],get(gca,'ylim'),'k-');
 % 
@@ -61,9 +62,9 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
 %% Plot outputs v
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),1),'r-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),1),'r-.','LineWidth',2);
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),2),'b-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),2),'b-.','LineWidth',2);
- %   plot(tidx(inter+1),vmag_new(tidx(inter+1),3),tidx(inter+1),vmag_ref_sig(tidx(inter+1),3),'-.','color',[0.9290 0.6940 0.1250],'LineWidth',2);
+    plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(1)),'r-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),1),'r-.','LineWidth',1);
+    plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(2)),'b-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),2),'b-.','LineWidth',1);
+    plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(3)),tidx(inter+1),vmag_ref_sig(tidx(inter+1),3),'-.','color',[0.9290 0.6940 0.1250],'LineWidth',1);
     r=tidx(inter+1);
     Ts_bound=0.02;
     % Plot boundaries around settling time
@@ -75,8 +76,8 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
     %    plot([r(1) r(end)], [vmag_new(r(end),3)-Ts_bound*vmag_step vmag_new(r(end),3)-Ts_bound*vmag_step],'k-');
 
     %plot(s,vmag_new(s,1),'k.','MarkerSize',20);
-    %plot(t,repmat(vmin,[1,length(t)]),'k-.',t,repmat(vmax,[1,length(t)]),'k-.','LineWidth',2);
-    plot([Vmag_ctrlStart,Vmag_ctrlStart],get(gca,'ylim'),'k-');
+    %plot(t,repmat(vmin,[1,length(t)]),'k-.',t,repmat(vmax,[1,length(t)]),'k-.','LineWidth',1);
+    plot([Vmag_ctrlStart/Ts,Vmag_ctrlStart/Ts],get(gca,'ylim'),'k-');
 
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Voltage (pu)');title('Vmag at perf node'); grid on; legend('va','varef','vb','vbref','vc','vcref','ctrl start');  
     %txt1 = strcat('perf node Vbase (V) =',num2str(V1base)); text(get(gca,'xlim')+[0 -1000],get(gca,'ylim'),txt1);
@@ -95,14 +96,14 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 % Plot inverter commands pnew
     figure;     % same plot across phases
     hold on;
-    plot(tidx(inter+1),pnew(tidx(inter+1),1),'r-','LineWidth',2);
-    plot(tidx(inter+1),pnew(tidx(inter+1),2),'b-','LineWidth',2);
-  %  plot(tidx(inter+1),pnew(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',2);
-%     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',2);
-%     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',2);
-%     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',2);
-    %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',2);
-    plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'k-');
+    plot(tidx(inter+1),pnew(tidx(inter+1),plotIdx(1)),'r-','LineWidth',1);
+    plot(tidx(inter+1),pnew(tidx(inter+1),plotIdx(2)),'b-','LineWidth',1);
+    plot(tidx(inter+1),pnew(tidx(inter+1),plotIdx(3)),'color',[0.9290 0.6940 0.1250],'LineWidth',1);
+%     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',1);
+%     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',1);
+%     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',1);
+    %plot(t,repmat(qmin,[1,length(t)]),'k-.',t,repmat(qmax,[1,length(t)]),'k-.','LineWidth',1);
+    plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
 
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Real Power (pu)');title('p cmd at actuator node'); grid on; legend('Pa','Pb','Pc','Pavail');
     %txt2 = strcat('Sbase (pu)=',num2str(Sbase)); text(get(gca,'xlim')+[0 -1000], get(gca,'ylim'),txt2);
@@ -114,12 +115,12 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 % pinv=PQact(:,1:3);
 %     figure;     % same plot across phases
 %     hold on;
-%     plot(tidx(inter+1),pinv(tidx(inter+1),1),'r-','LineWidth',2);
-%     plot(tidx(inter+1),pinv(tidx(inter+1),2),'b-','LineWidth',2);
-%     plot(tidx(inter+1),pinv(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',2);
-% %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',2);
-% %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',2);
-% %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',2);
+%     plot(tidx(inter+1),pinv(tidx(inter+1),1),'r-','LineWidth',1);
+%     plot(tidx(inter+1),pinv(tidx(inter+1),2),'b-','LineWidth',1);
+%     plot(tidx(inter+1),pinv(tidx(inter+1),3),'color',[0.9290 0.6940 0.1250],'LineWidth',1);
+% %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),1),'b--','LineWidth',1);
+% %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),2),'r--','LineWidth',1);
+% %     plot(tidx(inter+1),PTOD_sig(tidx(inter+1),3),'g--','LineWidth',1);
 %     plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'k-');
 % 
 %     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Real Power (kW)');title('p inv at actuator node'); grid on; legend('Pa','Pb','Pc','Pavail');
@@ -131,22 +132,22 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
 %% Plot vang as subplots so can see up close:
     figure;     % same plot across phases
     h1=subplot(3,1,1); hold on;
-    plot(tidx(inter+1),vang_new(tidx(inter+1),1),'r-',tidx(inter+1),vang_ref_sig(tidx(inter+1),1),'r-.','LineWidth',2);
-    plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'k-');
+    plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(1)),'r-',tidx(inter+1),vang_ref_sig(tidx(inter+1),1),'r-.','LineWidth',1);
+    plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
 
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec'));title('Vang at perf node'); grid on; legend('va','varef','ctrl start');  
 
     h2=subplot(3,1,2); hold on;
-    plot(tidx(inter+1),vang_new(tidx(inter+1),2),'b-',tidx(inter+1),vang_ref_sig(tidx(inter+1),2),'b-.','LineWidth',2);
-    plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'k-');
+    plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(2)),'b-',tidx(inter+1),vang_ref_sig(tidx(inter+1),2),'b-.','LineWidth',1);
+    plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
 
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); title('Vang at perf node'); grid on; legend('vb','vbref','ctrl start');  
 
-%     h3=subplot(3,1,3); hold on;
-%     plot(tidx(inter+1),vang_new(tidx(inter+1),3),tidx(inter+1),vang_ref_sig(tidx(inter+1),3),'-.','color',[0.9290 0.6940 0.1250],'LineWidth',2);
-%     plot([Vang_ctrlStart,Vang_ctrlStart],get(gca,'ylim'),'k-');
-% 
-%     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec'));title('Vang at perf node'); grid on; legend('vc','vcref','ctrl start');  
+    h3=subplot(3,1,3); hold on;
+    plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(3)),tidx(inter+1),vang_ref_sig(tidx(inter+1),3),'-.','color',[0.9290 0.6940 0.1250],'LineWidth',1);
+    plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
+
+    xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec'));title('Vang at perf node'); grid on; legend('vc','vcref','ctrl start');  
 
     %axis([min(tidx(inter+1)),max(tidx(inter+1)),-5,5]); % narrow axis to easier see one phase
     %set(gca, 'XTick',plotStart:60:(plotEnd-plotStart+1)*60, 'XTickLabel',minStart:(minEnd+1))        
@@ -164,4 +165,18 @@ h_label=ylabel('Phase Angle (degrees)','visible','on');
 % % plot load data over sim interval
 % figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, one curve for each node'); xlabel('seconds'); ylabel('kW or kVAR');
 
-%%
+%% Plot all inv actuation on one plot
+pinv=PQact(:,1:length(ctrl_idx)/2); % not in pu
+qinv=PQact(:,length(ctrl_idx)/2+1:end);
+figure; plot(tidx(inter+1),pinv(tidx(inter+1),:),'k-','LineWidth',1);
+xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Real Power (kW)');title('P cmd at actuator node, (Pcmd)'); grid on;
+figure; plot(tidx(inter+1),qinv(tidx(inter+1),:),'k-','LineWidth',1);
+xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Reactive Power (kVAR)');title('Q cmd at actuator node, (Qcmd)'); grid on;
+
+qinv(end,:)% check that all are below sat point
+pinv(end,:) 
+
+
+% we observe instability
+% check the control loop align, i.e. that we arent misaligning phases
+% try same sim but with 6 different random locs
