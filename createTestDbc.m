@@ -1,11 +1,11 @@
 function [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(pload,qload,Ts,ctrl_idx,Sbase)
     % pload and qload are in seconds, not in timesteps
     numDbc=length(ctrl_idx); % P&Q across all actuators and all phases
-    dbcDur=20; % in timesteps, not in seconds
+    dbcDur=5; % in timesteps, not in seconds; to get seconds, multiply by Ts
     totDbcTime=numDbc*(dbcDur*2);
     %end of dbc=dbcDur+totDbcTime=20+2*r*40
     checkTestDbcFit=totDbcTime<length(pload)/Ts % the disturbance timesteps should not go off the edge of the actual sim duration
-    dbcStart=5:dbcDur*2:totDbcTime; % in timesteps
+    dbcStart=dbcDur:dbcDur*2:totDbcTime; % in timesteps
     dbcMeas=dbcStart+dbcDur-3; % in timesteps
     sz=size(pload);
     testDbcData=[[0:Ts:length(pload)]' zeros(length(pload)/Ts+1,numDbc)]; % col1 is time, initialize as no dbc with correct dims
@@ -18,8 +18,8 @@ function [testDbcData, dbcMeas, stepP, stepQ, dbcDur]=createTestDbc(pload,qload,
     % Must multiply by Sbase because dbc powers will be added in update
     % power block, which is in kW not pu
     if pload_avg>0
-        stepP=30; % choose 1st avg to make scalar, assumes dbc location is colocated with a load
-        stepQ=30;  %want at least 200 kW change to excite voltage
+        stepP=-100; % choose 1st avg to make scalar, assumes dbc location is colocated with a load
+        stepQ=-100;  %want at least 200 kW change to excite voltage
     else
         stepP=0;
         stepQ=0;
