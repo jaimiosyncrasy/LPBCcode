@@ -22,24 +22,24 @@ Ts=1; % should agree with simulink outermost block setting
 
 % read initialization file
     % CHECK THIS
-    testIdx=2; % (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+    test_num=1; % (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file, dont change this
-    [num txt raw]=xlsread('init.xlsx');
+    [num txt raw]=xlsread('init_7.31.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
-    testKey=raw(testIdx+numHead,1); testKey=testKey{1}
+    testKey=raw(test_num+numHead,1); testKey=testKey{1}
     disp(strcat('---------- Initializing controller test',testKey,'----------'));
-    kgainCalcType=raw(testIdx+numHead,2); kgainCalcType=kgainCalcType{1}
-    PVpen=raw(testIdx+numHead,3); PVpen=PVpen{1};
-    time=raw(testIdx+numHead,4); time=time{1}; time=strsplit(time,'-');
+    kgainCalcType=raw(test_num+numHead,2); kgainCalcType=kgainCalcType{1}
+    PVpen=raw(test_num+numHead,4); PVpen=PVpen{1};
+    time=raw(test_num+numHead,5); time=time{1}; time=strsplit(time,'-');
     timeStart=time(1); timeEnd=time(2); % HH:MM format, for full day  use 23:59
     [minStart,minEnd,simTimestamps] = setSimTime(timeStart,timeEnd);
-    resultsName=raw(testIdx+numHead,5); resultsName=resultsName{1};
+    resultsName=raw(test_num+numHead,2); resultsName=resultsName{1};
     % 'raw LPBC output name' col not used by this code, instead used by results tracking tool
-    measStr=raw(testIdx+numHead,6); measStr=measStr{1}; % convert cell array to string
-    actStr=raw(testIdx+numHead,7); actStr=actStr{1};
-    dbcStr=raw(testIdx+numHead,9); dbcStr=dbcStr{1};
-    Sinv_str=raw(testIdx+numHead,10); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
-    ridxStr=raw(testIdx+numHead,8); ridxStr=ridxStr{1}; 
+    measStr=raw(test_num+numHead,7); measStr=measStr{1}; % convert cell array to string
+    actStr=raw(test_num+numHead,9); actStr=actStr{1};
+    dbcStr=raw(test_num+numHead,12); dbcStr=dbcStr{1};
+    Sinv_str=raw(test_num+numHead,11); Sinv_str=Sinv_str{1}; % inv limit, apparent pow
+    ridxStr=raw(test_num+numHead,10); ridxStr=ridxStr{1}; 
     if isa(ridxStr,'double') % if already a double, no need to convert string to double
        ridx=ridxStr;
     else
@@ -52,7 +52,7 @@ Ts=1; % should agree with simulink outermost block setting
     % this code expects second-wise data
     % use xlsread to obtain loadNames from header, then csvread to read data (too much data for xlsread to handle)
     secStart=minStart*60+1; secEnd=minEnd*60; % use exact index as in first col of the .csv
-    n=237; % for each feeder, the number of cols in TV load/gen data (including time col), which is number of nodes*phases
+    n=295; % for each feeder, the number of cols in TV load/gen data (including time col), which is number of nodes*phases
     % parms for changing feeders: https://docs.google.com/document/d/1sW9_txbTIt1qRnV-qul3Sq5a_F1xBMD70WIAcUUA-SI/edit
     r1=secStart; r2=secEnd; c1=0; c2=n-1; % col and row offset
     
@@ -61,9 +61,9 @@ Ts=1; % should agree with simulink outermost block setting
 % data needs to be scaled down)
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     %netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
-    loadData = csvread('123NF_NL_sec_PVpen125_sigbuilder.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
-  [PQloads,txt,raw] = xlsread('123NF_mnt_PVpen125_NL.csv'); % PQloads has time vector
-
+  %  loadData = csvread('123NF_sct700_PVpen125_NL.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
+    [loadData,~,~] = xlsread('123NF_sct710_PVpen125_NL.csv'); % PQloads has time vector
+    
     m=1;% modifier to scale the net load. With m=1, vmag very low (0.92pu)
     netLoadData=m*loadData; % units of kW, kVAR
     % loadData formatted [PPP ... QQQ] LD_634/P1	LD_634/Q1	LD_634/P2	LD_634/Q2	LD_634/P3	LD_634/Q3	LD_671/P1
@@ -82,13 +82,13 @@ Ts=1; % should agree with simulink outermost block setting
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
     % NOTE: starting pin must be B, not C! This is because we remove the
     % first col afterward
-    [txt,num,raw] = xlsread('004_GB_IEEE123_OPAL.xlsx','Pins','B1:ID1'); % pick out load names
+    [txt,num,raw] = xlsread('004_GB_IEEE123_OPAL_accur.xlsx','Pins','B1:KJ1'); % pick out load names
 %     raw = csvread('impedMod_IEEE13_csv.csv',r1, c1, [r1 c1 r2 c2]);
     % TEMP: ^replace 'B1:AJ2'hardcoding to allow for feeders of diff sizes
     loadNames =raw(1,2:end); % 
     loadNames = cellfun(@(S) S(4:end), loadNames, 'Uniform', 0); % clean up string format
 
-    [txt,num,raw] = xlsread('004_GB_IEEE123_OPAL.xlsx','Pins','B2:JP3'); % pick out bus names
+    [txt,num,raw] = xlsread('004_GB_IEEE123_OPAL_accur.xlsx','Pins','B2:JP3'); % pick out bus names
     busNames=raw(1,2:end); % used to select meas node
     busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging  
@@ -137,7 +137,7 @@ Options=[1 1]; % [Testing PBC_ctrl]
     
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx,measStr); 
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx,measStr,test_num); 
    
 %     vmag_ref
 %     vang_ref
@@ -146,11 +146,9 @@ Options=[1 1]; % [Testing PBC_ctrl]
 
 %% step2: run simulation to collect step response data
    
-%     Turn controllers off    
-    Kp_vmag=zeros(r,1);
-    Ki_vmag=zeros(r,1);
-    Kp_vang=zeros(r,1);
-    Ki_vang=zeros(r,1);
+%     Turn controllers off  
+    sz=length(ctrl_idx);
+    F11=zeros(sz/2,sz/2); F12=F11; F21=F11; F22=F11;
     
      Vang_ctrlStart = 0; % wait until after interval over which you tuned controller
      Vmag_ctrlStart = 0; % in seconds, time for turning on controllers
@@ -182,10 +180,10 @@ Options=[1 1]; % [Testing PBC_ctrl]
 
    %% Run sim with controllers off to get sys ID data
      disp('------------------- Running uncontrolled sim...');
-      set_param('sim123NF', 'StopTime', num2str(size(testDbcData,1)))
+      set_param('sim123NF_v2', 'StopTime', num2str(size(testDbcData,1)))
 
     % Run simulink
-        sim('sim123NF.mdl')
+        sim('sim123NF_v2.mdl')
         vmag_init_actual=vmag_new(40,:);
         vang_init_actual=vang_new(40,:);
         disp('finished simulink');    
@@ -233,5 +231,5 @@ title('P-->Vang');
 % figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
 % figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
-%save('123NF_stepdata_3.18.mat') % save all vars so can load them
+save(strcat('123NF_stepdata_',num2str(test_num),'9.8.mat')) % save all vars so can load them
  %%

@@ -1,24 +1,37 @@
-function [tarVmag,tarVang] = process_targets(minStart,measStr,meas_idx)
-    row=minStart+2 % minStart starts at 0, so if zero want 2nd row, so add 2
-    [~,head,~] = xlsread('voltage_targets_123NF_100PVpen.csv','A1:ACU1');
-    [num,txt,raw] = xlsread('voltage_targets_123NF_100PVpen.csv',strcat('A',num2str(row),':ACU',num2str(row)));
-    assert(num(:,1)==minStart) % make sure TODs match
-    % extract only the targets for your performance nodes:
-    % find index of head where measStr matches into head
-    
-    perf_idx=[];
+function [tarVmag,tarVang,vang_nom] = process_targets(minStart,measStr,meas_idx,test_num)
+% to get targets of 1st timestep: row 1,3, and 11
+% to get targets of 2nd timestep: row 1,4, and 14
+    tarVmag=[]; tarVang_no_offset=[]; tarVang=[]; vang_nom=[];
+
+	phtarg_file=strcat('tar_PVpen125_9.8/voltage_targets_lzn_test',num2str(test_num),'.csv');
+	[num,txt,raw]=xlsread(phtarg_file);
+    tar_names=txt(1,:);
+    vmags=num(1,2:end);
+    vangs=num(9,2:end);
+
+
+    % find index of tar_names where measStr matches into tar_names  
     perfNode=split(measStr,',')
     for i=1:length(perfNode)
-        checkhead = not( cellfun( @isempty, strfind( head, perfNode(i) ) ) );
-        perf_idx=[perf_idx find(checkhead)];
+        checktar_names = not( cellfun( @isempty, strfind( tar_names, perfNode(i) ) ) );
+        idx=find(checktar_names);
+        tarVmag=[tarVmag vmags(idx)];
+        tarVang_no_offset=[tarVang_no_offset vangs(idx)];
+       if contains(tar_names(idx),'_a_')
+	 %  if ismember('_a_',tar_names{i})
+			tarVang=[tarVang 0+tarVang_no_offset(i)];
+			vang_nom=[vang_nom 0];
+	   elseif contains(tar_names(idx),'_b_')
+			tarVang=[tarVang [-120]+tarVang_no_offset(i)];
+			vang_nom=[vang_nom -120];
+	   elseif contains(tar_names(idx),'_c_')
+			tarVang=[tarVang [120]+tarVang_no_offset(i)];
+			vang_nom=[vang_nom 120];
+       end
+       
     end
     %perf_idx=unique(perf_idx); % remove duplicates
     
-    a=head(perf_idx)
-    b=num(perf_idx+1)
-    % assign targets
-    tarVmag=b(:,1:2:end)
-    tarVang=b(:,2:2:end)
     assert((length(meas_idx)==length(tarVmag) && length(meas_idx)==length(tarVang)));
     % issue: tarVmag is length 9 while length(meas_idx) is length 21
 end
