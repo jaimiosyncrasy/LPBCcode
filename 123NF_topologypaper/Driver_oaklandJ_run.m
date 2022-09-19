@@ -1,5 +1,6 @@
 clc; clearvars -except test_num; close all;
-load(strcat('123NF_stepdata_',num2str(test_num),'9.8.mat')) % save all vars so can load them
+load(strcat('123NF_stepdata_test',num2str(test_num),'_9.18.mat')) % save all vars so can load them
+%load(strcat('123NF_stepdata_',num2str(test_num),'9.10.mat')) % save all vars so can load them
 
     Vang_ctrl=true; % boolean
     Vmag_ctrl=true; % boolean
@@ -22,16 +23,26 @@ load(strcat('123NF_stepdata_',num2str(test_num),'9.8.mat')) % save all vars so c
 %     assert(length(lead_idx)==length(a_));
 
 %% load kgains from file
-    load(strcat('kgains/kgains_test',num2str(test_num),'_9.8.mat')); % gives us "kgains"
-    Fbar=Fbar_kgain_mid/15; % div by 5 because ephasorsim has 5s lag compared to linsim (see 'results 2' page in OneNote) 
-    
-    blk_1=size(Fbar_kgain_mid,1)/2; blk_2=size(Fbar_kgain_mid,2)/2;
-    F11=Fbar(1:blk_1,1:blk_2);
-    F21=Fbar(blk_1+1:end,1:blk_2);
+    load(strcat('kgains/kgains_test',num2str(test_num),'_09-18.mat')); % gives us "kgains"
+    % set testnum=2 to have scale=0.9 to get oscillations
+    scale=0.3*ones(1,17);
+    scale(2)=0.05; scale(5)=0.2; scale(7)=0.4; % modifier, ideally would be 1
+ %   Fbar=scale(test_num)*Fbar_kgain_mid/5; % div by 5 because ephasorsim has 5s lag compared to linsim (see 'results 2' page in OneNote) 
+    Fbar=scale(test_num)*bestF_asmat/5; % div by 5 because ephasorsim has 5s lag compared to linsim (see 'results 2' page in OneNote) 
+
+    assert(size(controlLoopAlign,1)==size(Fbar,1))
+    blk_1=size(Fbar,1)/2; blk_2=size(Fbar,2)/2;
+    F11=1.2*Fbar(1:blk_1,1:blk_2);
+    F21=1.2*Fbar(blk_1+1:end,1:blk_2); 
     F12=Fbar(1:blk_1,blk_2+1:end);
     F22=Fbar(blk_1+1:end,blk_2+1:end);
 
+    % zero out vang control
+  % F21=0*F21; F22=0*F22;
    
+    % zero out vmag control
+    %F11=0*F11; F12=0*F12;
+        
 % %     Turn controllers off  
 %     sz=length(ctrl_idx);
 %     F11=zeros(sz/2,sz/2); F12=F11; F21=F11; F22=F11;
@@ -42,11 +53,11 @@ load(strcat('123NF_stepdata_',num2str(test_num),'9.8.mat')) % save all vars so c
     % define disturbance directly in this function below 
    
     ctrl_start_lag=10; % time after tv load/gen begins to start controllers
-    Vmag_ctrlStart=(5+dbcDur*length(ctrl_idx))+ctrl_start_lag; % check load data to see when stops being constant
-    Vang_ctrlStart=(5+dbcDur*length(ctrl_idx))+ctrl_start_lag; 
+    Vmag_ctrlStart=TVload_start+ctrl_start_lag; % check load data to see when stops being constant
+    Vang_ctrlStart=TVload_start+ctrl_start_lag; 
 
     netLoadData_snippet=netLoadData; % for controlled sim, set load data to be TV from sigbuilder
-    loadData_noTS=netLoadData_snippet(:,2:end); % remove timestamp
+    loadData_noTS=netLoadData_snippet(TVload_start:end,2:end); % remove timestamp
 
      n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
      
@@ -64,6 +75,7 @@ load(strcat('123NF_stepdata_',num2str(test_num),'9.8.mat')) % save all vars so c
  %   figure; plot(actualDbcData(:,[2:7]),'LineWidth',1.5); title('Disturbance'); xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('power (kW or kVAR)'); 
 %legend('Pa','Pb','Pc','Qa','Qb','Qc');
 
+assert(size(testDbcData,1)==size(actualDbcData,1))
 
  %%  Run sim with controllers ON
 % Options(1)=0; % turnonn rsc constr, notdoing step response tests
@@ -87,9 +99,7 @@ Options(2)=1; % PBC
     disp('------------------- Outputing results...');
     
     % save data into .mats
-	%save('OaklandJ_6act_wrsc_1.1.mat','vmag_new','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','kgains','scale2')
-     % to check what you've saved away...
-     %clear all; load('simData_001.mat'); whos
-     
+	%save(strcat('results/123NF_test',num2str(test_num),'_norsc_9.18.mat'),'vmag_new','vmag_all','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','Fbar')
+ 
 %% ------------------------- End of Code ----------------------------------
 toc % print elapsed sim time

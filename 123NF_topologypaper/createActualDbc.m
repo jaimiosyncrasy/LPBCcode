@@ -1,4 +1,4 @@
-function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData,r)
+function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData,ctrlStart)
 % input: net load data at dbc node across sim duration, pload is wx1
       % r is number of phases across all nodes, i.e. the dim of the pin
       % let w be number of timesteps in sim duration
@@ -10,8 +10,13 @@ function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData,
     % define square wave (step up and step down) disturbance
    
     % dbcs starts 60s after interval over which controller is trained, then occurs every 15 minutes
-    ctrlStart=(20+80*r)*Ts;
-    dbcStart=ctrlStart+60:15*60:length(pload) % in seconds
+    if length(pload)<200
+        dbcStart=round(length(pload)/2)-1 % single dbc at 100s
+        dbcDur=dbcStart;
+    else
+        dbcStart=(ctrlStart+60):200:length(pload)-ctrlStart % in seconds
+        dbcDur=200;
+    end
     if ~isempty(dbcStart) % if there is enough time after testDbc to have an actual dbc
        % dbc size is a func of the load data at the start of the dbc
             stepP=pload(dbcStart(1)); % assumes dbc location is colocated with a load
@@ -26,7 +31,8 @@ function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData,
        % At every dbcStart, a diff set of 1 to totPh disturbances occur (single double and 3ph totally random), each phase-dbc varying in amp but of the SAME duration
 
         numDbc=length(dbcStart); % 
-        eventType=randsrc(numDbc,1,[0 1]); % half of dbs are cloud cover, half are load changes
+     %   eventType=randsrc(numDbc,1,[0 1]); % half of dbs are cloud cover, half are load changes
+        eventType=ones(numDbc,1);
         for i=1:numDbc
             eventType(i)
             if eventType(i)==1 % load change event, change in net load at a random num of dbc nodes
@@ -47,16 +53,16 @@ function actualDbcData=createActualDbc(pload,qload,Ts,dbc_idx,Sinv, netLoadData,
     %             dbcAmp(2,:)=dbcAmp(1,:).*tan(theta) % inductive loads
 
             dbcAmp(2,:)=(5-(-5))*rand(1,numPh)+(-5); % scaling factor for stepP/Q
-            dbcDur=randi([10 120],1,1) % in seconds, dbcs are 10 to 330 second sq waves
+            %dbcDur=randi([10 120],1,1) % in seconds, dbcs are 10 to 330 second sq waves
             else % cloud cover event, net load inc at all dbc nodes
                 phIdx=1:totPh;
                 numPh=length(phIdx);
                 dbcAmp=zeros(2,numPh); % reset
                 dbcAmp=(5-(0))*rand(2,numPh)+(0); % scaling factor for stepP/Q
                 dbcAmp(2,:)=0; % cloud cover reduces P, but no change in Q
-                dbcDur=randi([10 120],1,1) % in seconds, dbcs are 10 to 330 second sq waves
+                %dbcDur=randi([10 120],1,1) % in seconds, dbcs are 10 to 330 second sq waves
             end
-            dbcEnd=(dbcStart(i)+dbcDur);
+            dbcEnd=min((dbcStart(i)+dbcDur),length(pload));
             actualDbcData(dbcStart(i)/Ts:dbcEnd/Ts,phIdx+1)=repmat(dbcAmp(1,:)*stepP,length(dbcStart(i)/Ts:dbcEnd/Ts),1);
             actualDbcData(dbcStart(i)/Ts:dbcEnd/Ts,phIdx+1+totPh)=repmat(dbcAmp(2,:)*stepQ,length(dbcStart(i)/Ts:dbcEnd/Ts),1);
         end

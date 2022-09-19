@@ -6,25 +6,26 @@
 % 5. once running, update change feeder doc: https://docs.google.com/document/d/1sW9_txbTIt1qRnV-qul3Sq5a_F1xBMD70WIAcUUA-SI/edit
 %------------------------------
 % Jaimie Swartz, PBC PI local controller code, 7/19/21
+
 %clc; clearvars -except myVars sensCell powCell e; close all;
 clc; clear all; 
 %close all;
+test_num=16; % (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
 
 disp('Running Local Controller...');
 tic % begin counting sim elapsed time
+
 %% initialize(loaddata.init)
 % check: impedance model pins are exactly 3 rows, and load list is same as
 % TV load/gen data
 
-Ts=1; % should agree with simulink outermost block setting
-% 0.1 is more realistic, but hard to see conceptually on plots
-% 1 easier to see, but controller should be faster than this irl
+    Ts=1; % should agree with simulink outermost block setting
+    % 0.1 is more realistic, but hard to see conceptually on plots
+    % 1 easier to see, but controller should be faster than this irl
 
 % read initialization file
-    % CHECK THIS
-    test_num=1; % (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
     numHead=4; % number of header rows in init file, dont change this
-    [num txt raw]=xlsread('init_7.31.xlsx');
+    [num txt raw]=xlsread('init_7.31_busListOrder.xlsx');
     % see row 4 of initilaization file to verify hardcoded index number 
     testKey=raw(test_num+numHead,1); testKey=testKey{1}
     disp(strcat('---------- Initializing controller test',testKey,'----------'));
@@ -62,7 +63,7 @@ Ts=1; % should agree with simulink outermost block setting
     % netLoadData = csvread('sig0.3_001_phasor08_IEEE13_secondWise_sigBuilder_5min_normalized_03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
     %netLoadData = csvread('001_phasor08_IEEE13_time_sigBuilder_secondwise_norm03.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
   %  loadData = csvread('123NF_sct700_PVpen125_NL.csv',r1,c1,[r1 c1 r2 c2]); % includes first col as timestamp, needed for simulink loop
-    [loadData,~,~] = xlsread('123NF_sct710_PVpen125_NL.csv'); % PQloads has time vector
+    [loadData,~,~] = xlsread('123NF_sct670_PVpen125_NL.csv'); % PQloads has time vector
     
     m=1;% modifier to scale the net load. With m=1, vmag very low (0.92pu)
     netLoadData=m*loadData; % units of kW, kVAR
@@ -77,7 +78,7 @@ Ts=1; % should agree with simulink outermost block setting
     %     loadData_noTS=netLoadData_snippet(:,2:end); % remove timestamp
 
     figure; plot(netLoadData_snippet(:,1),netLoadData_snippet(:,2:end)); title('load data for sim itvl, one curve for each node'); xlabel('seconds'); ylabel('kW or kVAR');
-
+    TVload_start=min(find(diff(netLoadData_snippet(:,2))>0))
 
     %r1 = 0; r2 = 1; c1 = 1; c2 = 35;
     % NOTE: starting pin must be B, not C! This is because we remove the
@@ -93,7 +94,8 @@ Ts=1; % should agree with simulink outermost block setting
     busNames=cellfun(@(S) S(1:end-5), busNames, 'Uniform', 0); % clean up string format
     % Assign node location indices, print to help with debugging  
 %%
-    meas_idx=strToIdx(measStr,busNames)
+    meas_idx=strToIdx(measStr,busNames); uniq_meas_idx=get_unique_sorted(meas_idx,measStr);
+ %   meas_idx=strToIdx(measStr,busNames); uniq_meas_idx=unique(meas_idx,'sorted');
     ctrl_idx=strToIdx(actStr,loadNames)
     dbc_idx=strToIdx(dbcStr,loadNames)
     Sinv=repmat(Sinv_str,1,length(ctrl_idx)/2); % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
@@ -137,7 +139,7 @@ Options=[1 1]; % [Testing PBC_ctrl]
     
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_SPBC_targets(minStart,minEnd,Sbase,V1base,V2base,measStr); 
     %[vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_UD_targets(minStart,minEnd,Sbase,V1base,V2base) ;
-    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx,measStr,test_num); 
+    [vmag_ref,vang_ref,p_init,q_init,vmag_init_actual, vang_init_actual]  = set_const_target(minStart,minEnd,Sbase,meas_idx,measStr,controlLoopAlign,test_num); 
    
 %     vmag_ref
 %     vang_ref
@@ -147,8 +149,8 @@ Options=[1 1]; % [Testing PBC_ctrl]
 %% step2: run simulation to collect step response data
    
 %     Turn controllers off  
-    sz=length(ctrl_idx);
-    F11=zeros(sz/2,sz/2); F12=F11; F21=F11; F22=F11;
+    sz1=length(ctrl_idx); sz2=length(unique(meas_idx,'stable'));
+    F11=zeros(sz1/2,sz2); F12=F11; F21=F11; F22=F11;
     
      Vang_ctrlStart = 0; % wait until after interval over which you tuned controller
      Vmag_ctrlStart = 0; % in seconds, time for turning on controllers
@@ -170,13 +172,14 @@ Options=[1 1]; % [Testing PBC_ctrl]
     netLoadData_snippet=[timevec repmat(netLoadData(1,2:end),dbcTime,1)]; % set netLoadData to be constant just for uncontrolled sim
     loadData_noTS=netLoadData_snippet(:,2:end); % remove timestamp
 
-    n=length(dbc_idx); Pidx=1:2:n-1; Qidx=2:2:n;
-    actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(Pidx)),0*loadData_noTS(:,dbc_idx(Qidx)),Ts,dbc_idx,Sinv,netLoadData_snippet,r);    
-    n=length(ctrl_idx); Pidx=1:2:n-1; Qidx=2:2:n;
+    n=length(dbc_idx); dbcP_idx=1:2:n-1; dbcQ_idx=2:2:n; % dbc_idx is formatted PQPQ
+    actualDbcData=createActualDbc(0*loadData_noTS(:,dbc_idx(dbcP_idx)),0*loadData_noTS(:,dbc_idx(dbcQ_idx)),Ts,dbc_idx,Sinv,netLoadData_snippet,r);    
+    n=length(ctrl_idx); ctrlP_idx=1:n/2; ctrlQ_idx=n/2+1:n;
     %actualDbcData = actualDbcData*0;
-    [testDbcData, dbcMeas, stepP, stepQ]=createTestDbc(loadData_noTS(:,ctrl_idx(Pidx)),loadData_noTS(:,ctrl_idx(Qidx)),Ts,ctrl_idx,dbcDur); % testDbcData is a load value
+    [testDbcData, dbcMeas, stepP, stepQ]=createTestDbc(loadData_noTS(:,ctrl_idx(ctrlP_idx)),loadData_noTS(:,ctrl_idx(ctrlQ_idx)),Ts,ctrl_idx,dbcDur,loadNames); % testDbcData is a load value
     %testDbcData(:,2:7)=0;
-    
+    assert(size(testDbcData,1)==size(actualDbcData,1))
+
 
    %% Run sim with controllers off to get sys ID data
      disp('------------------- Running uncontrolled sim...');
@@ -189,10 +192,10 @@ Options=[1 1]; % [Testing PBC_ctrl]
         disp('finished simulink');    
         
     % Compute sensitivities
-       [dvdq dvdp ddeldq ddeldp sensMats]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,loadNames,Sbase)
+       [dvdq dvdp ddeldq ddeldp sensMats]=computeSens(dbcMeas, stepP, stepQ, dbcDur, vmag_new,vang_new, ctrl_idx,uniq_meas_idx,loadNames,Sbase)
         % units: [V/kVAR V/kW deg/kVar deg/kW]
 if (any(diff(sign(dvdq(dvdq~=0)))) || any(diff(sign(ddeldp(ddeldp~=0))))) % if not all the same sign
-    error('dvdq or ddeldp not all same sign across all phases. Check whether testDbc step size is exciting enouh (see plots)');
+    disp('warning: dvdq or ddeldp not all same sign across all phases. Check whether testDbc step size is exciting enouh (see plots)');
 end
 scale=1; [dvdq(1)*scale,dvdp(1)*scale,ddeldq(1)*scale,ddeldp(1)*scale] % expect 2nd smaller than 1st, 4th smaller than 3rd
 %^ should be close to impedance vlaues!
@@ -212,24 +215,28 @@ end
 figure;
 for i = 1:plotr
     subplot(1,plotr,i);
-    [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,i),itvl,testDbcData(itvl,i*2+1));
-    set(hline1,'LineWidth',1.5);
-set(hline2,'LineWidth',1.5);
-    legend('vmag','q');
+    for j=1:length(uniq_meas_idx)
+        [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,j),itvl,testDbcData(itvl,i*2+1));
+        set(hline1,'LineWidth',1.5);
+    set(hline2,'LineWidth',1.5);
+        legend('vmag','q');
+    end
 end
 title('Q-->Vmag');
 figure;
 for i = 1:plotr
     subplot(1,plotr,i);
-    [haxes hline1, hline2]=plotyy(itvl,vang_new(itvl,i),itvl,testDbcData(itvl,i*2));
-    set(hline1,'LineWidth',1.5);
-    set(hline2,'LineWidth',1.5);
-    legend('vang','p');
+    for j=1:length(uniq_meas_idx)
+        [haxes hline1, hline2]=plotyy(itvl,vang_new(itvl,j),itvl,testDbcData(itvl,i*2));
+        set(hline1,'LineWidth',1.5);
+        set(hline2,'LineWidth',1.5);
+        legend('vang','p');
+    end
 end
 title('P-->Vang');
         
 % figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
 % figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
-save(strcat('123NF_stepdata_',num2str(test_num),'9.8.mat')) % save all vars so can load them
+save(strcat('123NF_stepdata_test',num2str(test_num),'_9.18.mat')) % save all vars so can load them
  %%

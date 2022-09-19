@@ -7,7 +7,7 @@ function idx=strToIdx(inputStr,nodeNames)
     for i=1:length(a)
         foo=find(ismember(nodeNames,a(i))); % return indices where a matches with nodeNames
         if isempty(foo)
-            disp(strcat('error, could not match{ ',inputStr,' with load names'));
+            disp(strcat('error, could not match ',a(i),' with load names'));
         end
         idx=[idx foo];
     end

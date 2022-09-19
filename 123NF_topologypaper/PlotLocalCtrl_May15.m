@@ -9,18 +9,20 @@ close all;
 %     Vmag_ctrlStart=50; % in seconds
 %     Vang_ctrlStart=50; % 
 
-plotIdx=[1 2 3]; % if more than 1 act/perf node pair, assign which 3 indices to plot
+plotIdx=1:min([3,size(vmag_new,2)]); % if more than 1 act/perf node pair, assign which 3 indices to plot
 
 %% Plot
-tidx=0:length(t); % tout is cummulative timestep (non-int), tidx is integers for indexing
+tidx=1:length(t); % tout is cummulative timestep (non-int), tidx is integers for indexing
 %plotStart=minStart; %minute of the day, should not exceed timeEnd
-plotStart=(Vmag_ctrlStart-ctrl_start_lag)/60; % minutes after sim start
+plotStart=round((Vmag_ctrlStart-ctrl_start_lag)/60); % minutes after sim start
 %plotEnd=minStart+1450/600; % minEnd for entire simulation
 %^to stop at certain timestep T, plotEnd=minStart+T/600
 plotEnd=minEnd-minStart; % minutes after sim start
+%plotEnd=2.5; % minutes after sim start
 
 inter=plotStart*60:plotStart*60+(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 %inter=50:150; %interval to plot over in seconds
+inter=Vmag_ctrlStart-12:size(actualDbcData,1);
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
 
 %size(inter=1:300-50;
@@ -65,9 +67,13 @@ vmag_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vmag_new(2,:),minEnd-minS
     figure;     % same plot across phases
     hold on;
     plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(1)),'r-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),1),'r--','LineWidth',1);
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(2)),'b-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),2),'b--','LineWidth',1);
-    plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(3)),tidx(inter+1),vmag_ref_sig(tidx(inter+1),3),'--','color',[0.9290 0.6940 0.1250],'LineWidth',1);
-    r=tidx(inter+1);
+    if length(plotIdx)>1
+         plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(2)),'b-',tidx(inter+1),vmag_ref_sig(tidx(inter+1),2),'b--','LineWidth',1);
+    end
+    if length(plotIdx)>2
+         plot(tidx(inter+1),vmag_new(tidx(inter+1),plotIdx(3)),tidx(inter+1),vmag_ref_sig(tidx(inter+1),3),'--','color',[0.9290 0.6940 0.1250],'LineWidth',1);
+    end
+     r=tidx(inter+1);
     Ts_bound=0.02;
     % Plot boundaries around settling time
     %    plot([r(1) r(end)], [vmag_new(r(end),1)+Ts_bound*vmag_step vmag_new(r(end),1)+Ts_bound*vmag_step],'k-');
@@ -140,15 +146,17 @@ vang_init_actual =[[0:60:(minEnd-minStart)*60]',repmat(vang_new(2,:),minEnd-minS
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec'));title('Vang at perf node'); grid on; legend('v_a','v_a ref','ctrl start');  
 
     h2=subplot(3,1,2); hold on;
-    plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(2)),'b-',tidx(inter+1),vang_ref_sig(tidx(inter+1),2),'b--','LineWidth',1);
-    plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
-
+    if length(plotIdx)>1
+        plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(2)),'b-',tidx(inter+1),vang_ref_sig(tidx(inter+1),2),'b--','LineWidth',1);
+        plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
+    end
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); title('Vang at perf node'); grid on; legend('v_b','v_b ref','ctrl start');  
 
     h3=subplot(3,1,3); hold on;
-    plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(3)),tidx(inter+1),vang_ref_sig(tidx(inter+1),3),'--','color',[0.9290 0.6940 0.1250],'LineWidth',1);
-    plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
-
+    if length(plotIdx)>2
+        plot(tidx(inter+1),vang_new(tidx(inter+1),plotIdx(3)),tidx(inter+1),vang_ref_sig(tidx(inter+1),3),'--','color',[0.9290 0.6940 0.1250],'LineWidth',1);
+        plot([Vang_ctrlStart/Ts,Vang_ctrlStart/Ts],get(gca,'ylim'),'k-');
+    end
     xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec'));title('Vang at perf node'); grid on; legend('v_c','v_c ref','ctrl start');  
 
     %axis([min(tidx(inter+1)),max(tidx(inter+1)),-5,5]); % narrow axis to easier see one phase
@@ -172,20 +180,32 @@ h_label=ylabel('Phase Angle (degrees)','visible','on');
 pinv=PQact(:,1:size(PQact,2)/2);
 qinv=PQact(:,size(PQact,2)/2+1:end);
 figure; 
-subplot(2,1,2); plot(tidx(inter+1),pinv(tidx(inter+1),:),'LineWidth',1.2);
+subplot(2,1,2); plot(tidx(inter+1),pinv(tidx(inter+1),:),'LineWidth',1);
 xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Real Power (kW)');title('P inv at all actuators'); grid on;
-subplot(2,1,1);  plot(tidx(inter+1),qinv(tidx(inter+1),:),'LineWidth',1.2);
+subplot(2,1,1);  plot(tidx(inter+1),qinv(tidx(inter+1),:),'LineWidth',1);
 xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('Reactive Power (kVAR)');title('Q inv at all actuators'); grid on;
 
 totP_perph=sum(pinv(200,:))/3
 totQ_perph=sum(qinv(200,:))/3
 
 %%
-figure; subplot(2,1,1); plot(tidx(inter+1),qnew(inter,:),'LineWidth',1.2); title('q cmd (pu)'); grid on;
-subplot(2,1,2); plot(tidx(inter+1),pnew(inter,:),'LineWidth',1.2); title('p cmd (pu)'); grid on;
+% figure; subplot(2,1,1); plot(tidx(inter+1),qnew(inter+1,:),'LineWidth',1.2); title('q cmd (pu)'); grid on;
+% subplot(2,1,2); plot(tidx(inter+1),pnew(inter+1,:),'LineWidth',1.2); title('p cmd (pu)'); grid on;
 
 %%
-figure; subplot(2,1,1); plot(tidx(inter+1),vmag_err(inter,:),'LineWidth',1.2); title('vmag err (meas-ref), pos=overV'); grid on;
+figure; subplot(2,1,1); plot(tidx(inter+1),vmagsq_err(inter+1,:),'LineWidth',1); title('vmag err (meas-ref), pos=overV'); grid on;
 xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('tracking error (pu)');grid on;
-subplot(2,1,2); plot(tidx(inter+1),vang_err(inter,:),'LineWidth',1.2); title('vang err (meas-ref)'); grid on;
+subplot(2,1,2); plot(tidx(inter+1),vang_err(inter+1,:),'LineWidth',1); title('vang err (meas-ref)'); grid on;
 xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('tracking error (deg)');grid on;
+
+
+%% Save all figs and data to files
+% figure; plot(vmagsq_err(Vmag_ctrlStart-5:Vmag_ctrlStart+15,:))
+plot_dir=strcat('results/test',num2str(test_num),'_plots');
+mkdir(plot_dir)
+fig_names={'vmag','vang','Qinv','Pinv'};
+save_all_figs(plot_dir,fig_names)
+
+% save data into .mats
+save(strcat('results/test',num2str(test_num),'_plots/data_norsc_9.18.mat'),'vmag_new','vmag_all','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','Fbar')
+ 
