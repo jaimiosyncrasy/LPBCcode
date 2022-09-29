@@ -10,7 +10,7 @@
 %clc; clearvars -except myVars sensCell powCell e; close all;
 clc; clear all; 
 %close all;
-test_num=16; % (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
+test_num=1; % (sim1_1 = 2; sim_9 = 3), for each scenario run, first test below the headers is idx=1
 
 disp('Running Local Controller...');
 tic % begin counting sim elapsed time
@@ -96,17 +96,23 @@ tic % begin counting sim elapsed time
 %%
     meas_idx=strToIdx(measStr,busNames); uniq_meas_idx=get_unique_sorted(meas_idx,measStr);
  %   meas_idx=strToIdx(measStr,busNames); uniq_meas_idx=unique(meas_idx,'sorted');
-    ctrl_idx=strToIdx(actStr,loadNames)
+    ctrl_idx_align=strToIdx(actStr,loadNames)
     dbc_idx=strToIdx(dbcStr,loadNames)
-    Sinv=repmat(Sinv_str,1,length(ctrl_idx)/2); % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
-    r=length(ctrl_idx)/2 % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r
+    Sinv=repmat(Sinv_str,1,length(ctrl_idx_align)/2); % TEMP, when multiple actuators need to use length of inv ctrl_idx, not whole ctrl_idx
+    r=length(ctrl_idx_align)/2 % number of "phase-actuators", div by 2 because each phase actuator has P and Q control so control index has length 2*r
     
 %     [netLoadData, PV_percent] = PV_Cloud_Disturbance(netLoadData, 200, 210);
 %     figure; plot(netLoadData(:,1),netLoadData(:,2:end)); title('load data, after PV disturbance');
 
 % Print which measurments alin with which actuators, each row is a meas-act
 % loop
-    controlLoopAlign=[loadNames(ctrl_idx)' repmat(busNames(meas_idx)',2,1)]
+    controlLoopAlign=[loadNames(ctrl_idx_align)' repmat(busNames(meas_idx)',2,1)]
+    
+    [~,txt,~]=xlsread('123NF_busList.csv');
+    busNames=txt(:,1); foo=split(busNames,'_'); busNames_short=foo(:,2); % get the node number only
+    ctrl_idx=[make_busOrder(busNames_short,loadNames(ctrl_idx_align(1:length(ctrl_idx_align)/2)),ctrl_idx_align(1:length(ctrl_idx_align)/2))...
+        make_busOrder(busNames_short,loadNames(ctrl_idx_align(length(ctrl_idx_align)/2+1:end)),ctrl_idx_align(length(ctrl_idx_align)/2+1:end))];
+    loadNames(ctrl_idx)'
     
 %% create table of controllable nodes, their resource type, and capacity
 % 1 for battery+PV, 2 for battery only, 3 for EV
@@ -201,42 +207,42 @@ scale=1; [dvdq(1)*scale,dvdp(1)*scale,ddeldq(1)*scale,ddeldp(1)*scale] % expect 
 %^ should be close to impedance vlaues!
 %save(resultsName,'sensMats','dvdp','dvdq','ddeldq','ddeldp');
 
-%% Plot step responses for each phase
-        % extra plot for way 3
-r=length(ctrl_idx)/2;
-plotr=min([r,8]);
-%close all
-% qnew and vmag_new are in pu
-if size(vmag_new,1)>150
-    itvl=1:150; % number of timesteps to plot
-else
-    itvl=1:size(vmag_new,1)-1;
-end
-figure;
-for i = 1:plotr
-    subplot(1,plotr,i);
-    for j=1:length(uniq_meas_idx)
-        [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,j),itvl,testDbcData(itvl,i*2+1));
-        set(hline1,'LineWidth',1.5);
-    set(hline2,'LineWidth',1.5);
-        legend('vmag','q');
-    end
-end
-title('Q-->Vmag');
-figure;
-for i = 1:plotr
-    subplot(1,plotr,i);
-    for j=1:length(uniq_meas_idx)
-        [haxes hline1, hline2]=plotyy(itvl,vang_new(itvl,j),itvl,testDbcData(itvl,i*2));
-        set(hline1,'LineWidth',1.5);
-        set(hline2,'LineWidth',1.5);
-        legend('vang','p');
-    end
-end
-title('P-->Vang');
-        
-% figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
-% figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
+%% %% Plot step responses for each phase
+%         % extra plot for way 3
+% r=length(ctrl_idx)/2;
+% plotr=min([r,8]);
+% %close all
+% % qnew and vmag_new are in pu
+% if size(vmag_new,1)>150
+%     itvl=1:150; % number of timesteps to plot
+% else
+%     itvl=1:size(vmag_new,1)-1;
+% end
+% figure;
+% for i = 1:plotr
+%     subplot(1,plotr,i);
+%     for j=1:length(uniq_meas_idx)
+%         [haxes hline1 hline2]=plotyy(itvl,vmag_new(itvl,j),itvl,testDbcData(itvl,i*2+1));
+%         set(hline1,'LineWidth',1.5);
+%     set(hline2,'LineWidth',1.5);
+%         legend('vmag','q');
+%     end
+% end
+% title('Q-->Vmag');
+% figure;
+% for i = 1:plotr
+%     subplot(1,plotr,i);
+%     for j=1:length(uniq_meas_idx)
+%         [haxes hline1, hline2]=plotyy(itvl,vang_new(itvl,j),itvl,testDbcData(itvl,i*2));
+%         set(hline1,'LineWidth',1.5);
+%         set(hline2,'LineWidth',1.5);
+%         legend('vang','p');
+%     end
+% end
+% title('P-->Vang');
+%         
+% % figure; plot(allPQ(1:250,7:9),'LineWidth',1.5);
+% % figure; plot(allPQ(1:250,34:36),'LineWidth',1.5);
 
-save(strcat('123NF_stepdata_test',num2str(test_num),'_9.18.mat')) % save all vars so can load them
+save(strcat('stepdata/stepdata_test',num2str(test_num),'_9.21.mat')) % save all vars so can load them
  %%

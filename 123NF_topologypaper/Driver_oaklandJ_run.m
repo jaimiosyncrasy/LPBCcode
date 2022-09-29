@@ -1,5 +1,5 @@
 clc; clearvars -except test_num; close all;
-load(strcat('123NF_stepdata_test',num2str(test_num),'_9.18.mat')) % save all vars so can load them
+load(strcat('stepdata/stepdata_test',num2str(test_num),'_9.21.mat')) % save all vars so can load them
 %load(strcat('123NF_stepdata_',num2str(test_num),'9.10.mat')) % save all vars so can load them
 
     Vang_ctrl=true; % boolean
@@ -23,17 +23,33 @@ load(strcat('123NF_stepdata_test',num2str(test_num),'_9.18.mat')) % save all var
 %     assert(length(lead_idx)==length(a_));
 
 %% load kgains from file
-    load(strcat('kgains/kgains_test',num2str(test_num),'_09-18.mat')); % gives us "kgains"
-    % set testnum=2 to have scale=0.9 to get oscillations
-    scale=0.3*ones(1,17);
-    scale(2)=0.05; scale(5)=0.2; scale(7)=0.4; % modifier, ideally would be 1
- %   Fbar=scale(test_num)*Fbar_kgain_mid/5; % div by 5 because ephasorsim has 5s lag compared to linsim (see 'results 2' page in OneNote) 
-    Fbar=scale(test_num)*bestF_asmat/5; % div by 5 because ephasorsim has 5s lag compared to linsim (see 'results 2' page in OneNote) 
+scale=0.45*ones(1,30);
+mode=1; % select 1 or 2
 
+if mode==1 % Helou
+    load(strcat('kgains_Helou/kgains_test',num2str(test_num),'_09-23.mat')); % gives us "kgains"
+    Fbar=1.3*Fbar/5; % scale to 1.3x to show the system is unstable
+elseif mode==2
+    scale([1:7,18:20])=0.2;
+    load(strcat('kgains/kgains_test',num2str(test_num),'_09-18.mat')); % gives us "kgains"
+    scale(1)=0.3; scale(2)=0.2; scale(5)=0.2; scale(7)=0.4; scale(18:19)=0.2; % modifier, ideally would be 1
+    scale(19)=0.3; % derate to avoid instability 
+    scale(5)=0.3
+    if test_num<=7 || test_num>17
+        Fbar=scale(test_num)*Fbar_kgain_mid/5; % div by 5 because ephasorsim has 5s lag compared to linsim (see 'results 2' page in OneNote) 
+    else
+        Fbar=scale(test_num)*bestF_asmat/5; 
+    end
+end
+% load(strcat('kgains/kgains_test',num2str(test_num),'_09-21_heatmap.mat')); % gives us "kgains"
+%  Fbar=scale(test_num)*bestF_asmat/5; 
+
+
+ %% assign kgains to F block matrices
     assert(size(controlLoopAlign,1)==size(Fbar,1))
     blk_1=size(Fbar,1)/2; blk_2=size(Fbar,2)/2;
-    F11=1.2*Fbar(1:blk_1,1:blk_2);
-    F21=1.2*Fbar(blk_1+1:end,1:blk_2); 
+    F11=1*Fbar(1:blk_1,1:blk_2);
+    F21=1*Fbar(blk_1+1:end,1:blk_2); 
     F12=Fbar(1:blk_1,blk_2+1:end);
     F22=Fbar(blk_1+1:end,blk_2+1:end);
 

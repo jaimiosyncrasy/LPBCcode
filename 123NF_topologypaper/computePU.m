@@ -37,8 +37,8 @@ function [Sbase,V1base,V2base] = computePU()
 
      % Calculating for 123NF unbalanced
      %Calculating Base Vals to Convert to pu
-   %  V1base=2401.8; % V 
-     V1base=2350.26; % raise the Vpu by 1%
+ %    V1base=2401.8; % V 
+    V1base=2370; % raise the Vpu by 1%
      Sbase=(V1base^2); % in VA, chosen so that Zbase=1
     V2base=NaN;
     

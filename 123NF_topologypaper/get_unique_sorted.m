@@ -9,7 +9,7 @@ function [meas_idx_sorted] = get_unique_sorted(meas_idx,measStr)
     groupVec=[1]; groupNum=1;
     for i=1:length(actNodes)-1
         i
-        if strcmp(actNodes{i+1},actNodes{i})
+        if ~strcmp(actNodes{i+1},actNodes{i})
             groupNum=groupNum+1;
         end
         groupVec=[groupVec groupNum];

@@ -1,14 +1,6 @@
 
 close all;
 
-% Items plotLocalCtrl expects is in matlab workspace:
-% data from sim, either load the .mat or already in workspace
-%     t=1:0.1:600;
-%     minStart=14*60+0; minEnd=14*60+5; % 14:00-14:05
-%     Ts=0.1;
-%     Vmag_ctrlStart=50; % in seconds
-%     Vang_ctrlStart=50; % 
-
 plotIdx=1:min([3,size(vmag_new,2)]); % if more than 1 act/perf node pair, assign which 3 indices to plot
 
 %% Plot
@@ -17,12 +9,13 @@ tidx=1:length(t); % tout is cummulative timestep (non-int), tidx is integers for
 plotStart=round((Vmag_ctrlStart-ctrl_start_lag)/60); % minutes after sim start
 %plotEnd=minStart+1450/600; % minEnd for entire simulation
 %^to stop at certain timestep T, plotEnd=minStart+T/600
-plotEnd=minEnd-minStart; % minutes after sim start
+plotEnd=plotStart+(minEnd-minStart); % minutes after sim start
 %plotEnd=2.5; % minutes after sim start
 
-inter=plotStart*60:plotStart*60+(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
+num_mnt_plot=10; % minutes to plot after ctrl staRT
+%inter=plotStart*60:plotStart*60+(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 %inter=50:150; %interval to plot over in seconds
-inter=Vmag_ctrlStart-12:size(actualDbcData,1);
+inter=Vmag_ctrlStart-12:Vmag_ctrlStart+num_mnt_plot*60;
 checkPlotInter=max(inter)<=600/Ts % required, can only plot 10 min of 1s data
 
 %size(inter=1:300-50;
@@ -201,11 +194,17 @@ xlabel(strcat('timesteps,Ts=',num2str(Ts),'sec')); ylabel('tracking error (deg)'
 
 %% Save all figs and data to files
 % figure; plot(vmagsq_err(Vmag_ctrlStart-5:Vmag_ctrlStart+15,:))
-plot_dir=strcat('results/test',num2str(test_num),'_plots');
-mkdir(plot_dir)
-fig_names={'vmag','vang','Qinv','Pinv'};
-save_all_figs(plot_dir,fig_names)
+
 
 % save data into .mats
-save(strcat('results/test',num2str(test_num),'_plots/data_norsc_9.18.mat'),'vmag_new','vmag_all','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','Fbar')
- 
+if mode==1
+    plot_dir=strcat('results/test',num2str(test_num),'_Helou_plots');
+    mkdir(plot_dir)
+    save(strcat('results/test',num2str(test_num),'_Helou_plots/data_norsc_9.18.mat'),'Vmag_ctrlStart','vmag_new','vmagsq_err','vang_err','vmag_all','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','Fbar')
+elseif mode==2
+    plot_dir=strcat('results/test',num2str(test_num),'_plots');
+    mkdir(plot_dir)
+    save(strcat('results/test',num2str(test_num),'_plots/data_norsc_9.18.mat'),'Vmag_ctrlStart','vmag_new','vmagsq_err','vang_err','vmag_all','vang_new','pnew','qnew','simTimestamps','vmag_ref_sig','vang_ref_sig','Fbar')
+end
+fig_names={'err','PQ','vang','vmag'};
+save_all_figs(plot_dir,fig_names)
