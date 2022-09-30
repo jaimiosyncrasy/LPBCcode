@@ -131,7 +131,7 @@ end
 
 Options=[1 1]; % [Testing PBC_ctrl]
 
-%% read PV data  to get P_TOD
+% read PV data  to get P_TOD
     timevec=[1:600]';
     P_TOD=[timevec (6*21)*ones(length(timevec),length(ctrl_idx)/2)];
     
