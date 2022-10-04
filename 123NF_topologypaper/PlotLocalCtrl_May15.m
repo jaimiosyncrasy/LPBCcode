@@ -12,7 +12,7 @@ plotStart=round((Vmag_ctrlStart-ctrl_start_lag)/60); % minutes after sim start
 plotEnd=plotStart+(minEnd-minStart); % minutes after sim start
 %plotEnd=2.5; % minutes after sim start
 
-num_mnt_plot=10; % minutes to plot after ctrl staRT
+num_mnt_plot=7; % minutes to plot after ctrl staRT
 %inter=plotStart*60:plotStart*60+(plotEnd-plotStart)/Ts*60; %interval to plot over in seconds, may be a subset of the minStart to minEnd
 %inter=50:150; %interval to plot over in seconds
 inter=Vmag_ctrlStart-12:Vmag_ctrlStart+num_mnt_plot*60;
